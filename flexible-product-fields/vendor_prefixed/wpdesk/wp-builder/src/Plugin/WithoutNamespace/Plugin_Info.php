@@ -2,13 +2,13 @@
 
 namespace VendorFPF;
 
-if (!\interface_exists('VendorFPF\\WPDesk_Translatable')) {
+if (!\interface_exists('VendorFPF\WPDesk_Translatable')) {
     require_once __DIR__ . '/Translatable.php';
 }
-if (!\interface_exists('VendorFPF\\WPDesk_Buildable')) {
+if (!\interface_exists('VendorFPF\WPDesk_Buildable')) {
     require_once __DIR__ . '/Buildable.php';
 }
-if (!\interface_exists('VendorFPF\\WPDesk_Has_Plugin_Info')) {
+if (!\interface_exists('VendorFPF\WPDesk_Has_Plugin_Info')) {
     require_once __DIR__ . '/Has_Plugin_Info.php';
 }
 /**
@@ -16,7 +16,7 @@ if (!\interface_exists('VendorFPF\\WPDesk_Has_Plugin_Info')) {
  *
  * have to be compatible with PHP 5.2.x
  */
-class WPDesk_Plugin_Info implements \VendorFPF\WPDesk_Translatable, \VendorFPF\WPDesk_Buildable, \VendorFPF\WPDesk_Has_Plugin_Info
+class WPDesk_Plugin_Info implements WPDesk_Translatable, WPDesk_Buildable, WPDesk_Has_Plugin_Info
 {
     /** @var string */
     private $plugin_file_name;

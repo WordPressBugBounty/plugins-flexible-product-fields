@@ -2,10 +2,10 @@
 Contributors: wpdesk,dyszczo,grola,piotrpo,marcinkolanko,mateuszgbiorczyk,sebastianpisula,bartj,amisiewicz
 Donate link: https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/
 Tags: woocommerce customize product, woocommerce product addons, woocommerce product options, woocommerce custom product, woocommerce custom fields
-Requires at least: 5.7
+Requires at least: 5.8
 Tested up to: 6.6
-Requires PHP: 7.3
-Stable tag: 2.4.6
+Requires PHP: 7.4
+Stable tag: 2.5.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -318,6 +318,10 @@ You can also choose one from the list below based on your needs.
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.5.0 - 2024-10-30 =
+* Added field options (select, radio, radio with colors, radio with images) can change product image on product page
+* Added support for WooCommerce 9.4
 
 = 2.4.6 - 2024-09-07 =
 * Added support for WooCommerce 9.3

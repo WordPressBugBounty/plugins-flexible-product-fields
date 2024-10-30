@@ -13,9 +13,10 @@ class OptionsWithColorOption extends OptionsOption {
 	public function get_default_value() {
 		return [
 			[
-				OptionsValueOption::FIELD_NAME => '',
-				OptionsLabelOption::FIELD_NAME => '',
-				OptionsColorOption::FIELD_NAME => '',
+				OptionsValueOption::FIELD_NAME        => '',
+				OptionsLabelOption::FIELD_NAME        => '',
+				OptionsColorOption::FIELD_NAME        => '',
+				OptionsVariantImageOption::FIELD_NAME => '',
 			],
 		];
 	}
@@ -25,9 +26,10 @@ class OptionsWithColorOption extends OptionsOption {
 	 */
 	public function get_children(): array {
 		return [
-			OptionsValueOption::FIELD_NAME => new OptionsValueOption(),
-			OptionsLabelOption::FIELD_NAME => new OptionsLabelOption(),
-			OptionsColorOption::FIELD_NAME => new OptionsColorOption(),
+			OptionsValueOption::FIELD_NAME        => new OptionsValueOption(),
+			OptionsLabelOption::FIELD_NAME        => new OptionsLabelOption(),
+			OptionsColorOption::FIELD_NAME        => new OptionsColorOption(),
+			OptionsVariantImageOption::FIELD_NAME => new OptionsVariantImageOption(),
 		];
 	}
 }

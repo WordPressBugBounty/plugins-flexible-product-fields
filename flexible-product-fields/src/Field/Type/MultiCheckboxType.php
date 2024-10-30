@@ -93,7 +93,7 @@ class MultiCheckboxType extends TypeAbstract {
 
 		$default_checked = [];
 		foreach ( $field_data[ OptionsCheckboxOption::FIELD_NAME ] as $option ) {
-			if ( $option[ DefaultCheckedOption::FIELD_NAME ] ) {
+			if ( $option[ DefaultCheckedOption::FIELD_NAME ] !== '' ) {
 				$default_checked[] = $option[ OptionsValueOption::FIELD_NAME ];
 			}
 		}

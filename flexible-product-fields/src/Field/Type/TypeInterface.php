@@ -42,9 +42,9 @@ interface TypeInterface {
 	/**
 	 * Returns values used as variables in field template.
 	 *
-	 * @param array $field_data Field settings.
+	 * @param array<string, mixed> $field_data Field settings.
 	 *
-	 * @return array
+	 * @return array<string, mixed>
 	 */
 	public function get_field_template_vars( array $field_data ): array;
 

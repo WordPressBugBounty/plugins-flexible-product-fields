@@ -15,5 +15,5 @@ abstract class SlimPlugin implements \VendorFPF\WPDesk_Translatable
      *
      * @return void
      */
-    public abstract function init();
+    abstract public function init();
 }

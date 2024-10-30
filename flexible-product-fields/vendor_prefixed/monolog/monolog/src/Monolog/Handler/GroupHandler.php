@@ -20,7 +20,7 @@ use VendorFPF\Monolog\ResettableInterface;
  *
  * @phpstan-import-type Record from \Monolog\Logger
  */
-class GroupHandler extends \VendorFPF\Monolog\Handler\Handler implements \VendorFPF\Monolog\Handler\ProcessableHandlerInterface, \VendorFPF\Monolog\ResettableInterface
+class GroupHandler extends Handler implements ProcessableHandlerInterface, ResettableInterface
 {
     use ProcessableHandlerTrait;
     /** @var HandlerInterface[] */
@@ -34,7 +34,7 @@ class GroupHandler extends \VendorFPF\Monolog\Handler\Handler implements \Vendor
     public function __construct(array $handlers, bool $bubble = \true)
     {
         foreach ($handlers as $handler) {
-            if (!$handler instanceof \VendorFPF\Monolog\Handler\HandlerInterface) {
+            if (!$handler instanceof HandlerInterface) {
                 throw new \InvalidArgumentException('The first argument of the GroupHandler must be an array of HandlerInterface instances.');
             }
         }
@@ -44,7 +44,7 @@ class GroupHandler extends \VendorFPF\Monolog\Handler\Handler implements \Vendor
     /**
      * {@inheritDoc}
      */
-    public function isHandling(array $record) : bool
+    public function isHandling(array $record): bool
     {
         foreach ($this->handlers as $handler) {
             if ($handler->isHandling($record)) {
@@ -56,7 +56,7 @@ class GroupHandler extends \VendorFPF\Monolog\Handler\Handler implements \Vendor
     /**
      * {@inheritDoc}
      */
-    public function handle(array $record) : bool
+    public function handle(array $record): bool
     {
         if ($this->processors) {
             /** @var Record $record */
@@ -70,7 +70,7 @@ class GroupHandler extends \VendorFPF\Monolog\Handler\Handler implements \Vendor
     /**
      * {@inheritDoc}
      */
-    public function handleBatch(array $records) : void
+    public function handleBatch(array $records): void
     {
         if ($this->processors) {
             $processed = [];
@@ -88,12 +88,12 @@ class GroupHandler extends \VendorFPF\Monolog\Handler\Handler implements \Vendor
     {
         $this->resetProcessors();
         foreach ($this->handlers as $handler) {
-            if ($handler instanceof \VendorFPF\Monolog\ResettableInterface) {
+            if ($handler instanceof ResettableInterface) {
                 $handler->reset();
             }
         }
     }
-    public function close() : void
+    public function close(): void
     {
         parent::close();
         foreach ($this->handlers as $handler) {
@@ -103,10 +103,10 @@ class GroupHandler extends \VendorFPF\Monolog\Handler\Handler implements \Vendor
     /**
      * {@inheritDoc}
      */
-    public function setFormatter(\VendorFPF\Monolog\Formatter\FormatterInterface $formatter) : \VendorFPF\Monolog\Handler\HandlerInterface
+    public function setFormatter(FormatterInterface $formatter): HandlerInterface
     {
         foreach ($this->handlers as $handler) {
-            if ($handler instanceof \VendorFPF\Monolog\Handler\FormattableHandlerInterface) {
+            if ($handler instanceof FormattableHandlerInterface) {
                 $handler->setFormatter($formatter);
             }
         }

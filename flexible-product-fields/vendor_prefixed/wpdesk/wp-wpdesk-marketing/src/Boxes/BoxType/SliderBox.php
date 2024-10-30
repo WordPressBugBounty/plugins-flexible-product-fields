@@ -7,7 +7,7 @@
  */
 namespace VendorFPF\WPDesk\Library\Marketing\Boxes\BoxType;
 
-class SliderBox extends \VendorFPF\WPDesk\Library\Marketing\Boxes\BoxType\Box
+class SliderBox extends Box
 {
     const TYPE = 'slider';
 }

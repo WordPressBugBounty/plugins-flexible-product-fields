@@ -19,7 +19,7 @@ class TimeStepMinuteRule implements RuleInterface {
 		}
 
 		preg_match( '/^(?:[0-9]{2}):([0-9]{2})/', $value, $matches );
-		if ( ! $matches ) {
+		if ( count( $matches ) === 0 ) {
 			return true;
 		}
 

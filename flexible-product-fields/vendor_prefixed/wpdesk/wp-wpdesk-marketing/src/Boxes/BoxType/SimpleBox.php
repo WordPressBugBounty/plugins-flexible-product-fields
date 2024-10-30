@@ -7,7 +7,7 @@
  */
 namespace VendorFPF\WPDesk\Library\Marketing\Boxes\BoxType;
 
-class SimpleBox extends \VendorFPF\WPDesk\Library\Marketing\Boxes\BoxType\Box
+class SimpleBox extends Box
 {
     const TYPE = 'simple';
 }

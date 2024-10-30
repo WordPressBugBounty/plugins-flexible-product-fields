@@ -103,14 +103,22 @@ class RadioImagesType extends TypeAbstract {
 	public function get_field_template_vars( array $field_data ): array {
 		$template_vars = parent::get_field_template_vars( $field_data );
 
-		$media_ids = [];
+		$media_ids           = [];
+		$options_image_props = [];
 		foreach ( $field_data[ OptionsOption::FIELD_NAME ] as $option ) {
-			$media_ids[ $option[ OptionsValueOption::FIELD_NAME ] ] = $option[ OptionsImageOption::FIELD_NAME ];
+			$image_id = $option[ OptionsImageOption::FIELD_NAME ];
+			$media_ids[ $option[ OptionsValueOption::FIELD_NAME ] ] = $image_id;
+
+			$image_props             = \wc_get_product_attachment_props( $image_id );
+			$image_props['image_id'] = $image_id;
+
+			$options_image_props[ $option[ OptionsValueOption::FIELD_NAME ] ] = $image_props;
 		}
 
-		$template_vars['media_ids']          = $media_ids;
-		$template_vars['preview_width']      = $field_data[ PreviewWidthOption::FIELD_NAME ] ?? 0;
-		$template_vars['preview_show_label'] = ! ( $field_data[ PreviewLabelOption::FIELD_NAME ] ?? false );
+		$template_vars['media_ids']           = $media_ids;
+		$template_vars['preview_width']       = $field_data[ PreviewWidthOption::FIELD_NAME ] ?? 0;
+		$template_vars['preview_show_label']  = ! (bool) ( $field_data[ PreviewLabelOption::FIELD_NAME ] ?? false );
+		$template_vars['options_image_props'] = $options_image_props;
 
 		return $template_vars;
 	}

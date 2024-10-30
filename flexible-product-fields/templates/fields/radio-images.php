@@ -2,15 +2,16 @@
 /**
  * This template can be overridden by copying it to yourtheme/flexible-product-fields/fields/radio-images.php
  *
- * @var int             $field_group_id     ID of post (post type - fpf_fields).
- * @var string          $key                Field ID.
- * @var string          $type               Field type.
- * @var mixed[]         $args               Custom attributes for field.
- * @var string          $class              CSS class name or space-separated list of classes.
- * @var string[]        $media_ids          .
- * @var int             $preview_width      .
- * @var bool            $preview_show_label .
- * @var string|string[] $value              Field value.
+ * @var int                  $field_group_id     ID of post (post type - fpf_fields).
+ * @var string               $key                Field ID.
+ * @var string               $type               Field type.
+ * @var mixed[]              $args               Custom attributes for field.
+ * @var string               $class              CSS class name or space-separated list of classes.
+ * @var string[]             $media_ids          .
+ * @var int                  $preview_width      .
+ * @var bool                 $preview_show_label .
+ * @var string|string[]      $value              Field value.
+ * @var array<string, mixed> $options_image_props Array of image properties.
  *
  * @package Flexible Product Fields
  */
@@ -27,6 +28,7 @@ $value = ( ( $value === null ) && ( ( $args['default'] ?? '' ) !== '' ) ) ? $arg
 					value="<?php echo esc_html( $option_value ); ?>"
 					name="<?php echo esc_attr( $key ); ?>"
 					id="<?php echo esc_attr( $key . '_' . $option_value ); ?>"
+					data-image-props="<?php echo esc_attr( wc_esc_json( wp_json_encode( $options_image_props[ $option_value ] ) ) ); ?>"
 					<?php echo ( $option_value == $value ) ? 'checked' : ''; ?>
 				>
 				<label for="<?php echo esc_attr( $key . '_' . $option_value ); ?>"

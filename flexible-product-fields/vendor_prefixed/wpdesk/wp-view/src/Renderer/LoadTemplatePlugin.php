@@ -6,7 +6,7 @@ use VendorFPF\WPDesk\View\Resolver\Resolver;
 /**
  * Can render templates
  */
-class LoadTemplatePlugin implements \VendorFPF\WPDesk\View\Renderer\Renderer
+class LoadTemplatePlugin implements Renderer
 {
     private $plugin;
     private $path;
@@ -15,7 +15,7 @@ class LoadTemplatePlugin implements \VendorFPF\WPDesk\View\Renderer\Renderer
         $this->plugin = $plugin;
         $this->path = $path;
     }
-    public function set_resolver(\VendorFPF\WPDesk\View\Resolver\Resolver $resolver)
+    public function set_resolver(Resolver $resolver)
     {
     }
     public function render($template, array $params = null)

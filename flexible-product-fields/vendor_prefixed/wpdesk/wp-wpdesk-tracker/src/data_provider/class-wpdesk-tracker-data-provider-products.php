@@ -14,7 +14,7 @@ namespace VendorFPF;
 if (!\defined('ABSPATH')) {
     exit;
 }
-if (!\class_exists('VendorFPF\\WPDesk_Tracker_Data_Provider_Products')) {
+if (!\class_exists('VendorFPF\WPDesk_Tracker_Data_Provider_Products')) {
     /**
      * Class WPDesk_Tracker_Data_Provider_Products
      */
