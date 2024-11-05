@@ -5,7 +5,7 @@ Tags: woocommerce customize product, woocommerce product addons, woocommerce pro
 Requires at least: 5.8
 Tested up to: 6.6
 Requires PHP: 7.4
-Stable tag: 2.5.0
+Stable tag: 2.5.1
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -318,6 +318,10 @@ You can also choose one from the list below based on your needs.
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.5.1 - 2024-11-05 =
+* Fixed Multicheckbox field has all options selected by default
+* Added a filter (fpf/radio_with_images/disable_product_image_change) to allow users to customize the behavior of the Radio with Images field. This filter controls whether the product image should be changed based on the selected radio button. By default, the image will be updated when a different option is selected. If you prefer a different behavior, you can use the provided filter to customize it according to your needs.
 
 = 2.5.0 - 2024-10-30 =
 * Added field options (select, radio, radio with colors, radio with images) can change product image on product page

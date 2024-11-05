@@ -109,6 +109,22 @@ class RadioImagesType extends TypeAbstract {
 			$image_id = $option[ OptionsImageOption::FIELD_NAME ];
 			$media_ids[ $option[ OptionsValueOption::FIELD_NAME ] ] = $image_id;
 
+			/**
+			 * Filter to disable product image change.
+			 *
+			 * @since 2.5.1
+			 *
+			 * @param bool $disable_product_image_change
+			 * @param array<string, mixed> $field_data
+			 * @param array<string, mixed> $option
+			 *
+			 * @return bool
+			 */
+			$disable_product_image_change = \apply_filters( 'fpf/radio_with_images/disable_product_image_change', false, $field_data, $option );
+			if ( $disable_product_image_change ) {
+				continue;
+			}
+
 			$image_props             = \wc_get_product_attachment_props( $image_id );
 			$image_props['image_id'] = $image_id;
 
