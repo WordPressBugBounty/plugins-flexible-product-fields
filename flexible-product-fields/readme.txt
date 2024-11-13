@@ -3,9 +3,9 @@ Contributors: wpdesk,dyszczo,grola,piotrpo,marcinkolanko,mateuszgbiorczyk,sebast
 Donate link: https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/
 Tags: woocommerce customize product, woocommerce product addons, woocommerce product options, woocommerce custom product, woocommerce custom fields
 Requires at least: 5.8
-Tested up to: 6.6
+Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.5.1
+Stable tag: 2.5.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -318,6 +318,9 @@ You can also choose one from the list below based on your needs.
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.5.2 - 2024-11-13 =
+* Added support for WordPress 6.7
 
 = 2.5.1 - 2024-11-05 =
 * Fixed Multicheckbox field has all options selected by default
