@@ -23,6 +23,7 @@ class ProductsRoute extends RouteAbstract implements RouteInterface {
 		$args = [
 			'posts_per_page' => -1,
 			'post_type'      => [ 'product' ],
+			'post_status'    => [ 'publish', 'draft' ],
 			'orderby'        => 'title',
 			'order'          => 'ASC',
 			'lang'           => '',

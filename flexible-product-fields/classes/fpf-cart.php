@@ -77,10 +77,8 @@ class FPF_Cart {
 	 * @return string
 	 */
 	public function woocommerce_add_to_cart_handler( $type, $product_id ) {
-		if ( $type != FPF_Product_Extendend_Info::PRODUCT_TYPE_GROUPED ) {
-			add_filter( 'woocommerce_add_cart_item', [ $this, 'woocommerce_add_cart_item' ], self::HOOK_AFTER_DEFAULT, 1 );
-			add_filter( 'woocommerce_add_cart_item_data', [ $this, 'woocommerce_add_cart_item_data' ], self::HOOK_AFTER_DEFAULT, 3 );
-		}
+		add_filter( 'woocommerce_add_cart_item', [ $this, 'woocommerce_add_cart_item' ], self::HOOK_AFTER_DEFAULT, 1 );
+		add_filter( 'woocommerce_add_cart_item_data', [ $this, 'woocommerce_add_cart_item_data' ], self::HOOK_AFTER_DEFAULT, 3 );
 		return $type;
 	}
 
@@ -88,7 +86,20 @@ class FPF_Cart {
 		$product_id = $product_data['product_id'] ?? null;
 		$referer_id = $product_data['flexible_product_fields_product_id'] ?? null;
 
-		return ( ( $product_id !== null ) && ( $referer_id !== null ) && ( $product_id == $referer_id ) );
+		if ( $product_id === null || $referer_id === null ) {
+			return false;
+		}
+
+		$referer_product = \wc_get_product( $referer_id );
+		if ( ! $referer_product instanceof \WC_Product ) {
+			return false;
+		}
+
+		if ( $referer_product->get_type() === FPF_Product_Extendend_Info::PRODUCT_TYPE_GROUPED ) {
+			return true;
+		}
+
+		return (int) $product_id === (int) $referer_id;
 	}
 
 	/**
@@ -312,13 +323,22 @@ class FPF_Cart {
 	 * @param int $variation_id
 	 *
 	 * @return array
-	 * @throws Exception
+	 * @throws \Exception
 	 */
 	public function woocommerce_add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
-		$product_data = wc_get_product( $product_id );
+		if ( ! isset( $_POST['_fpf_product_id'], $_POST['_fpf_nonce'] ) ) {
+			return $cart_item_data;
+		}
+
+		$post_data = wc_clean( wp_unslash( $_POST ) );
+
+		if ( ! wp_verify_nonce( $post_data['_fpf_nonce'], 'fpf_add_to_cart_nonce' ) ) {
+			throw new \Exception( 'Nonce verification failed.' );
+		}
+
+		$product_data = wc_get_product( $post_data['_fpf_product_id'] );
 		$fields       = $this->_product->get_translated_fields_for_product( $product_data );
 
-		$post_data    = wp_unslash( $_POST );
 		$fields       = apply_filters( 'flexible_product_fields_apply_logic_rules', $fields, $post_data );
 		$fields_types = $this->_product_fields->get_field_types_by_type();
 

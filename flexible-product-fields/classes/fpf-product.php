@@ -5,8 +5,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 }
 
 use WPDesk\FPF\Free\Field\TemplateArgs;
-use WPDesk\FPF\Free\Field\Type\RadioType;
-use WPDesk\FPF\Free\Field\Type\MultiCheckboxType;
+use WPDesk\FPF\Free\Service\TemplateFinder\TemplateFinder;
 
 class FPF_Product {
 
@@ -44,6 +43,8 @@ class FPF_Product {
 	 */
 	private $product_price = null;
 
+	private TemplateFinder $template_finder;
+
 	/**
 	 * FPF_Product constructor.
 	 *
@@ -54,6 +55,7 @@ class FPF_Product {
 		$this->_plugin         = $plugin;
 		$this->_product_fields = $product_fields;
 		$this->product_price   = $product_price;
+		$this->template_finder = new TemplateFinder();
 		$this->hooks();
 	}
 
@@ -125,196 +127,12 @@ class FPF_Product {
 	 * @return array
 	 */
 	public function get_translated_fields_for_product( $product, $hook = false ) {
-		return $this->translate_fields_titles_and_labels( $this->get_fields_for_product( $product, $hook ) );
+		$templates = $this->template_finder->find( $product, $hook );
+		$templates->add_fields_definitions( $this->_product_fields->get_field_types_by_type() );
+
+		return $this->translate_fields_titles_and_labels( $templates->legacy_results() );
 	}
 
-	/**
-	 * @param WC_Product $product
-	 * @param bool|string $hook
-	 *
-	 * @return array
-	 */
-	public function get_fields_for_product( $product, $hook = false ) {
-		$cache_key = 'product_' . wpdesk_get_product_id( $product );
-		if ( $hook ) {
-			$cache_key .= '_h_' . $hook;
-		}
-		$ret = $this->_product_fields->cache_get( $cache_key );
-		if ( $ret === false ) {
-			$ret          = [
-				'posts'          => [],
-				'fields'         => [],
-				'display_fields' => [],
-				'has_required'   => false,
-			];
-			$fields_posts = [];
-			$args         = [
-				'post_type'      => 'fpf_fields',
-				'posts_per_page' => -1,
-				'meta_query'     => [
-					[
-						'key'     => '_assign_to',
-						'value'   => 'product',
-						'compare' => '=',
-					],
-					[
-						'key'     => '_product_id',
-						'value'   => wpdesk_get_product_id( $product ),
-						'compare' => '=',
-					],
-				],
-			];
-			if ( $hook ) {
-				$args['meta_query'][] = [
-					'key'     => '_section',
-					'value'   => $hook,
-					'compare' => '=',
-				];
-			}
-			$posts = get_posts( $args );
-			foreach ( $posts as $post ) {
-				$ret['posts'][ $post->ID ] = $post;
-			}
-
-			$categories = wp_get_post_terms( wpdesk_get_product_id( $product ), 'product_cat', [ 'fields' => 'ids' ] );
-			foreach ( $categories as $category ) {
-				$cat_cache_key = 'category_' . $category;
-				if ( $hook ) {
-					$cat_cache_key .= '_h_' . $hook;
-				}
-				$posts = $this->_product_fields->cache_get( $cat_cache_key );
-				if ( $posts === false ) {
-					$args = [
-						'post_type'      => 'fpf_fields',
-						'posts_per_page' => -1,
-						'meta_query'     => [
-							[
-								'key'     => '_assign_to',
-								'value'   => 'category',
-								'compare' => '=',
-							],
-							[
-								'key'     => '_category_id',
-								'value'   => $category,
-								'compare' => 'in',
-							],
-						],
-					];
-					if ( $hook ) {
-						$args['meta_query'][] = [
-							'key'     => '_section',
-							'value'   => $hook,
-							'compare' => '=',
-						];
-					}
-					$posts = get_posts( $args );
-					$this->_product_fields->cache_set( $cat_cache_key, $posts );
-				}
-				foreach ( $posts as $post ) {
-					$ret['posts'][ $post->ID ] = $post;
-				}
-			}
-
-			$tags = wp_get_post_terms( wpdesk_get_product_id( $product ), 'product_tag', [ 'fields' => 'ids' ] );
-			foreach ( $tags as $tag ) {
-				$cat_cache_key = 'tag_' . $tag;
-				if ( $hook ) {
-					$cat_cache_key .= '_h_' . $hook;
-				}
-				$posts = $this->_product_fields->cache_get( $cat_cache_key );
-				if ( $posts === false ) {
-					$args = [
-						'post_type'      => 'fpf_fields',
-						'posts_per_page' => -1,
-						'meta_query'     => [
-							[
-								'key'     => '_assign_to',
-								'value'   => 'tag',
-								'compare' => '=',
-							],
-							[
-								'key'     => '_tag_id',
-								'value'   => $tag,
-								'compare' => 'in',
-							],
-						],
-					];
-					if ( $hook ) {
-						$args['meta_query'][] = [
-							'key'     => '_section',
-							'value'   => $hook,
-							'compare' => '=',
-						];
-					}
-					$posts = get_posts( $args );
-					$this->_product_fields->cache_set( $cat_cache_key, $posts );
-				}
-				foreach ( $posts as $post ) {
-					$ret['posts'][ $post->ID ] = $post;
-				}
-			}
-
-			$cat_cache_key = 'all';
-			if ( $hook ) {
-				$cat_cache_key .= '_h_' . $hook;
-			}
-			$posts = $this->_product_fields->cache_get( $cat_cache_key );
-			if ( $posts === false ) {
-				$args = [
-					'post_type'      => 'fpf_fields',
-					'posts_per_page' => -1,
-					'meta_query'     => [
-						[
-							'key'     => '_assign_to',
-							'value'   => 'all',
-							'compare' => '=',
-						],
-					],
-				];
-				if ( $hook ) {
-					$args['meta_query'][] = [
-						'key'     => '_section',
-						'value'   => $hook,
-						'compare' => '=',
-					];
-				}
-				$posts = get_posts( $args );
-				$this->_product_fields->cache_set( $cat_cache_key, $posts );
-			}
-			foreach ( $posts as $post ) {
-				$ret['posts'][ $post->ID ] = $post;
-			}
-			$ret['posts'] = apply_filters( 'flexible_product_fields_sort_groups_posts', $ret['posts'] );
-			foreach ( $ret['posts'] as $key => $post ) {
-				$ret['posts'][ $key ]->fields_meta = get_post_meta( $post->ID, '_fields', true );
-				if ( is_array( $ret['posts'][ $key ]->fields_meta ) ) {
-					$new_fields    = array_map(
-						function ( $field_data ) use ( $post ) {
-							$field_data['_group_id'] = $post->ID;
-							return $field_data;
-						},
-						$ret['posts'][ $key ]->fields_meta
-					);
-					$ret['fields'] = array_merge( $ret['fields'], $new_fields );
-				}
-			}
-			foreach ( $ret['fields'] as $key => $field ) {
-				$field_type                                    = $this->get_field_type( $field['type'] );
-				$ret['fields'][ $key ]['has_price']            = isset( $field_type['has_price'] ) ? $field_type['has_price'] : false;
-				$ret['fields'][ $key ]['has_price_in_options'] = isset( $field_type['has_price_in_options'] ) ? $field_type['has_price_in_options'] : false;
-				$ret['fields'][ $key ]['has_options']          = $field_type['has_options'];
-				if ( empty( $field_type['is_available'] ) && ! $field_type['is_available'] ) {
-					unset( $ret['fields'][ $key ] );
-				} else {
-					if ( isset( $field['required'] ) && ( $field['required'] == 1 ) ) {
-						$ret['has_required'] = true;
-					}
-				}
-			}
-			$this->_product_fields->cache_set( $cache_key, $ret );
-		}
-		return $ret;
-	}
 
 	/**
 	 * @param WC_Product $product
@@ -381,9 +199,19 @@ class FPF_Product {
 		global $product;
 		$fields = $this->create_fields_for_product( $product, $hook );
 		if ( count( $fields['display_fields'] ) ) {
-			echo $this->_plugin->load_template( $hook, 'hooks', [ 'fields' => $fields['display_fields'] ] );
+			echo $this->_plugin->load_template( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				$hook,
+				'hooks',
+				[
+					'fields'    => $fields['display_fields'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					'fpf_nonce' => wp_create_nonce( 'fpf_add_to_cart_nonce' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+				]
+			);
 		}
 	}
+
+
+
 
 	/**
 	 * Translate fields titles and labels.
@@ -419,9 +247,6 @@ class FPF_Product {
 		$this->is_woocommerce_before_add_to_cart_button_fired = true;
 		global $product;
 		$product_extended_info = new FPF_Product_Extendend_Info( $product );
-		if ( $product_extended_info->is_type_grouped() ) {
-			return;
-		}
 		$this->show_fields( 'woocommerce_before_add_to_cart_button' );
 		echo $this->_plugin->load_template( 'display', 'totals', [] );
 		$fields = $this->translate_fields_titles_and_labels( $this->get_translated_fields_for_product( $product ) );
@@ -478,11 +303,6 @@ class FPF_Product {
 	public function woocommerce_after_add_to_cart_button() {
 		global $product;
 		$product_extended_info = new FPF_Product_Extendend_Info( $product );
-		if ( $product_extended_info->is_type_grouped() ) {
-			return;
-		}
 		$this->show_fields( 'woocommerce_after_add_to_cart_button' );
 	}
-
-
 }

@@ -33,7 +33,7 @@ class DeactivationTracker implements Hookable {
 	 * {@inheritdoc}
 	 */
 	public function hooks() {
-		add_action( 'plugins_loaded', [ $this, 'load_deactivation_modal' ] );
+		add_action( 'admin_init', [ $this, 'load_deactivation_modal' ] );
 	}
 
 	/**

@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Flexible Product Fields plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Flexible Product Fields 2.5.4\n"
+"Project-Id-Version: Flexible Product Fields 2.6.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/flexible-product-fields\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2024-11-15T10:51:39+00:00\n"
+"POT-Creation-Date: 2024-11-26T06:52:59+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.11.0\n"
 "X-Domain: flexible-product-fields\n"
@@ -47,7 +47,7 @@ msgstr ""
 msgid "Select options"
 msgstr ""
 
-#: classes/fpf-cart.php:197
+#: classes/fpf-cart.php:208
 msgid "yes"
 msgstr ""
 
@@ -57,12 +57,12 @@ msgstr ""
 
 #: classes/fpf-plugin.php:234
 #: src/Settings/Page.php:140
-#: vendor_prefixed/wpdesk/wp-builder/src/Plugin/AbstractPlugin.php:198
+#: vendor_prefixed/wpdesk/wp-builder/src/Plugin/AbstractPlugin.php:188
 msgid "Settings"
 msgstr ""
 
 #: classes/fpf-plugin.php:235
-#: vendor_prefixed/wpdesk/wp-builder/src/Plugin/AbstractPlugin.php:194
+#: vendor_prefixed/wpdesk/wp-builder/src/Plugin/AbstractPlugin.php:184
 msgid "Docs"
 msgstr ""
 
@@ -77,8 +77,8 @@ msgstr ""
 #: classes/fpf-post-type.php:57
 #: classes/fpf-post-type.php:58
 #: classes/fpf-post-type.php:60
-#: classes/fpf-post-type.php:239
-#: classes/fpf-post-type.php:240
+#: classes/fpf-post-type.php:302
+#: classes/fpf-post-type.php:303
 msgid "Product Fields"
 msgstr ""
 
@@ -120,7 +120,7 @@ msgid "Product Fields."
 msgstr ""
 
 #: classes/fpf-post-type.php:92
-#: src/Settings/Option/GroupAssignOption.php:37
+#: src/Settings/Option/GroupAssignOption.php:40
 msgid "Assign to"
 msgstr ""
 
@@ -131,34 +131,49 @@ msgstr ""
 
 #: classes/fpf-post-type.php:105
 #: src/Settings/FieldsGroup.php:34
-#: src/Settings/Option/GroupAssignOption.php:54
+#: src/Settings/Option/GroupAssignOption.php:57
 msgid "Product"
 msgstr ""
 
-#: classes/fpf-post-type.php:119
+#: classes/fpf-post-type.php:122
 #: src/Settings/FieldsGroup.php:39
-#: src/Settings/Option/GroupAssignOption.php:55
+#: src/Settings/Option/GroupAssignOption.php:59
 msgid "Category"
 msgstr ""
 
-#: classes/fpf-post-type.php:133
+#: classes/fpf-post-type.php:139
 #: src/Settings/FieldsGroup.php:44
-#: src/Settings/Option/GroupAssignOption.php:56
+#: src/Settings/Option/GroupAssignOption.php:61
 msgid "Tag"
 msgstr ""
 
-#: classes/fpf-post-type.php:147
+#: classes/fpf-post-type.php:156
+#: src/Settings/Option/GroupAssignOption.php:58
+msgid "Product excluded"
+msgstr ""
+
+#: classes/fpf-post-type.php:173
+#: src/Settings/Option/GroupAssignOption.php:60
+msgid "Category excluded"
+msgstr ""
+
+#: classes/fpf-post-type.php:190
+#: src/Settings/Option/GroupAssignOption.php:62
+msgid "Tag excluded"
+msgstr ""
+
+#: classes/fpf-post-type.php:207
 #: src/Settings/FieldsGroup.php:49
-#: src/Settings/Option/GroupAssignOption.php:57
+#: src/Settings/Option/GroupAssignOption.php:63
 msgid "All products"
 msgstr ""
 
-#: classes/fpf-post-type.php:200
+#: classes/fpf-post-type.php:263
 #: templates/metabox/upgrade-now.php:7
 msgid "Flexible Product Fields PRO"
 msgstr ""
 
-#: classes/fpf-post-type.php:209
+#: classes/fpf-post-type.php:272
 #: src/Marketing/SupportPage.php:51
 #: src/Marketing/SupportPage.php:52
 msgid "Start Here"
@@ -809,27 +824,27 @@ msgstr ""
 msgid "Created with %1$s by %2$sWP Desk%3$s - if you like FPF %4$srate us%5$s"
 msgstr ""
 
-#: vendor_prefixed/wpdesk/ltv-dashboard-widget/src/DashboardWidget.php:59
+#: vendor_prefixed/wpdesk/ltv-dashboard-widget/src/DashboardWidget.php:65
 msgid "Grow your business with WP Desk"
 msgstr ""
 
-#: vendor_prefixed/wpdesk/ltv-dashboard-widget/src/DashboardWidget.php:288
+#: vendor_prefixed/wpdesk/ltv-dashboard-widget/src/DashboardWidget.php:291
 msgid "Buy now"
 msgstr ""
 
-#: vendor_prefixed/wpdesk/ltv-dashboard-widget/src/DashboardWidget.php:290
+#: vendor_prefixed/wpdesk/ltv-dashboard-widget/src/DashboardWidget.php:293
 msgid "Learn more"
 msgstr ""
 
-#: vendor_prefixed/wpdesk/ltv-dashboard-widget/src/DashboardWidget.php:293
+#: vendor_prefixed/wpdesk/ltv-dashboard-widget/src/DashboardWidget.php:296
 msgid "Download"
 msgstr ""
 
-#: vendor_prefixed/wpdesk/ltv-dashboard-widget/src/DashboardWidget.php:304
+#: vendor_prefixed/wpdesk/ltv-dashboard-widget/src/DashboardWidget.php:307
 msgid "More info"
 msgstr ""
 
-#: vendor_prefixed/wpdesk/wp-builder/src/Plugin/AbstractPlugin.php:191
+#: vendor_prefixed/wpdesk/wp-builder/src/Plugin/AbstractPlugin.php:181
 msgid "Support"
 msgstr ""
 
@@ -864,11 +879,11 @@ msgid "Kindly tell us the reason so we can improve"
 msgstr ""
 
 #. translators: %1$s: plugin name
-#: vendor_prefixed/wpdesk/wp-wpdesk-deactivation-modal/src/Model/FormTemplate.php:25
+#: vendor_prefixed/wpdesk/wp-wpdesk-deactivation-modal/src/Model/FormTemplate.php:38
 msgid "You are deactivating %1$s plugin"
 msgstr ""
 
-#: vendor_prefixed/wpdesk/wp-wpdesk-deactivation-modal/src/Model/FormTemplate.php:28
+#: vendor_prefixed/wpdesk/wp-wpdesk-deactivation-modal/src/Model/FormTemplate.php:49
 msgid "If you have a moment, please let us know why you are deactivating plugin (anonymous feedback):"
 msgstr ""
 

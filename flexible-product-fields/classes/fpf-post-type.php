@@ -101,11 +101,14 @@ class FPF_Post_Type {
 	public function manage_fpf_fields_posts_custom_column( $column ) {
 		global $post;
 		$assign_to_options = [
-			'product'  => [
+			'product' => [
 				'label'           => __( 'Product', 'flexible-product-fields' ),
 				'values_callback' => function() use ( $post ) {
-					$values = get_post_meta( $post->ID, '_product_id', false ) ?: [];
+					$values = get_post_meta( $post->ID, '_product_id', false );
 					$labels = [];
+					if ( ! is_iterable( $values ) ) {
+						return $labels;
+					}
 					foreach ( $values as $product_id ) {
 						$product = get_post( $product_id );
 						if ( $product !== null ) {
@@ -118,8 +121,11 @@ class FPF_Post_Type {
 			'category' => [
 				'label'           => __( 'Category', 'flexible-product-fields' ),
 				'values_callback' => function() use ( $post ) {
-					$values = get_post_meta( $post->ID, '_category_id', false ) ?: [];
+					$values = get_post_meta( $post->ID, '_category_id', false );
 					$labels = [];
+					if ( ! is_iterable( $values ) ) {
+						return $labels;
+					}
 					foreach ( $values as $category_id ) {
 						$category = get_term( $category_id );
 						if ( $category !== null ) {
@@ -132,8 +138,62 @@ class FPF_Post_Type {
 			'tag' => [
 				'label'           => __( 'Tag', 'flexible-product-fields' ),
 				'values_callback' => function() use ( $post ) {
-					$values = get_post_meta( $post->ID, '_tag_id', false ) ?: [];
+					$values = get_post_meta( $post->ID, '_tag_id', false );
 					$labels = [];
+					if ( ! is_iterable( $values ) ) {
+						return $labels;
+					}
+					foreach ( $values as $tag_id ) {
+						$tag = get_term( $tag_id );
+						if ( $tag !== null ) {
+							$labels[] = $tag->name;
+						}
+					}
+					return $labels;
+				},
+			],
+			'excluded_product' => [
+				'label'           => __( 'Product excluded', 'flexible-product-fields' ),
+				'values_callback' => function() use ( $post ) {
+					$values = get_post_meta( $post->ID, '_excluded_product_id', false );
+					$labels = [];
+					if ( ! is_iterable( $values ) ) {
+						return $labels;
+					}
+					foreach ( $values as $product_id ) {
+						$product = get_post( $product_id );
+						if ( $product !== null ) {
+							$labels[] = $product->post_title;
+						}
+					}
+					return $labels;
+				},
+			],
+			'excluded_category' => [
+				'label'           => __( 'Category excluded', 'flexible-product-fields' ),
+				'values_callback' => function() use ( $post ) {
+					$values = get_post_meta( $post->ID, '_excluded_category_id', false );
+					$labels = [];
+					if ( ! is_iterable( $values ) ) {
+						return $labels;
+					}
+					foreach ( $values as $category_id ) {
+						$category = get_term( $category_id );
+						if ( $category !== null ) {
+							$labels[] = $category->name;
+						}
+					}
+					return $labels;
+				},
+			],
+			'excluded_tag' => [
+				'label'           => __( 'Tag excluded', 'flexible-product-fields' ),
+				'values_callback' => function() use ( $post ) {
+					$values = get_post_meta( $post->ID, '_excluded_tag_id', false );
+					$labels = [];
+					if ( ! is_iterable( $values ) ) {
+						return $labels;
+					}
 					foreach ( $values as $tag_id ) {
 						$tag = get_term( $tag_id );
 						if ( $tag !== null ) {
@@ -153,8 +213,11 @@ class FPF_Post_Type {
 
 		switch ( $column ) {
 			case 'fpf_fields':
-				$values = get_post_meta( $post->ID, '_fields', true ) ?: [];
+				$values = get_post_meta( $post->ID, '_fields', true );
 				$labels = [];
+				if ( ! is_iterable( $values ) ) {
+					break;
+				}
 				foreach ( $values as $value ) {
 					if ( mb_strlen( $value['title'] ) > 64 ) {
 						$labels[] = htmlentities( mb_substr( $value['title'], 0, 64 ) ) . '...';
@@ -257,4 +320,3 @@ class FPF_Post_Type {
 	}
 
 }
-

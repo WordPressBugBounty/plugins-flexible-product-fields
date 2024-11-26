@@ -45,5 +45,4 @@ class ShortLinksGenerator implements Hookable, HookablePluginDependant {
 		}
 		return $short_url;
 	}
-
 }
