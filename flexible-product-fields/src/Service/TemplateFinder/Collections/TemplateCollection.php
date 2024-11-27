@@ -59,7 +59,7 @@ class TemplateCollection {
 			'has_required'   => (bool) count(
 				array_filter(
 					$this->fields,
-					fn ( $field ) => filter_var( $field['required'], FILTER_VALIDATE_BOOLEAN )
+					fn( $field) => isset( $field['required'] ) && filter_var( $field['required'], FILTER_VALIDATE_BOOLEAN )
 				)
 			),
 			'display_fields' => [],
@@ -79,7 +79,7 @@ class TemplateCollection {
 					return $carry;
 				}
 
-				if ( ! filter_var( $definition['is_available'], FILTER_VALIDATE_BOOLEAN ) ) {
+				if ( ! filter_var( $definition['is_available'] ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
 					return $carry;
 				}
 
