@@ -15,7 +15,13 @@ class CategoryTemplateFinder implements TemplateFinderInterface {
 	private const TEMPLATE_META_KEY = '_category_id';
 
 	public function find_templates( ProductHandlerInterface $product_handler, TemplateQuery $template_query ): TemplateCollection {
-		$values          = $product_handler->get_category_ids();
+		$values = $product_handler->get_category_ids();
+
+		// wc will automatically assign product to uncategorized so this is only in case someone will change this behaviour.
+		if ( count( $values ) === 0 ) {
+			return new TemplateCollection();
+		}
+
 		$meta_query_args = [
 			'key'     => self::TEMPLATE_META_KEY,
 			'value'   => count( $values ) === 1 ? $values[0] : $values,
