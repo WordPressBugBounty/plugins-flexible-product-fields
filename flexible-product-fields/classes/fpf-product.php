@@ -128,7 +128,7 @@ class FPF_Product {
 	 */
 	public function get_translated_fields_for_product( $product, $hook = false ) {
 		$templates = $this->template_finder->find( $product, $hook );
-		$templates->add_fields_definitions( $this->_product_fields->get_field_types_by_type() );
+		$templates->init_fields( $this->_product_fields->get_field_types_by_type() );
 
 		return $this->translate_fields_titles_and_labels( $templates->legacy_results() );
 	}

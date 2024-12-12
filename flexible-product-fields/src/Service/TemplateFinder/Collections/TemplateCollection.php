@@ -24,19 +24,20 @@ class TemplateCollection {
 	 * @param WP_Post[] $posts
 	 */
 	public function __construct( array $posts = [] ) {
-		$this->posts  = $posts;
-		$this->fields = $this->init_fields();
+		$this->posts = $posts;
 	}
 
 	public function merge( TemplateCollection $templates ): void {
-		$this->posts  = array_merge( $this->posts, $templates->posts );
-		$this->fields = array_merge( $this->fields, $templates->fields );
+		$this->posts = \apply_filters(
+			'flexible_product_fields_sort_groups_posts',
+			array_merge( $this->posts, $templates->posts )
+		);
 	}
 
 	/**
 	 * @return array<array<string, mixed>>
 	 */
-	public function init_fields(): array {
+	private function get_fields(): array {
 		return array_reduce(
 			$this->posts,
 			fn ( array $carry, WP_Post $post ) => array_merge(
@@ -51,10 +52,8 @@ class TemplateCollection {
 	 * @return array<string, mixed>
 	 */
 	public function legacy_results(): array {
-		$posts = \apply_filters( 'flexible_product_fields_sort_groups', $this->posts );
-
 		return [
-			'posts'          => $posts,
+			'posts'          => $this->posts,
 			'fields'         => $this->fields,
 			'has_required'   => (bool) count(
 				array_filter(
@@ -69,9 +68,9 @@ class TemplateCollection {
 	/**
 	 * @param array<string, array<string, mixed>> $fields_definitions
 	 */
-	public function add_fields_definitions( array $fields_definitions ): void {
+	public function init_fields( array $fields_definitions ): void {
 		$this->fields = array_reduce(
-			$this->fields,
+			$this->get_fields(),
 			function ( array $carry, array $field ) use ( $fields_definitions ) {
 				$type       = $field['type'] ?? '';
 				$definition = $fields_definitions[ $type ] ?? [];
