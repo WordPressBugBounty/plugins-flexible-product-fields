@@ -171,9 +171,10 @@ class FPF_Cart {
 			if ( isset( $field['price_type'] ) && $field['price_type'] != '' && isset( $field['price'] ) && floatval( $field['price'] ) != 0 ) {
 				$field_price                  = floatval( $field['price'] );
 				$field_price_type             = (string) $field['price_type'];
-				$field_price_current_currency = $this->field_price_multicurrency( $field_price, $field_price_type, $product );
+				$field_price_base_currency    = $this->product_price->calculate_price( $field_price, $field_price_type, $product );
+				$field_price_current_currency = (float) $this->product_price->multicurrency_calculate_price_to_display( $field_price_base_currency );
 
-				$extra_cost += $field_price_current_currency;
+				$extra_cost += $field_price_base_currency;
 
 				$org_value = isset( $field['org_value'] ) ? (string) $field['org_value'] : '';
 				$cart_item['flexible_product_fields'][ $key ]['value'] = $this->field_display_value( $field_price_current_currency, $org_value );

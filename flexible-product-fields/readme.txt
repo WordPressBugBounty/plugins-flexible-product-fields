@@ -5,7 +5,7 @@ Tags: woocommerce customize product, woocommerce product addons, woocommerce pro
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.6.4
+Stable tag: 2.6.5
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -318,6 +318,12 @@ You can also choose one from the list below based on your needs.
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.6.5 - 2025-01-14 =
+* Added support for WooCommerce 9.6
+* Fixed compatibility issues with currency switching plugins
+* Fixed warnings about undefined array key in some cases
+* Fixed js console error in multiselect field in some cases
 
 = 2.6.4 - 2024-12-12 =
 * Fixed fields group order
