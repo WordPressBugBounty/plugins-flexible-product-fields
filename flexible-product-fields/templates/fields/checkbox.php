@@ -17,6 +17,6 @@
 <div class="fpf-field fpf-<?php echo esc_attr( $type ); ?>">
 	<?php
 	$args['class'] = explode( ' ', $class );
-	woocommerce_form_field( $key, $args, ( $default_checked && ! $_POST ) ? '1' : $value );
+	woocommerce_form_field( $key, $args, ( $default_checked && $value === null ) ? '1' : $value );
 	?>
 </div>

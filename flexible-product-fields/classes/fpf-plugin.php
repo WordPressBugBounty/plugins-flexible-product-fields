@@ -105,6 +105,10 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 		wp_enqueue_style( 'fpf_front' );
 
 		if ( is_singular( 'product' ) ) {
+			$product = wc_get_product( get_the_ID() );
+			if ( ! $product instanceof \WC_Product ) {
+				return;
+			}
 			wp_enqueue_style( 'fpf_new_front', trailingslashit( $this->get_plugin_assets_url() ) . 'css/new-front.css', [], $this->scripts_version );
 			wp_enqueue_script( 'fpf_new_front', trailingslashit( $this->get_plugin_assets_url() ) . 'js/new-front.js', [], $this->scripts_version, true );
 
@@ -149,7 +153,7 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 					)
 				);
 			}
-			$product = wc_get_product( get_the_ID() );
+
 			wp_localize_script(
 				'fpf_product',
 				'fpf_product',
@@ -161,6 +165,8 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 					'currency_format_thousand_sep' => esc_attr( stripslashes( get_option( 'woocommerce_price_thousand_sep' ) ) ),
 					'currency_format'              => $currency_format,
 					'fields_rules'                 => $this->fpf_product->get_logic_rules_for_product( $product ),
+					'fpf_fields'                   => $this->fpf_product->get_fields_data( $product ),
+					'fpf_product_price'            => $this->fpf_product->get_product_price_data( $product ),
 				]
 			);
 		}
@@ -202,6 +208,13 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 		add_action( 'init', [ $this, 'init_polylang' ] );
 		add_action( 'admin_init', [ $this, 'init_wpml' ] );
 		$this->hooks_on_hookable_objects();
+	}
+
+	/**
+	 * Getter for FPF_Product
+	 */
+	public function get_fpf_product(): FPF_Product {
+		return $this->fpf_product;
 	}
 
 	/**
@@ -248,5 +261,3 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 
 
 }
-
-

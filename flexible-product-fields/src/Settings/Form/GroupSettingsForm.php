@@ -26,7 +26,13 @@ class GroupSettingsForm implements FormInterface {
 	 * {@inheritdoc}
 	 */
 	public function get_posted_data(): array {
-		return json_decode( stripslashes( $_POST[ self::FORM_FIELD_NAME ] ), true ) ?: [];
+		if ( ! isset( $_POST[ self::FORM_FIELD_NAME ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in src/Settings/Page.php
+			return [];
+		}
+
+		$posted_data = \json_decode( \sanitize_text_field( \wp_unslash( $_POST[ self::FORM_FIELD_NAME ] ) ), true ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in src/Settings/Page.php
+
+		return $posted_data ?: [];
 	}
 
 	/**

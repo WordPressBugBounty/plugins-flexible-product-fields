@@ -20,12 +20,12 @@ class DaysBeforeRule implements RuleInterface {
 		}
 
 		$days_before = $field_data['days_before'] ?? '';
-		$date_min = CalendarAttributeHelper::get_date_min( $days_before, self::DATE_FORMAT, $field_data );
+		$date_min    = CalendarAttributeHelper::get_date_min( $days_before, self::DATE_FORMAT, $field_data );
 		if ( $date_min === '' ) {
 			return true;
 		}
 
-		$dates    = ( $value ) ? explode( ',', $value ) : [];
+		$dates = ( $value ) ? explode( ',', $value ) : [];
 		foreach ( $dates as $date ) {
 			if ( gmdate( self::DATE_FORMAT, strtotime( $date ) ) < $date_min ) {
 				return false;

@@ -7,6 +7,10 @@ namespace WPDesk\FPF\Free\Service\TemplateFinder\ProductHandler;
  */
 class VariationProductHandler extends ProductHandler implements ProductHandlerInterface {
 
+	public function get_product_ids(): array {
+		return [ $this->product->get_id(), $this->product->get_parent_id() ];
+	}
+
 	public function get_category_ids(): array {
 		$parent_product = \wc_get_product(
 			$this->product->get_parent_id()

@@ -384,6 +384,7 @@ class ComposerStaticInit8e5aea80b312e88993f9380e32cdf924
         'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\ProductHandler\\VariableProductHandler' => __DIR__ . '/../..' . '/src/Service/TemplateFinder/ProductHandler/VariableProductHandler.php',
         'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\ProductHandler\\VariationProductHandler' => __DIR__ . '/../..' . '/src/Service/TemplateFinder/ProductHandler/VariationProductHandler.php',
         'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\TemplateFinder' => __DIR__ . '/../..' . '/src/Service/TemplateFinder/TemplateFinder.php',
+        'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\TemplateFinderCache' => __DIR__ . '/../..' . '/src/Service/TemplateFinder/TemplateFinderCache.php',
         'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\TemplateQuery' => __DIR__ . '/../..' . '/src/Service/TemplateFinder/TemplateQuery.php',
         'WPDesk\\FPF\\Free\\Settings\\FieldsGroup' => __DIR__ . '/../..' . '/src/Settings/FieldsGroup.php',
         'WPDesk\\FPF\\Free\\Settings\\Form\\FormIntegration' => __DIR__ . '/../..' . '/src/Settings/Form/FormIntegration.php',

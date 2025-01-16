@@ -99,7 +99,7 @@ class FPF_Cart {
 			return true;
 		}
 
-		return (int) $product_id === (int) $referer_id;
+		return true;
 	}
 
 	/**

@@ -18,6 +18,7 @@ use WPDesk\FPF\Free\Settings\Option\FieldTypeOption;
 use WPDesk\FPF\Free\Settings\Option\OptionsLabelOption;
 use WPDesk\FPF\Free\Settings\Option\OptionsOption;
 use WPDesk\FPF\Free\Settings\Option\OptionsValueOption;
+use WP_Post;
 
 /**
  * .
@@ -51,11 +52,15 @@ class Page implements Hookable, HookablePluginDependant {
 	}
 
 	/**
-	 * @param \WP_Post $post Post object.
+	 * @param WP_Post $post Post object.
 	 *
 	 * @return void
 	 */
-	public function show_settings_template( \WP_Post $post ) {
+	public function show_settings_template( $post ) {
+		if ( ! $post instanceof WP_Post ) {
+			return;
+		}
+
 		if ( $post->post_type !== self::POST_TYPE ) {
 			return;
 		}

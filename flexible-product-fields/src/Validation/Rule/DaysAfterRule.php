@@ -20,12 +20,12 @@ class DaysAfterRule implements RuleInterface {
 		}
 
 		$days_after = $field_data['days_after'] ?? '';
-		$date_max = CalendarAttributeHelper::get_date_max( $days_after, self::DATE_FORMAT, $field_data );
+		$date_max   = CalendarAttributeHelper::get_date_max( $days_after, self::DATE_FORMAT, $field_data );
 		if ( $date_max === '' ) {
 			return true;
 		}
 
-		$dates    = ( $value ) ? explode( ',', $value ) : [];
+		$dates = ( $value ) ? explode( ',', $value ) : [];
 		foreach ( $dates as $date ) {
 			if ( gmdate( self::DATE_FORMAT, strtotime( $date ) ) > $date_max ) {
 				return false;

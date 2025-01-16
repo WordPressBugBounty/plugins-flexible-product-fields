@@ -38,20 +38,20 @@ use WPDesk\FPF\Pro\Field\File\RestRouteCreator;
 						<span class="fpf-file-draggable-content">
 							<span class="fpf-file-draggable-error" hidden></span>
 							<span class="fpf-file-draggable-placeholder"
-								 <?php echo ( $index < count( $value_filenames ) ) ? 'hidden' : ''; ?>>
+								<?php echo ( $index < count( $value_filenames ) ) ? 'hidden' : ''; ?>>
 								<?php echo esc_html__( 'Select File or Drag & Drop', 'flexible-product-fields' ); ?>
 							</span>
 							<span class="fpf-file-draggable-loading" hidden>
 								<?php echo esc_html__( 'Uploading...', 'flexible-product-fields' ); ?>
 							</span>
 							<span class="fpf-file-draggable-preview"
-								 <?php echo ( $index >= count( $value_filenames ) ) ? 'hidden' : ''; ?>>
+								<?php echo ( $index >= count( $value_filenames ) ) ? 'hidden' : ''; ?>>
 								<?php echo esc_attr( $value_filenames[ $index ] ?? '' ); ?>
 							</span>
 						</span>
 						<button type="button"
 							class="button fpf-file-draggable-delete"
-							 <?php echo ( $index >= count( $value_filenames ) ) ? 'hidden' : ''; ?>>
+							<?php echo ( $index >= count( $value_filenames ) ) ? 'hidden' : ''; ?>>
 							<?php echo esc_html__( 'Delete', 'flexible-product-fields' ); ?>
 						</button>
 					</span>

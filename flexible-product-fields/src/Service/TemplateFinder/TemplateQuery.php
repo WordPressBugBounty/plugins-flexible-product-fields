@@ -46,12 +46,19 @@ class TemplateQuery {
 			],
 		];
 
+		$cache_key     = 'fpf_template_query_' . md5( json_encode( $args ) );
+		$cached_result = \wp_cache_get( $cache_key );
+
+		if ( $cached_result !== false ) {
+			return $cached_result;
+		}
+
 		$this->query->query( $args );
 		if ( $this->query->post_count === 0 ) {
 			return [];
 		}
 
-		return array_reduce(
+		$result = array_reduce(
 			$this->query->posts,
 			function ( array $carry, WP_Post $post ) {
 				$raw_fields_meta    = \get_post_meta( $post->ID, '_fields', true );
@@ -64,6 +71,9 @@ class TemplateQuery {
 			},
 			[]
 		);
+
+		\wp_cache_set( $cache_key, $result );
+		return $result;
 	}
 
 	/**

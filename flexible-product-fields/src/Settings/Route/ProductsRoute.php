@@ -17,12 +17,19 @@ class ProductsRoute extends RouteAbstract implements RouteInterface {
 	}
 
 	/**
+	 * @return string[]
+	 */
+	protected function get_post_types(): array {
+		return [ 'product' ];
+	}
+
+	/**
 	 * {@inheritdoc}
 	 */
 	public function get_endpoint_response( array $params ) {
 		$args = [
 			'posts_per_page' => -1,
-			'post_type'      => [ 'product' ],
+			'post_type'      => $this->get_post_types(),
 			'post_status'    => [ 'publish', 'draft' ],
 			'orderby'        => 'title',
 			'order'          => 'ASC',

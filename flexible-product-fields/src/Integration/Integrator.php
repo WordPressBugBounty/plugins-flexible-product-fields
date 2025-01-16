@@ -2,6 +2,8 @@
 
 namespace WPDesk\FPF\Free\Integration;
 
+use FPF_Product;
+
 /**
  * .
  */
@@ -27,6 +29,16 @@ class Integrator implements IntegratorInterface {
 	 * @var string
 	 */
 	private $version_dev = FLEXIBLE_PRODUCT_FIELDS_VERSION_DEV;
+
+	private FPF_Product $fpf_product;
+
+	public function __construct( FPF_Product $fpf_product ) {
+		$this->fpf_product = $fpf_product;
+	}
+
+	public function get_fpf_product(): FPF_Product {
+		return $this->fpf_product;
+	}
 
 	/**
 	 * {@inheritdoc}

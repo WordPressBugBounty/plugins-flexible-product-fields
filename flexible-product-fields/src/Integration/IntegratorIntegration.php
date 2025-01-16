@@ -44,7 +44,9 @@ class IntegratorIntegration implements Hookable, HookablePluginDependant {
 	public function set_hook_for_integration() {
 		do_action(
 			'flexible_product_fields/init',
-			( new Integrator() )
+			( new Integrator(
+				$this->plugin_old->get_fpf_product()
+			) )
 		);
 	}
 }

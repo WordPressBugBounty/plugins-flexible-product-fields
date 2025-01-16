@@ -1,9 +1,9 @@
 jQuery(document).ready(function() {
 
 	function fpf_variation_price() {
-		jQuery.each(fpf_fields,function(i,val){
+		jQuery.each(fpf_product.fpf_fields,function(i,val){
 			if ( val.has_price && val.price_type == 'percent' && val.price != 0 ) {
-				val.price_value = fpf_product_price * val.price / 100;
+				val.price_value = fpf_product.fpf_product_price * val.price / 100;
 				var price_display = accounting.formatMoney( val.price_value, {
 					symbol 		: fpf_product.currency_format_symbol,
 					decimal 	: fpf_product.currency_format_decimal_sep,
@@ -18,7 +18,7 @@ jQuery(document).ready(function() {
 			if (val.has_options) {
 				jQuery.each(val.options, function (i, val_option) {
 					if ( val_option.price_type == 'percent' ) {
-						val_option.price_value = fpf_product_price * val_option.price / 100;
+						val_option.price_value = fpf_product.fpf_product_price * val_option.price / 100;
 						var price_display = accounting.formatMoney( val_option.price_value, {
 							symbol 		: fpf_product.currency_format_symbol,
 							decimal 	: fpf_product.currency_format_decimal_sep,
@@ -47,7 +47,7 @@ jQuery(document).ready(function() {
 		wrap.empty();
 		var adjust_price = 0;
 		var adjusted_price = false;
-		jQuery.each(fpf_fields,function(i,val){
+		jQuery.each(fpf_product.fpf_fields,function(i,val){
 			var price_displays  = [];
 			var price_values    = [];
 			var calculate_price = true;
@@ -137,7 +137,7 @@ jQuery(document).ready(function() {
 			});
 		});
 		if ( adjusted_price ) {
-			var total_price = ( qty * fpf_product_price ) + adjust_price;
+			var total_price = ( qty * fpf_product.fpf_product_price ) + adjust_price;
 			total_price = accounting.formatMoney( total_price, {
 				symbol 		: fpf_product.currency_format_symbol,
 				decimal 	: fpf_product.currency_format_decimal_sep,
@@ -150,7 +150,7 @@ jQuery(document).ready(function() {
 		}
 	}
 
-	if ( typeof fpf_fields != 'undefined' ) {
+	if ( typeof fpf_product.fpf_fields != 'undefined' ) {
 		fpf_price_options();
 	}
 	jQuery(document).on("change",".fpf-input-field,input.qty",function() {
@@ -161,7 +161,7 @@ jQuery(document).ready(function() {
 	});
 
 	jQuery(document).on( 'found_variation', 'form.cart', function( event, variation ) {
-		fpf_product_price = variation.display_price;
+		fpf_product.fpf_product_price = variation.display_price;
 		fpf_variation_price();
 		fpf_price_options();
 	});
@@ -171,10 +171,10 @@ jQuery(document).ready(function() {
 		var items  = [];
 		var keys   = [];
 
-		var length = fpf_fields.length;
+		var length = fpf_product.fpf_fields.length;
 		for ( var i = 0; i < length; i++ ) {
-			var field_key = fpf_fields[ i ].id;
-			if ( fpf_fields[ i ].type === 'multiselect' ) {
+			var field_key = fpf_product.fpf_fields[ i ].id;
+			if ( fpf_product.fpf_fields[ i ].type === 'multiselect' ) {
 				field_key += '[]';
 			}
 			keys.push( field_key );

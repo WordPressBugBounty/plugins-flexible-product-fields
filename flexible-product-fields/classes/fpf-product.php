@@ -1,7 +1,7 @@
 <?php
 
 if ( ! defined( 'ABSPATH' ) ) {
-	exit; // Exit if accessed directly
+	exit; // Exit if accessed directly.
 }
 
 use WPDesk\FPF\Free\Field\TemplateArgs;
@@ -27,7 +27,7 @@ class FPF_Product {
 	private $is_woocommerce_before_add_to_cart_button_fired = false;
 
 	/**
-	 * @var null|Flexible_Product_Fields
+	 * @var null|Flexible_Product_Fields_Plugin
 	 */
 	private $_plugin = null;
 
@@ -48,19 +48,19 @@ class FPF_Product {
 	/**
 	 * FPF_Product constructor.
 	 *
-	 * @param Flexible_Product_Fields $plugin
+	 * @param Flexible_Product_Fields_Plugin $plugin
 	 * @param FPF_Product_Fields $product_fields
 	 */
 	public function __construct( Flexible_Product_Fields_Plugin $plugin, FPF_Product_Fields $product_fields, FPF_Product_Price $product_price ) {
 		$this->_plugin         = $plugin;
 		$this->_product_fields = $product_fields;
 		$this->product_price   = $product_price;
-		$this->template_finder = new TemplateFinder();
+		$this->template_finder = new TemplateFinder( $product_fields );
 		$this->hooks();
 	}
 
 	/**
-	 *
+	 * Hooks.
 	 */
 	public function hooks() {
 
@@ -68,13 +68,6 @@ class FPF_Product {
 		add_action( 'woocommerce_after_add_to_cart_button', [ $this, 'woocommerce_after_add_to_cart_button' ] );
 
 		add_filter( 'woocommerce_product_supports', [ $this, 'woocommerce_product_supports' ], 10, 3 );
-	}
-
-	/**
-	 * @param string $error
-	 */
-	public function add_error( $error ) {
-		wc_add_notice( $error, 'error' );
 	}
 
 	/**
@@ -95,6 +88,7 @@ class FPF_Product {
 	 * @param string $type
 	 *
 	 * @return array
+	 * @internal
 	 */
 	public function get_field_type( $type ) {
 		$ret         = [];
@@ -112,9 +106,13 @@ class FPF_Product {
 	 *
 	 * @return bool
 	 */
-	public function product_has_required_field( $product ) {
-		$fields = $this->get_translated_fields_for_product( $product );
-		return $fields['has_required'];
+	public function product_has_required_field( $product ): bool {
+		if ( ! $product instanceof \WC_Product ) {
+			return false;
+		}
+
+		$templates = $this->template_finder->find( $product );
+		return $templates->has_required_fields();
 	}
 
 	/**
@@ -124,15 +122,16 @@ class FPF_Product {
 	 * @param WC_Product $product
 	 * @param bool|string $hook
 	 *
-	 * @return array
+	 * @return array<string, array<string, mixed>>
 	 */
-	public function get_translated_fields_for_product( $product, $hook = false ) {
-		$templates = $this->template_finder->find( $product, $hook );
-		$templates->init_fields( $this->_product_fields->get_field_types_by_type() );
+	public function get_translated_fields_for_product( $product, $hook = false ): array {
+		if ( ! $product instanceof \WC_Product ) {
+			return [];
+		}
 
+		$templates = $this->template_finder->find( $product, $hook );
 		return $this->translate_fields_titles_and_labels( $templates->legacy_results() );
 	}
-
 
 	/**
 	 * @param WC_Product $product
@@ -157,6 +156,7 @@ class FPF_Product {
 	 * @param bool|string $hook
 	 *
 	 * @return array
+	 * @internal
 	 */
 	public function create_fields_for_product( $product, $hook ) {
 		$fields = $this->get_translated_fields_for_product( $product, $hook );
@@ -171,6 +171,7 @@ class FPF_Product {
 	 * @param WC_Product $product
 	 *
 	 * @return string
+	 * @internal
 	 */
 	public function create_field( array $field, WC_Product $product ) {
 		$field_type    = $this->get_field_type( $field['type'] );
@@ -194,6 +195,9 @@ class FPF_Product {
 
 	/**
 	 * @param bool|string $hook
+	 *
+	 * @deprecated version 2.7.0 use render_fields_before_add_to_cart and render_fields_after_add_to_cart instead
+	 * @internal
 	 */
 	public function show_fields( $hook ) {
 		global $product;
@@ -203,15 +207,13 @@ class FPF_Product {
 				$hook,
 				'hooks',
 				[
-					'fields'    => $fields['display_fields'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					'fpf_nonce' => wp_create_nonce( 'fpf_add_to_cart_nonce' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					'fields'     => $fields['display_fields'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					'fpf_nonce'  => wp_create_nonce( 'fpf_add_to_cart_nonce' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+					'product_id' => $product->get_id(), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 				]
 			);
 		}
 	}
-
-
-
 
 	/**
 	 * Translate fields titles and labels.
@@ -236,35 +238,83 @@ class FPF_Product {
 		return $fields;
 	}
 
+	public function render_fields_before_add_to_cart( WC_Product $product ): string {
+		$fields = $this->create_fields_for_product( $product, 'woocommerce_before_add_to_cart_button' );
+		return $this->_plugin->load_template(
+			'woocommerce_before_add_to_cart_button',
+			'hooks',
+			[
+				'fields'     => $fields['display_fields'],
+				'product_id' => $product->get_id(),
+				'fpf_nonce'  => \wp_create_nonce( 'fpf_add_to_cart_nonce' ),
+			]
+		);
+	}
+
+	public function render_fields_after_add_to_cart( WC_Product $product ): string {
+		$fields = $this->create_fields_for_product( $product, 'woocommerce_after_add_to_cart_button' );
+		return $this->_plugin->load_template(
+			'woocommerce_after_add_to_cart_button',
+			'hooks',
+			[
+				'fields'     => $fields['display_fields'],
+				'product_id' => $product->get_id(),
+			]
+		);
+	}
+
+	/**
+	 * Fired by woocommerce_after_add_to_cart_button hook.
+	 */
+	public function woocommerce_after_add_to_cart_button(): void {
+		global $product;
+
+		if ( ! $product instanceof \WC_Product ) {
+			return;
+		}
+
+		echo $this->render_fields_after_add_to_cart( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
 	/**
 	 * Fired by woocommerce_before_add_to_cart_button hook.
 	 */
-	public function woocommerce_before_add_to_cart_button() {
+	public function woocommerce_before_add_to_cart_button(): void {
 		/** Prevent display fields more than once. Action may be fired by other third party plugins, ie. Woocommerce Subscriptions */
 		if ( $this->is_woocommerce_before_add_to_cart_button_fired ) {
 			return;
 		}
 		$this->is_woocommerce_before_add_to_cart_button_fired = true;
+
 		global $product;
-		$product_extended_info = new FPF_Product_Extendend_Info( $product );
-		$this->show_fields( 'woocommerce_before_add_to_cart_button' );
-		echo $this->_plugin->load_template( 'display', 'totals', [] );
-		$fields = $this->translate_fields_titles_and_labels( $this->get_translated_fields_for_product( $product ) );
+
+		if ( ! $product instanceof \WC_Product ) {
+			return;
+		}
+
+		echo $this->render_fields_before_add_to_cart( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+	}
+
+	/**
+	 * @return array<string, mixed> The fields data with calculated price values and display values.
+	 */
+	public function get_fields_data( WC_Product $product ): array {
+		$fields = $this->get_translated_fields_for_product( $product );
 		foreach ( $fields['fields'] as $key => $field ) {
 			$fields['fields'][ $key ]['price_value'] = 0;
 			if ( ! isset( $field['price_type'] ) ) {
 				$field['price_type']                    = 'fixed';
 				$fields['fields'][ $key ]['price_type'] = 'fixed';
 			}
-			if ( $field['has_price'] && isset( $field['price_type'] ) && $field['price_type'] != '' && isset( $field['price'] ) && $field['price'] != '' ) {
+			if ( filter_var( $field['has_price'], \FILTER_VALIDATE_BOOLEAN ) && isset( $field['price_type'] ) && $field['price_type'] != '' && isset( $field['price'] ) && $field['price'] !== '' ) {
 				$price_value                               = $this->product_price->calculate_price( floatval( $field['price'] ), $field['price_type'], $product );
 				$fields['fields'][ $key ]['price_value']   = $price_value;
 				$fields['fields'][ $key ]['price_display'] = $this->product_price->prepare_price_to_display( $product, $price_value );
 			}
-			if ( $field['has_options'] ) {
+			if ( filter_var( $field['has_options'], \FILTER_VALIDATE_BOOLEAN ) ) {
 				foreach ( $fields['fields'][ $key ]['options'] as $option_key => $option ) {
 					$fields['fields'][ $key ]['options'][ $option_key ]['price_value'] = 0;
-					if ( ! $field['has_price_in_options'] ) {
+					if ( ! filter_var( $field['has_price_in_options'], \FILTER_VALIDATE_BOOLEAN ) ) {
 						continue;
 					}
 
@@ -283,26 +333,16 @@ class FPF_Product {
 				}
 			}
 		}
+		return $fields['fields'];
+	}
+
+	public function get_product_price_data( WC_Product $product ): string {
 		$tax_display_mode = get_option( 'woocommerce_tax_display_shop' );
-		if ( $tax_display_mode == 'excl' ) {
+		if ( $tax_display_mode === 'excl' ) {
 			$product_price = wpdesk_get_price_excluding_tax( $product );
 		} else {
 			$product_price = wpdesk_get_price_including_tax( $product );
 		}
-		?>
-		<script type="text/javascript">
-			var fpf_fields = <?php echo json_encode( $fields['fields'] ); ?>;
-			var fpf_product_price = <?php echo json_encode( $product_price ); ?>;
-		</script>
-		<?php
-	}
-
-	/**
-	 *
-	 */
-	public function woocommerce_after_add_to_cart_button() {
-		global $product;
-		$product_extended_info = new FPF_Product_Extendend_Info( $product );
-		$this->show_fields( 'woocommerce_after_add_to_cart_button' );
+		return (string) $product_price;
 	}
 }

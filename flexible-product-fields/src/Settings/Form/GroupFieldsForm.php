@@ -25,7 +25,13 @@ class GroupFieldsForm implements FormInterface {
 	 * {@inheritdoc}
 	 */
 	public function get_posted_data(): array {
-		return json_decode( stripslashes( $_POST[ self::FORM_FIELD_NAME ] ), true ) ?: [];
+		if ( ! isset( $_POST[ self::FORM_FIELD_NAME ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in src/Settings/Page.php
+			return [];
+		}
+
+		$posted_data = \json_decode( \sanitize_text_field( \wp_unslash( $_POST[ self::FORM_FIELD_NAME ] ) ), true ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in src/Settings/Page.php
+
+		return $posted_data ?: [];
 	}
 
 	/**
@@ -51,7 +57,10 @@ class GroupFieldsForm implements FormInterface {
 	 * {@inheritdoc}
 	 */
 	public function save_form_data( \WP_Post $post ) {
-		$values        = $this->get_posted_data();
+		$values = $this->get_posted_data();
+		if ( count( $values ) === 0 ) {
+			return;
+		}
 		$posted_fields = [];
 		foreach ( $values as $field ) {
 			$posted_fields[ $field[ FieldNameOption::FIELD_NAME ] ] = $field;

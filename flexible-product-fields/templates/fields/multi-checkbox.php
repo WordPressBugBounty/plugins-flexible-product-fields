@@ -24,10 +24,26 @@
 				<br>
 				<span>
 					<?php if ( $selected_min ) : ?>
-						<?php echo esc_html( sprintf( __( 'Minimum: %s.', 'flexible-product-fields' ), $selected_min ) ); ?>
+						<?php
+						echo esc_html(
+							sprintf(
+								/* translators: %s: minimum number of values that can be selected within multicheckbox field */
+								__( 'Minimum: %s.', 'flexible-product-fields' ),
+								$selected_min
+							)
+						);
+						?>
 					<?php endif; ?>
 					<?php if ( $selected_max ) : ?>
-						<?php echo esc_html( sprintf( __( 'Limit: %s.', 'flexible-product-fields' ), $selected_max ) ); ?>
+						<?php
+						echo esc_html(
+							sprintf(
+							/* translators: %s: maximum number of values that can be selected within multicheckbox field */
+								__( 'Limit: %s.', 'flexible-product-fields' ),
+								$selected_max
+							)
+						);
+						?>
 					<?php endif; ?>
 				</span>
 			<?php endif; ?>
@@ -38,7 +54,7 @@
 					value="<?php echo esc_html( $option_value ); ?>"
 					name="<?php echo esc_attr( $key ); ?>[]"
 					id="<?php echo esc_attr( $key . '_' . $option_value ); ?>"
-					<?php echo ( ( ! $_POST && in_array( $option_value, $default_checked ) ) || in_array( $option_value, $value ?: [] ) ) ? 'checked' : ''; ?>
+					<?php echo ( ( $value === null && in_array( $option_value, $default_checked, true ) ) || in_array( $option_value, $value ?: [], true ) ) ? 'checked' : ''; ?>
 				>
 				<?php echo wp_kses_post( $option_label ); ?>
 			</label>

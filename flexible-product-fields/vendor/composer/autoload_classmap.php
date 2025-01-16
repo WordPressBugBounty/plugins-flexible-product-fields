@@ -361,6 +361,7 @@ return array(
     'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\ProductHandler\\VariableProductHandler' => $baseDir . '/src/Service/TemplateFinder/ProductHandler/VariableProductHandler.php',
     'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\ProductHandler\\VariationProductHandler' => $baseDir . '/src/Service/TemplateFinder/ProductHandler/VariationProductHandler.php',
     'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\TemplateFinder' => $baseDir . '/src/Service/TemplateFinder/TemplateFinder.php',
+    'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\TemplateFinderCache' => $baseDir . '/src/Service/TemplateFinder/TemplateFinderCache.php',
     'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\TemplateQuery' => $baseDir . '/src/Service/TemplateFinder/TemplateQuery.php',
     'WPDesk\\FPF\\Free\\Settings\\FieldsGroup' => $baseDir . '/src/Settings/FieldsGroup.php',
     'WPDesk\\FPF\\Free\\Settings\\Form\\FormIntegration' => $baseDir . '/src/Settings/Form/FormIntegration.php',

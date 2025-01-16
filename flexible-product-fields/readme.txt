@@ -5,7 +5,7 @@ Tags: woocommerce customize product, woocommerce product addons, woocommerce pro
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.6.5
+Stable tag: 2.7.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -105,6 +105,8 @@ It is possible to assign a group of custom fields to a specific product.
 #### Main features of the PRO version
 Read more to find out what you can get in the PRO version of this WooCommerce product configurator:
 
+* **Variable product support**
+  It's possible to add custom product fields for specific variations independently. The plugin allows searching products and each variation. On the product page, the custom fields will appear based on variation without reloading the page (AJAX).
 * **Order Group**
   Arranging field groups in order [(read more)](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#order-group)
 * **WooCommerce custom price fields**
@@ -127,6 +129,7 @@ You may also choose to customize the custom fields for more WooCommerce products
 * Categories
 * Tags
 * All products
+* Specific variations
 
 [Upgrade to Flexible Product Fields PRO Now &rarr;](https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/)
 
@@ -185,6 +188,10 @@ In the PRO version of the plugin, you can also use:
 And additional pricing for custom product fields and conditional logic to boost the shopping experience for your WooCommerce customers.
 
 [Upgrade to Flexible Product Fields PRO Now &rarr;](https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/)
+
+= Is it possible to add custom fields for subscriptions? =
+
+Yes. You can add subscriptions in WooCommerce with custom product fields with [Flexible Subscriptions](https://pl.wordpress.org/plugins/flexible-subscriptions/).
 
 = Where can I find documentation? =
 
@@ -318,6 +325,10 @@ You can also choose one from the list below based on your needs.
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.7.0 - 2025-01-16 =
+* Added compatibility with PRO feature (fields for product variations)
+* Added some caching and speed improvements
 
 = 2.6.5 - 2025-01-14 =
 * Added support for WooCommerce 9.6

@@ -37,7 +37,14 @@ class TemplateCollection {
 	/**
 	 * @return array<array<string, mixed>>
 	 */
-	private function get_fields(): array {
+	public function get_fields(): array {
+		return $this->fields;
+	}
+
+	/**
+	 * @return array<array<string, mixed>>
+	 */
+	private function get_raw_fields(): array {
 		return array_reduce(
 			$this->posts,
 			fn ( array $carry, WP_Post $post ) => array_merge(
@@ -48,6 +55,15 @@ class TemplateCollection {
 		);
 	}
 
+	public function has_required_fields(): bool {
+		return (bool) count(
+			array_filter(
+				$this->fields,
+				fn( $field ) => isset( $field['required'] ) && filter_var( $field['required'], FILTER_VALIDATE_BOOLEAN )
+			)
+		);
+	}
+
 	/**
 	 * @return array<string, mixed>
 	 */
@@ -55,12 +71,7 @@ class TemplateCollection {
 		return [
 			'posts'          => $this->posts,
 			'fields'         => $this->fields,
-			'has_required'   => (bool) count(
-				array_filter(
-					$this->fields,
-					fn( $field) => isset( $field['required'] ) && filter_var( $field['required'], FILTER_VALIDATE_BOOLEAN )
-				)
-			),
+			'has_required'   => $this->has_required_fields(),
 			'display_fields' => [],
 		];
 	}
@@ -70,7 +81,7 @@ class TemplateCollection {
 	 */
 	public function init_fields( array $fields_definitions ): void {
 		$this->fields = array_reduce(
-			$this->get_fields(),
+			$this->get_raw_fields(),
 			function ( array $carry, array $field ) use ( $fields_definitions ) {
 				$type       = $field['type'] ?? '';
 				$definition = $fields_definitions[ $type ] ?? [];
