@@ -391,6 +391,7 @@ class ComposerStaticInit8e5aea80b312e88993f9380e32cdf924
         'WPDesk\\FPF\\Free\\Settings\\Form\\FormInterface' => __DIR__ . '/../..' . '/src/Settings/Form/FormInterface.php',
         'WPDesk\\FPF\\Free\\Settings\\Form\\GroupFieldsForm' => __DIR__ . '/../..' . '/src/Settings/Form/GroupFieldsForm.php',
         'WPDesk\\FPF\\Free\\Settings\\Form\\GroupSettingsForm' => __DIR__ . '/../..' . '/src/Settings/Form/GroupSettingsForm.php',
+        'WPDesk\\FPF\\Free\\Settings\\Form\\Sanitizer\\FieldDataSanitizer' => __DIR__ . '/../..' . '/src/Settings/Form/Sanitizer/FieldDataSanitizer.php',
         'WPDesk\\FPF\\Free\\Settings\\Forms' => __DIR__ . '/../..' . '/src/Settings/Forms.php',
         'WPDesk\\FPF\\Free\\Settings\\Option\\CssOption' => __DIR__ . '/../..' . '/src/Settings/Option/CssOption.php',
         'WPDesk\\FPF\\Free\\Settings\\Option\\DefaultCheckedOption' => __DIR__ . '/../..' . '/src/Settings/Option/DefaultCheckedOption.php',

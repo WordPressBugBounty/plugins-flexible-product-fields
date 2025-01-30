@@ -368,6 +368,7 @@ return array(
     'WPDesk\\FPF\\Free\\Settings\\Form\\FormInterface' => $baseDir . '/src/Settings/Form/FormInterface.php',
     'WPDesk\\FPF\\Free\\Settings\\Form\\GroupFieldsForm' => $baseDir . '/src/Settings/Form/GroupFieldsForm.php',
     'WPDesk\\FPF\\Free\\Settings\\Form\\GroupSettingsForm' => $baseDir . '/src/Settings/Form/GroupSettingsForm.php',
+    'WPDesk\\FPF\\Free\\Settings\\Form\\Sanitizer\\FieldDataSanitizer' => $baseDir . '/src/Settings/Form/Sanitizer/FieldDataSanitizer.php',
     'WPDesk\\FPF\\Free\\Settings\\Forms' => $baseDir . '/src/Settings/Forms.php',
     'WPDesk\\FPF\\Free\\Settings\\Option\\CssOption' => $baseDir . '/src/Settings/Option/CssOption.php',
     'WPDesk\\FPF\\Free\\Settings\\Option\\DefaultCheckedOption' => $baseDir . '/src/Settings/Option/DefaultCheckedOption.php',

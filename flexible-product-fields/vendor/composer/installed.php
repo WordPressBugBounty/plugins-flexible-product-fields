@@ -1,9 +1,9 @@
 <?php return array(
     'root' => array(
         'name' => 'wpdesk/flexible-product-fields',
-        'pretty_version' => '2.7.0',
-        'version' => '2.7.0.0',
-        'reference' => '457d38dbb03581714f77b46943b48842772a6af2',
+        'pretty_version' => '2.7.1',
+        'version' => '2.7.1.0',
+        'reference' => 'cd1eac658c173632ab445ea5daba134d29303d47',
         'type' => 'library',
         'install_path' => __DIR__ . '/../../',
         'aliases' => array(),
@@ -20,9 +20,9 @@
             'dev_requirement' => false,
         ),
         'wpdesk/flexible-product-fields' => array(
-            'pretty_version' => '2.7.0',
-            'version' => '2.7.0.0',
-            'reference' => '457d38dbb03581714f77b46943b48842772a6af2',
+            'pretty_version' => '2.7.1',
+            'version' => '2.7.1.0',
+            'reference' => 'cd1eac658c173632ab445ea5daba134d29303d47',
             'type' => 'library',
             'install_path' => __DIR__ . '/../../',
             'aliases' => array(),

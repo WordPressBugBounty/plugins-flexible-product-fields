@@ -4,15 +4,22 @@ namespace WPDesk\FPF\Free\Settings\Form;
 
 use WPDesk\FPF\Free\Field\FieldData;
 use WPDesk\FPF\Free\Settings\Option\FieldNameOption;
+use WPDesk\FPF\Free\Settings\Form\Sanitizer\FieldDataSanitizer;
 
 /**
  * {@inheritdoc}
  */
 class GroupFieldsForm implements FormInterface {
 
+	private FieldDataSanitizer $sanitizer;
+
 	const FORM_TYPE          = 'fields';
 	const FORM_FIELD_NAME    = 'fpf_fields';
 	const SETTINGS_POST_META = '_fields';
+
+	public function __construct() {
+		$this->sanitizer = new FieldDataSanitizer();
+	}
 
 	/**
 	 * {@inheritdoc}
@@ -22,16 +29,20 @@ class GroupFieldsForm implements FormInterface {
 	}
 
 	/**
-	 * {@inheritdoc}
+	 * @return array<int, array<string, mixed>>
 	 */
 	public function get_posted_data(): array {
 		if ( ! isset( $_POST[ self::FORM_FIELD_NAME ] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in src/Settings/Page.php
 			return [];
 		}
 
-		$posted_data = \json_decode( \sanitize_text_field( \wp_unslash( $_POST[ self::FORM_FIELD_NAME ] ) ), true ); // phpcs:ignore WordPress.Security.NonceVerification.Missing -- Nonce verified in src/Settings/Page.php
+		$posted_data = \json_decode( \wp_unslash( $_POST[ self::FORM_FIELD_NAME ] ), true ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized -- Nonce verified in src/Settings/Page.php, Sanitization is done in the next line
 
-		return $posted_data ?: [];
+		if ( json_last_error() !== JSON_ERROR_NONE ) {
+			return [];
+		}
+
+		return $this->sanitizer->sanitize( $posted_data );
 	}
 
 	/**
