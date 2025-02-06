@@ -18,7 +18,7 @@ use WPDesk\FPF\Free\Settings\Option\FieldTypeOption;
 use WPDesk\FPF\Free\Settings\Option\FieldLabelOption;
 use WPDesk\FPF\Free\Settings\Option\PricingAdvOption;
 use WPDesk\FPF\Free\Settings\Option\OptionsColorOption;
-use WPDesk\FPF\Free\Settings\Option\OptionsVariantImageOption;
+use WPDesk\FPF\Free\Settings\Option\OptionsImageOptionOptional;
 use WPDesk\FPF\Free\Settings\Option\OptionsValueOption;
 use WPDesk\FPF\Free\Settings\Option\PreviewLabelOption;
 use WPDesk\FPF\Free\Settings\Option\PreviewWidthOption;
@@ -109,11 +109,11 @@ class RadioColorsType extends TypeAbstract {
 		foreach ( $field_data[ OptionsOption::FIELD_NAME ] as $option ) {
 			$color_values[ $option[ OptionsValueOption::FIELD_NAME ] ] = $option[ OptionsColorOption::FIELD_NAME ];
 
-			if ( ! isset( $option[ OptionsVariantImageOption::FIELD_NAME ] ) ) {
+			if ( ! isset( $option[ OptionsImageOptionOptional::FIELD_NAME ] ) ) {
 				continue;
 			}
 
-			$image_id                = $option[ OptionsVariantImageOption::FIELD_NAME ];
+			$image_id                = $option[ OptionsImageOptionOptional::FIELD_NAME ];
 			$image_props             = \wc_get_product_attachment_props( $image_id );
 			$image_props['image_id'] = $image_id;
 

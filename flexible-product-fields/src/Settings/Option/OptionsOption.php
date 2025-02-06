@@ -69,9 +69,8 @@ class OptionsOption extends OptionAbstract {
 	public function get_default_value() {
 		return [
 			[
-				OptionsValueOption::FIELD_NAME        => '',
-				OptionsLabelOption::FIELD_NAME        => '',
-				OptionsVariantImageOption::FIELD_NAME => '',
+				OptionsValueOption::FIELD_NAME => '',
+				OptionsLabelOption::FIELD_NAME => '',
 			],
 		];
 	}
@@ -81,9 +80,8 @@ class OptionsOption extends OptionAbstract {
 	 */
 	public function get_children(): array {
 		return [
-			OptionsValueOption::FIELD_NAME        => new OptionsValueOption(),
-			OptionsLabelOption::FIELD_NAME        => new OptionsLabelOption(),
-			OptionsVariantImageOption::FIELD_NAME => new OptionsVariantImageOption(),
+			OptionsValueOption::FIELD_NAME => new OptionsValueOption(),
+			OptionsLabelOption::FIELD_NAME => new OptionsLabelOption(),
 		];
 	}
 

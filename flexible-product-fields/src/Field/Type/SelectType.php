@@ -8,7 +8,7 @@ use WPDesk\FPF\Free\Settings\Tab\GeneralTab;
 use WPDesk\FPF\Free\Settings\Tab\PricingTab;
 use WPDesk\FPF\Free\Settings\Option\CssOption;
 use WPDesk\FPF\Free\Settings\Option\DefaultOption;
-use WPDesk\FPF\Free\Settings\Option\OptionsOption;
+use WPDesk\FPF\Free\Settings\Option\OptionsWithProductImageOption;
 use WPDesk\FPF\Free\Settings\Option\TooltipOption;
 use WPDesk\FPF\Free\Settings\Option\LogicAdvOption;
 use WPDesk\FPF\Free\Settings\Option\RequiredOption;
@@ -17,7 +17,7 @@ use WPDesk\FPF\Free\Settings\Option\FieldTypeOption;
 use WPDesk\FPF\Free\Settings\Option\FieldLabelOption;
 use WPDesk\FPF\Free\Settings\Option\PricingAdvOption;
 use WPDesk\FPF\Free\Settings\Option\PlaceholderOption;
-use WPDesk\FPF\Free\Settings\Option\OptionsVariantImageOption;
+use WPDesk\FPF\Free\Settings\Option\OptionsImageOptionOptional;
 use WPDesk\FPF\Free\Settings\Option\OptionsValueOption;
 use WPDesk\FPF\Free\Settings\Option\FieldPriorityOption;
 
@@ -62,16 +62,16 @@ class SelectType extends TypeAbstract {
 	public function get_options_objects(): array {
 		return [
 			GeneralTab::TAB_NAME => [
-				FieldPriorityOption::FIELD_NAME => new FieldPriorityOption(),
-				FieldTypeOption::FIELD_NAME     => new FieldTypeOption(),
-				FieldLabelOption::FIELD_NAME    => new FieldLabelOption(),
-				RequiredOption::FIELD_NAME      => new RequiredOption(),
-				PlaceholderOption::FIELD_NAME   => new PlaceholderOption(),
-				CssOption::FIELD_NAME           => new CssOption(),
-				TooltipOption::FIELD_NAME       => new TooltipOption(),
-				OptionsOption::FIELD_NAME       => new OptionsOption(),
-				DefaultOption::FIELD_NAME       => new DefaultOption(),
-				FieldNameOption::FIELD_NAME     => new FieldNameOption(),
+				FieldPriorityOption::FIELD_NAME           => new FieldPriorityOption(),
+				FieldTypeOption::FIELD_NAME               => new FieldTypeOption(),
+				FieldLabelOption::FIELD_NAME              => new FieldLabelOption(),
+				RequiredOption::FIELD_NAME                => new RequiredOption(),
+				PlaceholderOption::FIELD_NAME             => new PlaceholderOption(),
+				CssOption::FIELD_NAME                     => new CssOption(),
+				TooltipOption::FIELD_NAME                 => new TooltipOption(),
+				OptionsWithProductImageOption::FIELD_NAME => new OptionsWithProductImageOption(),
+				DefaultOption::FIELD_NAME                 => new DefaultOption(),
+				FieldNameOption::FIELD_NAME               => new FieldNameOption(),
 			],
 			PricingTab::TAB_NAME => [
 				PricingAdvOption::FIELD_NAME => new PricingAdvOption(),
@@ -89,12 +89,12 @@ class SelectType extends TypeAbstract {
 		$template_vars = parent::get_field_template_vars( $field_data );
 
 		$options_image_props = [];
-		foreach ( $field_data[ OptionsOption::FIELD_NAME ] as $option ) {
-			if ( ! isset( $option[ OptionsVariantImageOption::FIELD_NAME ] ) ) {
+		foreach ( $field_data[ OptionsWithProductImageOption::FIELD_NAME ] as $option ) {
+			if ( ! isset( $option[ OptionsImageOptionOptional::FIELD_NAME ] ) ) {
 				continue;
 			}
 
-			$image_id                = $option[ OptionsVariantImageOption::FIELD_NAME ];
+			$image_id                = $option[ OptionsImageOptionOptional::FIELD_NAME ];
 			$image_props             = \wc_get_product_attachment_props( $image_id );
 			$image_props['image_id'] = $image_id;
 

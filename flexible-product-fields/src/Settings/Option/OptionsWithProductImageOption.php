@@ -3,32 +3,28 @@
 namespace WPDesk\FPF\Free\Settings\Option;
 
 /**
- * {@inheritdoc}
+ * Class is responsible for creating options for fields like radio, select etc.
+ * It is similar to OptionsWithImageOption but it is not specific to radio with image field.
  */
-class OptionsWithColorOption extends OptionsOption {
+class OptionsWithProductImageOption extends OptionsOption {
 
 	/**
-	 * {@inheritdoc}
+	 * @return array<int, array<string, string>>
 	 */
-	public function get_default_value() {
+	public function get_default_value(): array {
 		return [
 			[
 				OptionsValueOption::FIELD_NAME         => '',
 				OptionsLabelOption::FIELD_NAME         => '',
-				OptionsColorOption::FIELD_NAME         => '',
 				OptionsImageOptionOptional::FIELD_NAME => '',
 			],
 		];
 	}
 
-	/**
-	 * {@inheritdoc}
-	 */
 	public function get_children(): array {
 		return [
 			OptionsValueOption::FIELD_NAME         => new OptionsValueOption(),
 			OptionsLabelOption::FIELD_NAME         => new OptionsLabelOption(),
-			OptionsColorOption::FIELD_NAME         => new OptionsColorOption(),
 			OptionsImageOptionOptional::FIELD_NAME => new OptionsImageOptionOptional(),
 		];
 	}
