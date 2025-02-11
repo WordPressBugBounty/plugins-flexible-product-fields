@@ -46,7 +46,7 @@ class RouteIntegration {
 				'args'                => $this->value_object->get_route_params(),
 				'callback'            => [ $this, 'get_endpoint_response' ],
 				'permission_callback' => function () {
-					return current_user_can( 'manage_options' );
+					return current_user_can( 'manage_woocommerce' );
 				},
 			],
 			true

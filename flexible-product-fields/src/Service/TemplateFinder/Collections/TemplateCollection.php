@@ -42,6 +42,13 @@ class TemplateCollection {
 	}
 
 	/**
+	 * @return WP_Post[]
+	 */
+	public function get_posts(): array {
+		return $this->posts;
+	}
+
+	/**
 	 * @return array<array<string, mixed>>
 	 */
 	private function get_raw_fields(): array {

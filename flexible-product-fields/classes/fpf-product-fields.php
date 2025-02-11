@@ -220,7 +220,7 @@ class FPF_Product_Fields {
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'handle_rest_api_products' ],
 				'permission_callback' => function() {
-					return current_user_can( 'manage_options' );
+					return current_user_can( 'manage_woocommerce' );
 				},
 			]
 		);
@@ -231,7 +231,7 @@ class FPF_Product_Fields {
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'handle_rest_api_categories' ],
 				'permission_callback' => function() {
-					return current_user_can( 'manage_options' );
+					return current_user_can( 'manage_woocommerce' );
 				},
 			]
 		);
@@ -242,7 +242,7 @@ class FPF_Product_Fields {
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'handle_rest_api_tags' ],
 				'permission_callback' => function() {
-					return current_user_can( 'manage_options' );
+					return current_user_can( 'manage_woocommerce' );
 				},
 			]
 		);

@@ -63,14 +63,14 @@ class FPF_Post_Type {
 					'add_new'             => __( 'Add New', 'flexible-product-fields' ),
 					'edit_item'           => __( 'Edit Fields Group', 'flexible-product-fields' ),
 					'update_item'         => __( 'Save Fields Group', 'flexible-product-fields' ),
-					'search_items'        => __( 'Search Fields Group', 'flexible-product-fields' ),
+					'search_items'        => __( 'Search', 'flexible-product-fields' ),
 					'not_found'           => __( 'Fields Group not found', 'flexible-product-fields' ),
 					'not_found_in_trash'  => __( 'Fields Group not found in trash', 'flexible-product-fields' ),
 				],
 				'description'         => __( 'Product Fields.', 'flexible-product-fields' ),
 				'public'              => false,
 				'show_ui'             => true,
-				'capability_type'     => 'post',
+				'capability_type'     => 'product',
 				'capabilities'        => [],
 				'map_meta_cap'        => true,
 				'publicly_queryable'  => false,
@@ -103,7 +103,7 @@ class FPF_Post_Type {
 		$assign_to_options = [
 			'product' => [
 				'label'           => __( 'Product', 'flexible-product-fields' ),
-				'values_callback' => function() use ( $post ) {
+				'values_callback' => function () use ( $post ) {
 					$values = get_post_meta( $post->ID, '_product_id', false );
 					$labels = [];
 					if ( ! is_iterable( $values ) ) {
@@ -120,7 +120,7 @@ class FPF_Post_Type {
 			],
 			'category' => [
 				'label'           => __( 'Category', 'flexible-product-fields' ),
-				'values_callback' => function() use ( $post ) {
+				'values_callback' => function () use ( $post ) {
 					$values = get_post_meta( $post->ID, '_category_id', false );
 					$labels = [];
 					if ( ! is_iterable( $values ) ) {
@@ -137,7 +137,7 @@ class FPF_Post_Type {
 			],
 			'tag' => [
 				'label'           => __( 'Tag', 'flexible-product-fields' ),
-				'values_callback' => function() use ( $post ) {
+				'values_callback' => function () use ( $post ) {
 					$values = get_post_meta( $post->ID, '_tag_id', false );
 					$labels = [];
 					if ( ! is_iterable( $values ) ) {
@@ -154,7 +154,7 @@ class FPF_Post_Type {
 			],
 			'excluded_product' => [
 				'label'           => __( 'Product excluded', 'flexible-product-fields' ),
-				'values_callback' => function() use ( $post ) {
+				'values_callback' => function () use ( $post ) {
 					$values = get_post_meta( $post->ID, '_excluded_product_id', false );
 					$labels = [];
 					if ( ! is_iterable( $values ) ) {
@@ -171,7 +171,7 @@ class FPF_Post_Type {
 			],
 			'excluded_category' => [
 				'label'           => __( 'Category excluded', 'flexible-product-fields' ),
-				'values_callback' => function() use ( $post ) {
+				'values_callback' => function () use ( $post ) {
 					$values = get_post_meta( $post->ID, '_excluded_category_id', false );
 					$labels = [];
 					if ( ! is_iterable( $values ) ) {
@@ -188,7 +188,7 @@ class FPF_Post_Type {
 			],
 			'excluded_tag' => [
 				'label'           => __( 'Tag excluded', 'flexible-product-fields' ),
-				'values_callback' => function() use ( $post ) {
+				'values_callback' => function () use ( $post ) {
 					$values = get_post_meta( $post->ID, '_excluded_tag_id', false );
 					$labels = [];
 					if ( ! is_iterable( $values ) ) {
@@ -205,7 +205,7 @@ class FPF_Post_Type {
 			],
 			'all' => [
 				'label'           => __( 'All products', 'flexible-product-fields' ),
-				'values_callback' => function() use ( $post ) {
+				'values_callback' => function () use ( $post ) {
 					return null;
 				},
 			],
@@ -301,7 +301,7 @@ class FPF_Post_Type {
 			'edit.php?post_type=product',
 			__( 'Product Fields', 'flexible-product-fields' ),
 			__( 'Product Fields', 'flexible-product-fields' ),
-			'manage_options',
+			'manage_woocommerce',
 			'edit.php?post_type=fpf_fields'
 		);
 	}
@@ -318,5 +318,4 @@ class FPF_Post_Type {
 		unset( $actions['edit'] );
 		return $actions;
 	}
-
 }

@@ -162,6 +162,7 @@ class Page implements Hookable, HookablePluginDependant {
 			'select_async_placeholder' => __( 'Start typing to search...', 'flexible-product-fields' ),
 			'select_loading'           => __( 'Loading...', 'flexible-product-fields' ),
 			'select_empty'             => __( 'No options.', 'flexible-product-fields' ),
+			'duplicate_suffix'         => __( 'Copy', 'flexible-product-fields' ),
 			'alert_field_unavailable'  => sprintf(
 			/* translators: %1$s: break line, %2$s: anchor opening tag, %3$s: anchor closing tag */
 				__( 'This field is available in the PRO version.%1$s %2$sUpgrade to PRO%3$s', 'flexible-product-fields' ),

@@ -55,7 +55,7 @@ class FPF_Product {
 		$this->_plugin         = $plugin;
 		$this->_product_fields = $product_fields;
 		$this->product_price   = $product_price;
-		$this->template_finder = new TemplateFinder( $product_fields );
+		$this->template_finder = new TemplateFinder();
 		$this->hooks();
 	}
 

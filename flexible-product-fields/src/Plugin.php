@@ -10,6 +10,7 @@ use VendorFPF\WPDesk_Plugin_Info;
 use WPDesk\FPF\Free\Field;
 use WPDesk\FPF\Free\Integration;
 use WPDesk\FPF\Free\Product;
+use WPDesk\FPF\Free\Service\TemplateFinder\TemplateFinder;
 use WPDesk\FPF\Free\Settings;
 use WPDesk\FPF\Free\Tracker;
 use WPDesk\FPF\Free\Validation;
@@ -82,6 +83,7 @@ class Plugin extends AbstractPlugin implements HookableCollection {
 
 		$this->add_hookable( new Integration\IntegratorIntegration( $this->plugin_old ) );
 		$this->add_hookable( new Tracker\DeactivationTracker( $this->plugin_info ) );
+		$this->add_hookable( new Settings\FieldListSearchModifier( new TemplateFinder() ) );
 
 		( new Settings\Forms() )->init();
 		( new Settings\Routes() )->init();

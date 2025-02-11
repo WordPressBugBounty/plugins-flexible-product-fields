@@ -50,7 +50,7 @@ class SupportPage implements Hookable {
 			'edit.php?post_type=fpf_fields',
 			__( 'Start Here', 'flexible-product-fields' ),
 			__( 'Start Here', 'flexible-product-fields' ),
-			'manage_options',
+			'manage_woocommerce',
 			self::PAGE_SLUG,
 			[ $this, 'render_page' ]
 		);

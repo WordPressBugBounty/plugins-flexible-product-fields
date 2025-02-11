@@ -3,6 +3,7 @@
 namespace WPDesk\FPF\Free\Field\Type;
 
 use WPDesk\FPF\Free\Field\Types;
+use WPDesk\FPF\Free\Settings\Option\DisableProductImageChangeOption;
 use WPDesk\FPF\Free\Settings\Option\CssOption;
 use WPDesk\FPF\Free\Settings\Option\DefaultOption;
 use WPDesk\FPF\Free\Settings\Option\FieldLabelOption;
@@ -80,6 +81,7 @@ class RadioImagesType extends TypeAbstract {
 				RequiredOption::FIELD_NAME         => new RequiredOption(),
 				CssOption::FIELD_NAME              => new CssOption(),
 				TooltipOption::FIELD_NAME          => new TooltipOption(),
+				DisableProductImageChangeOption::FIELD_NAME => new DisableProductImageChangeOption(),
 				OptionsWithImageOption::FIELD_NAME => new OptionsWithImageOption(),
 				DefaultOption::FIELD_NAME          => new DefaultOption(),
 				FieldNameOption::FIELD_NAME        => new FieldNameOption(),
@@ -109,19 +111,7 @@ class RadioImagesType extends TypeAbstract {
 			$image_id = $option[ OptionsImageOption::FIELD_NAME ];
 			$media_ids[ $option[ OptionsValueOption::FIELD_NAME ] ] = $image_id;
 
-			/**
-			 * Filter to disable product image change.
-			 *
-			 * @since 2.5.1
-			 *
-			 * @param bool $disable_product_image_change
-			 * @param array<string, mixed> $field_data
-			 * @param array<string, mixed> $option
-			 *
-			 * @return bool
-			 */
-			$disable_product_image_change = \apply_filters( 'fpf/radio_with_images/disable_product_image_change', false, $field_data, $option );
-			if ( $disable_product_image_change ) {
+			if ( $this->is_product_image_change_disabled( $field_data, $option ) ) {
 				continue;
 			}
 
@@ -137,6 +127,41 @@ class RadioImagesType extends TypeAbstract {
 		$template_vars['options_image_props'] = $options_image_props;
 
 		return $template_vars;
+	}
+
+	/**
+	 * Check if product image change is disabled.
+	 *
+	 * @param array<string, mixed> $field_data Field data.
+	 * @param array<string, mixed> $option     Option data.
+	 *
+	 * @return bool
+	 */
+	private function is_product_image_change_disabled( array $field_data, array $option ): bool {
+		$disable_product_image_change = $field_data['disable_product_image_change'] ?? false;
+
+		// Setting option has a higher priority, if this is set to true no filter would work.
+		if ( filter_var( $disable_product_image_change, FILTER_VALIDATE_BOOLEAN ) === true ) {
+			return true;
+		}
+
+		/**
+		 * Filter to disable product image change.
+		 *
+		 * @since 2.5.1
+		 *
+		 * @param bool $disable_product_image_change
+		 * @param array<string, mixed> $field_data
+		 * @param array<string, mixed> $option
+		 *
+		 * @return bool
+		 */
+		$disable_product_image_change = \apply_filters( 'fpf/radio_with_images/disable_product_image_change', false, $field_data, $option );
+		if ( filter_var( $disable_product_image_change, FILTER_VALIDATE_BOOLEAN ) === true ) {
+			return true;
+		}
+
+		return false;
 	}
 
 	/**

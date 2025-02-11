@@ -3,15 +3,15 @@
  * Plugin Name: Flexible Product Fields
  * Plugin URI: https://wordpress.org/plugins/flexible-product-fields/
  * Description: The plugin allows customers to configure the product using texts, numbers, dropdowns and multi-dropdowns, radio buttons and checkboxes.
- * Version: 2.7.2
+ * Version: 2.8.0
  * Author: WP Desk
  * Author URI: https://www.wpdesk.net/
  * Text Domain: flexible-product-fields
  * Domain Path: /lang/
  * Requires at least: 6.4
  * Tested up to: 6.7
- * WC requires at least: 9.2
- * WC tested up to: 9.6
+ * WC requires at least: 9.3
+ * WC tested up to: 9.7
  * Requires PHP: 7.4
  *
  * Copyright 2024 WP Desk Ltd.
@@ -39,7 +39,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 
 /* THIS VARIABLE CAN BE CHANGED AUTOMATICALLY */
-$plugin_version = '2.7.2';
+$plugin_version = '2.8.0';
 
 /*
  * Update when conditions are met:
@@ -53,7 +53,7 @@ $product_id         = 'Flexible Product Fields';
 $plugin_class_name  = 'Flexible_Product_Fields_Plugin';
 $plugin_text_domain = 'flexible-product-fields';
 $plugin_file        = __FILE__;
-$plugin_dir         = dirname( __FILE__ );
+$plugin_dir         = __DIR__;
 
 define( 'FLEXIBLE_PRODUCT_FIELDS_VERSION', $plugin_version );
 define( 'FLEXIBLE_PRODUCT_FIELDS_VERSION_DEV', $plugin_version_dev );

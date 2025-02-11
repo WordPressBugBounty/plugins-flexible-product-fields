@@ -2,7 +2,6 @@
 
 namespace WPDesk\FPF\Free\Service\TemplateFinder;
 
-use FPF_Product_Fields;
 use WPDesk\FPF\Free\Service\TemplateFinder\TemplateQuery;
 use WPDesk\FPF\Free\Service\TemplateFinder\Finder\AllTemplateFinder;
 use WPDesk\FPF\Free\Service\TemplateFinder\Finder\TagTemplateFinder;
@@ -30,15 +29,12 @@ class TemplateFinder {
 
 	protected TemplateFinderCache $cache;
 
-	protected FPF_Product_Fields $fpf_product_fields;
-
 	/**
 	 * @var array<string, array<string, mixed>>
 	 */
 	protected array $fields_definitions = [];
 
-	public function __construct( FPF_Product_Fields $fpf_product_fields ) {
-		$this->fpf_product_fields = $fpf_product_fields;
+	public function __construct() {
 		$this->template_query     = new TemplateQuery();
 		$this->finders            = new FinderCollection();
 		$this->cache              = new TemplateFinderCache();

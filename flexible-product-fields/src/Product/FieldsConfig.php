@@ -46,7 +46,7 @@ class FieldsConfig implements Hookable, HookablePluginDependant {
 	 * @internal
 	 */
 	public function show_save_config_button() {
-		if ( ! current_user_can( 'manage_options' ) ) {
+		if ( ! current_user_can( 'manage_woocommerce' ) ) {
 			return;
 		}
 
