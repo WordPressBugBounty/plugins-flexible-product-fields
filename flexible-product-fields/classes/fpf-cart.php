@@ -1,5 +1,4 @@
 <?php
-
 /**
  * Handles WooCommerce add to cart.
  */
@@ -151,7 +150,6 @@ class FPF_Cart {
 
 	/**
 	 * @param array $cart_item
-	 *
 	 * @return array mixed
 	 */
 	public function woocommerce_add_cart_item( $cart_item ) {
@@ -166,18 +164,30 @@ class FPF_Cart {
 			return $cart_item;
 		}
 
+		$product_price = isset( $cart_item['pricing_item_meta_data']['_price'] )
+			? (float) $cart_item['pricing_item_meta_data']['_price']
+			: (float) $product->get_price( 'edit' );
+		$measurement   = isset( $cart_item['pricing_item_meta_data']['_measurement_needed'] ) ? (float) $cart_item['pricing_item_meta_data']['_measurement_needed'] : 1;
+
 		$extra_cost = 0;
 		foreach ( $fields as $key => $field ) {
 			if ( isset( $field['price_type'] ) && $field['price_type'] != '' && isset( $field['price'] ) && floatval( $field['price'] ) != 0 ) {
-				$field_price                  = floatval( $field['price'] );
-				$field_price_type             = (string) $field['price_type'];
-				$field_price_base_currency    = $this->product_price->calculate_price( $field_price, $field_price_type, $product );
+				$field_price            = (float) $field['price'];
+				$field_price_type       = (string) $field['price_type'];
+				$field_calculation_type = (string) $field['calculation_type'];
+
+				$field_price_base_currency    = $this->product_price->calculate_price( $field_price, $field_price_type, $product, $field_calculation_type, $product_price, $measurement );
 				$field_price_current_currency = (float) $this->product_price->multicurrency_calculate_price_to_display( $field_price_base_currency );
 
-				$extra_cost += $field_price_base_currency;
+				if ( $field_calculation_type === 'fee' ) {
+					$title = (string) $field['name'];
+					$this->add_fee( $title, $field_price_base_currency );
+				} else {
+					$extra_cost += $field_price_base_currency;
 
-				$org_value = isset( $field['org_value'] ) ? (string) $field['org_value'] : '';
-				$cart_item['flexible_product_fields'][ $key ]['value'] = $this->field_display_value( $field_price_current_currency, $org_value );
+					$org_value = isset( $field['org_value'] ) ? (string) $field['org_value'] : '';
+					$cart_item['flexible_product_fields'][ $key ]['value'] = $this->field_display_value( $field_price_current_currency, $org_value );
+				}
 			}
 		}
 		$cart_item['data']->set_price( (float) $cart_item['data']->get_price( 'edit' ) + $extra_cost );
@@ -216,8 +226,9 @@ class FPF_Cart {
 					$field['price_type'] = 'fixed';
 				}
 				if ( isset( $field['price_type'] ) && $field['price_type'] != '' && isset( $field['price'] ) && $field['price'] != '' ) {
-					$ret['price_type'] = $field['price_type'];
-					$ret['price']      = $field['price'];
+					$ret['price_type']       = $field['price_type'];
+					$ret['price']            = $field['price'];
+					$ret['calculation_type'] = $field['calculation_type'];
 				}
 			}
 			if ( $field_type['has_options'] ) {
@@ -228,20 +239,22 @@ class FPF_Cart {
 							continue;
 						}
 
-						$price_values       = $field['price_values'] ?? [];
-						$option_price_type  = $price_values[ $option['value'] ]['price_type'] ?? ( $option['price_type'] ?? '' );
-						$option_price_value = $price_values[ $option['value'] ]['price'] ?? ( $option['price'] ?? '' );
+						$price_values            = $field['price_values'] ?? [];
+						$option_price_type       = $price_values[ $option['value'] ]['price_type'] ?? ( $option['price_type'] ?? '' );
+						$option_price_value      = $price_values[ $option['value'] ]['price'] ?? ( $option['price'] ?? '' );
+						$option_calculation_type = $price_values[ $option['value'] ]['calculation_type'] ?? ( $option['calculation_type'] ?? '' );
 
 						if ( ( $option_price_type === '' ) || ( $option_price_value === '' ) ) {
 							continue;
 						}
 
-						$ret['price_type'] = $option_price_type;
-						$ret['price']      = $option_price_value;
+						$ret['price_type']       = $option_price_type;
+						$ret['price']            = $option_price_value;
+						$ret['calculation_type'] = $option_calculation_type;
 					}
 				}
 			}
-			if ( isset( $ret['price_type'] ) && $ret['price_type'] != '' && isset( $ret['price'] ) && $ret['price'] != '' ) {
+			if ( isset( $ret['price_type'] ) && $ret['price_type'] !== '' && isset( $ret['price'] ) && $ret['price'] !== '' ) {
 				if ( $variation_id ) {
 					$product_id = $variation_id;
 				}
@@ -249,7 +262,8 @@ class FPF_Cart {
 				$product                      = wc_get_product( $product_id );
 				$field_price                  = floatval( $ret['price'] );
 				$field_price_type             = (string) $ret['price_type'];
-				$field_price_current_currency = $this->field_price_multicurrency( $field_price, $field_price_type, $product );
+				$field_calculation_type       = (string) $ret['calculation_type'];
+				$field_price_current_currency = $this->field_price_multicurrency( $field_price, $field_price_type, $product, $field_calculation_type );
 
 				$ret['org_value'] = isset( $ret['value'] ) ? (string) $ret['value'] : '';
 				$ret['value']     = $this->field_display_value( $field_price_current_currency, $ret['org_value'] );
@@ -265,8 +279,8 @@ class FPF_Cart {
 	 * @param string     $price_type       The type of price (fixed or percentage).
 	 * @return float The current price in the current currency.
 	 */
-	private function field_price_multicurrency( float $price_or_percent, string $price_type, \WC_Product $product ) : float {
-		$price = $this->product_price->calculate_price( $price_or_percent, $price_type, $product );
+	private function field_price_multicurrency( float $price_or_percent, string $price_type, \WC_Product $product, string $calculation_type ): float {
+		$price = $this->product_price->calculate_price( $price_or_percent, $price_type, $product, $calculation_type );
 		$price = $this->product_price->multicurrency_calculate_price_to_display( $price );
 
 		return (float) $price;
@@ -275,7 +289,7 @@ class FPF_Cart {
 	/**
 	 * Decides on how product field with price, should be displayed in the cart.
 	 */
-	private function field_display_value( float $price, string $label ) : string {
+	private function field_display_value( float $price, string $label ): string {
 		$display_value = trim( $label );
 
 		/**
@@ -379,5 +393,18 @@ class FPF_Cart {
 		return $cart_item_data;
 	}
 
-
+	/**
+	 * Add fee to cart.
+	 */
+	private function add_fee( string $fee_title, float $fee ): void {
+		add_action(
+			'woocommerce_cart_calculate_fees',
+			function ( $cart ) use ( $fee_title, $fee ) {
+				if ( $cart->is_empty() ) {
+					return;
+				}
+				$cart->add_fee( $fee_title, $fee );
+			}
+		);
+	}
 }

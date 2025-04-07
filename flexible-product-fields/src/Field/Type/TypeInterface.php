@@ -96,7 +96,7 @@ interface TypeInterface {
 	/**
 	 * Returns list of options objects for field settings.
 	 *
-	 * @return OptionInterface[][]
+	 * @return array<string, array<string, object>>
 	 */
 	public function get_options_objects(): array;
 

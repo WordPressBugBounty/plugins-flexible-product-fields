@@ -153,27 +153,33 @@ class TemplateArgs {
 			$args['custom_attributes']['data-hour-12'] = 1;
 		}
 
-		if ( $settings['has_price'] && ( $price_value = ( $field['price'] ?? '' ) ) ) {
-			$price_type    = $field['price_type'] ?? 'fixed';
-			$price_raw     = $this->get_raw_price_for_label( $price_type, $price_value, $product_price, $product );
-			$args['label'] .= sprintf(
-				' <span id="%1$s_price">%2$s</span>',
-				$field['id'],
-				sprintf(
-					apply_filters( 'flexible_product_fields/field_args/label_price', '(%s)', $price_raw, $field ),
-					$this->get_price_for_label( $price_type, $price_value, $product_price, $product )
-				)
-			);
+		if ( filter_var( $settings['has_price'], FILTER_VALIDATE_BOOLEAN ) ) {
+ 			$price_value = $field['price'] ?? '';
+			$price_type  = $field['price_type'] ?? 'fixed';
+			$calculation_type = $field['calculation_type'] ?? '';
+
+			if ( $product_price->is_valid_pricing_settings( $price_type, $price_value, $calculation_type ) ) {
+				$price_raw     = $this->get_raw_price_for_label( $price_type, $price_value, $product_price, $product );
+				$args['label'] .= sprintf(
+					' <span id="%1$s_price">%2$s</span>',
+					$field['id'],
+					sprintf(
+						apply_filters( 'flexible_product_fields/field_args/label_price', '(%s)', $price_raw, $field ),
+						$this->get_price_for_label( $price_type, $price_value, $product_price, $product )
+					)
+				);
+			}
 		}
 
-		if ( $settings['has_price_in_options'] && ( $args['options'] ?? [] ) ) {
+		if ( filter_var( $settings['has_price_in_options'], FILTER_VALIDATE_BOOLEAN ) && ( $args['options'] ?? [] ) ) {
 			$price_values = $field['price_values'] ?? [];
 
 			foreach ( $args['options'] as $option_value => $option_label ) {
 				$option_data = $this->get_option_data( $field['options'], $option_value );
 				$price_type  = $price_values[ $option_value ]['price_type'] ?? ( $option_data['price_type'] ?? '' );
 				$price_value = $price_values[ $option_value ]['price'] ?? ( $option_data['price'] ?? '' );
-				if ( ! $option_data || ! $price_type || ! $price_value ) {
+				$calculation_type = $price_values[ $option_value ]['calculation_type'] ?? ( $option_data['calculation_type'] ?? '' );
+				if ( ! $option_data || ! $product_price->is_valid_pricing_settings( $price_type, $price_value, $calculation_type ) ) {
 					continue;
 				}
 

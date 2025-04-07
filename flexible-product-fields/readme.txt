@@ -5,7 +5,7 @@ Tags: woocommerce customize product, woocommerce product addons, woocommerce pro
 Requires at least: 5.8
 Tested up to: 6.7
 Requires PHP: 7.4
-Stable tag: 2.8.0
+Stable tag: 2.9.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -325,6 +325,13 @@ You can also choose one from the list below based on your needs.
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.9.0 - 2025-03-07 =
+* Added integration with Flexible Quantity plugin
+* Added compatibility with new PRO version features (pricing type option)
+
+= 2.8.1 - 2025-03-21 =
+* Added support for WooCommerce 9.8
 
 = 2.8.0 - 2025-02-10 =
 * Added field groups (templates) search functionality

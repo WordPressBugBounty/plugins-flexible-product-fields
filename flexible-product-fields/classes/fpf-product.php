@@ -6,6 +6,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use WPDesk\FPF\Free\Field\TemplateArgs;
 use WPDesk\FPF\Free\Service\TemplateFinder\TemplateFinder;
+use WPDesk\FPF\Free\Helper\PluginHelper;
 
 class FPF_Product {
 
@@ -296,44 +297,144 @@ class FPF_Product {
 	}
 
 	/**
-	 * @return array<string, mixed> The fields data with calculated price values and display values.
-	 */
+	* @return array<string, mixed> The fields data with calculated price values and display values.
+	*/
 	public function get_fields_data( WC_Product $product ): array {
 		$fields = $this->get_translated_fields_for_product( $product );
+
 		foreach ( $fields['fields'] as $key => $field ) {
-			$fields['fields'][ $key ]['price_value'] = 0;
-			if ( ! isset( $field['price_type'] ) ) {
-				$field['price_type']                    = 'fixed';
-				$fields['fields'][ $key ]['price_type'] = 'fixed';
-			}
-			if ( filter_var( $field['has_price'], \FILTER_VALIDATE_BOOLEAN ) && isset( $field['price_type'] ) && $field['price_type'] != '' && isset( $field['price'] ) && $field['price'] !== '' ) {
-				$price_value                               = $this->product_price->calculate_price( floatval( $field['price'] ), $field['price_type'], $product );
-				$fields['fields'][ $key ]['price_value']   = $price_value;
-				$fields['fields'][ $key ]['price_display'] = $this->product_price->prepare_price_to_display( $product, $price_value );
-			}
-			if ( filter_var( $field['has_options'], \FILTER_VALIDATE_BOOLEAN ) ) {
-				foreach ( $fields['fields'][ $key ]['options'] as $option_key => $option ) {
-					$fields['fields'][ $key ]['options'][ $option_key ]['price_value'] = 0;
-					if ( ! filter_var( $field['has_price_in_options'], \FILTER_VALIDATE_BOOLEAN ) ) {
-						continue;
-					}
+			$fields['fields'][ $key ] = $this->process_field_prices( $field, $product );
 
-					$price_values       = $field['price_values'] ?? [];
-					$option_price_type  = $price_values[ $option['value'] ]['price_type'] ?? ( $option['price_type'] ?? '' );
-					$option_price_value = $price_values[ $option['value'] ]['price'] ?? ( $option['price'] ?? '' );
-					if ( ( $option_price_type === '' ) || ( $option_price_value === '' ) ) {
-						continue;
-					}
-
-					$price_value = $this->product_price->calculate_price( floatval( $option_price_value ), $option_price_type, $product );
-					$fields['fields'][ $key ]['options'][ $option_key ]['price_type']    = $option_price_type;
-					$fields['fields'][ $key ]['options'][ $option_key ]['price']         = $option_price_value;
-					$fields['fields'][ $key ]['options'][ $option_key ]['price_value']   = $price_value;
-					$fields['fields'][ $key ]['options'][ $option_key ]['price_display'] = $this->product_price->prepare_price_to_display( $product, $price_value );
-				}
+			if ( filter_var( $field['has_options'], FILTER_VALIDATE_BOOLEAN ) ) {
+				$fields['fields'][ $key ]['options'] = $this->process_field_options_prices(
+					$field,
+					$product
+				);
 			}
 		}
+
 		return $fields['fields'];
+	}
+
+	/**
+	 * Process prices for a single field.
+	 * 
+	 * @param array<string, mixed> $field
+	 * @param WC_Product $product
+	 *
+	 * @return array<string, mixed>
+	 */
+	private function process_field_prices( array $field, WC_Product $product ): array {
+		$field['price_value'] = 0;
+
+		if ( ! isset( $field['price_type'] ) ) {
+			$field['price_type'] = 'fixed';
+		}
+
+		if ( ! filter_var( $field['has_price'], FILTER_VALIDATE_BOOLEAN ) ) {
+			return $field;
+		}
+
+		$price            = $field['price'] ?? '';
+		$calculation_type = $field['calculation_type'] ?? '';
+
+		$processed_price = $this->get_processed_price_data( $price, $field['price_type'], $calculation_type, $product );
+
+		if ( $processed_price !== null ) {
+			$field['price_value']   = $processed_price['price_value'];
+			$field['price_display'] = $processed_price['price_display'];
+		}
+
+		return $field;
+	}
+
+	/**
+	* Process prices for field options.
+	* 
+	* @param array<string, mixed> $field
+	* @param WC_Product $product
+	*
+	* @return array<string, mixed>
+	*/
+	private function process_field_options_prices( array $field, WC_Product $product ): array {
+		$options = $field['options'] ?? [];
+
+		if ( ! filter_var( $field['has_price_in_options'], FILTER_VALIDATE_BOOLEAN ) ) {
+			return $options;
+		}
+
+		$price_values = $field['price_values'] ?? [];
+
+		foreach ( $options as $option_key => $option ) {
+			$options[ $option_key ] = $this->process_single_option_price(
+				$option,
+				$price_values,
+				$product
+			);
+		}
+
+		return $options;
+	}
+
+	/**
+	 * Process price for a single option.
+	 * 
+	 * @param array<string, mixed> $option
+	 * @param array<string, mixed> $price_values
+	 * @param WC_Product $product
+	 * 
+	 * @return array<string, mixed>
+	 */
+	private function process_single_option_price(
+		array $option,
+		array $price_values,
+		WC_Product $product
+	): array {
+		$option['price_value'] = 0;
+
+		$option_value            = $option['value'] ?? null;
+		$option_price_type       = $price_values[ $option_value ]['price_type'] ?? ( $option['price_type'] ?? '' );
+		$option_price_value      = $price_values[ $option_value ]['price'] ?? ( $option['price'] ?? '' );
+		$option_calculation_type = $price_values[ $option_value ]['calculation_type'] ?? ( $option['calculation_type'] ?? '' );
+
+		$processed_price = $this->get_processed_price_data( $option_price_value, $option_price_type, $option_calculation_type, $product );
+
+		if ( $processed_price !== null ) {
+			$option['price_type']       = $option_price_type;
+			$option['price']            = $option_price_value;
+			$option['calculation_type'] = $option_calculation_type;
+			$option['price_value']      = $processed_price['price_value'];
+			$option['price_display']    = $processed_price['price_display'];
+		}
+
+		return $option;
+	}
+
+	/**
+	 * Process price data based on provided settings.
+	 *
+	 * @param string      $price            Price value string.
+	 * @param string      $price_type       Price type.
+	 * @param string      $calculation_type Calculation type.
+	 * @param WC_Product  $product          Product object.
+	 * @return array{price_value: float, price_display: string}|null Processed price data or null if invalid.
+	 */
+	private function get_processed_price_data( string $price, string $price_type, string $calculation_type, WC_Product $product ): ?array {
+		if ( ! $this->product_price->is_valid_pricing_settings( $price_type, $price, $calculation_type ) ) {
+			return null;
+		}
+
+		$price_value = $this->product_price->calculate_price(
+			(float) $price,
+			$price_type,
+			$product,
+			$calculation_type
+		);
+
+		return [
+			'price_value'   => $price_value,
+			'price_display' => $this->product_price->prepare_price_to_display( $product, $price_value ),
+		];
 	}
 
 	public function get_product_price_data( WC_Product $product ): string {

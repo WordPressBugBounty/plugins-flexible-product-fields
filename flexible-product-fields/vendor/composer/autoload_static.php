@@ -358,6 +358,7 @@ class ComposerStaticInit8e5aea80b312e88993f9380e32cdf924
         'WPDesk\\FPF\\Free\\Field\\Type\\UrlType' => __DIR__ . '/../..' . '/src/Field/Type/UrlType.php',
         'WPDesk\\FPF\\Free\\Field\\Types' => __DIR__ . '/../..' . '/src/Field/Types.php',
         'WPDesk\\FPF\\Free\\Helper\\CalendarAttributeHelper' => __DIR__ . '/../..' . '/src/Helper/CalendarAttributeHelper.php',
+        'WPDesk\\FPF\\Free\\Helper\\PluginHelper' => __DIR__ . '/../..' . '/src/Helper/PluginHelper.php',
         'WPDesk\\FPF\\Free\\Integration\\Integrator' => __DIR__ . '/../..' . '/src/Integration/Integrator.php',
         'WPDesk\\FPF\\Free\\Integration\\IntegratorIntegration' => __DIR__ . '/../..' . '/src/Integration/IntegratorIntegration.php',
         'WPDesk\\FPF\\Free\\Integration\\IntegratorInterface' => __DIR__ . '/../..' . '/src/Integration/IntegratorInterface.php',

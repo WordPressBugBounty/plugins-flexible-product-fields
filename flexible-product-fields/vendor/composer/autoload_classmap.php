@@ -335,6 +335,7 @@ return array(
     'WPDesk\\FPF\\Free\\Field\\Type\\UrlType' => $baseDir . '/src/Field/Type/UrlType.php',
     'WPDesk\\FPF\\Free\\Field\\Types' => $baseDir . '/src/Field/Types.php',
     'WPDesk\\FPF\\Free\\Helper\\CalendarAttributeHelper' => $baseDir . '/src/Helper/CalendarAttributeHelper.php',
+    'WPDesk\\FPF\\Free\\Helper\\PluginHelper' => $baseDir . '/src/Helper/PluginHelper.php',
     'WPDesk\\FPF\\Free\\Integration\\Integrator' => $baseDir . '/src/Integration/Integrator.php',
     'WPDesk\\FPF\\Free\\Integration\\IntegratorIntegration' => $baseDir . '/src/Integration/IntegratorIntegration.php',
     'WPDesk\\FPF\\Free\\Integration\\IntegratorInterface' => $baseDir . '/src/Integration/IntegratorInterface.php',

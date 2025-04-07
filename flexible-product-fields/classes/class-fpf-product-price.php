@@ -4,6 +4,7 @@
  *
  * @package Flexible Product Fields
  */
+use WPDesk\FPF\Free\Helper\PluginHelper;
 
 /**
  * Product price calculation and format.
@@ -24,44 +25,26 @@ class FPF_Product_Price {
 	}
 
 	/**
-	 * Calculate percent to price.
-	 *
-	 * @param float      $percent Percent.
-	 * @param WC_Product $product Product.
-	 *
-	 * @return float
-	 */
-	private function calculate_percent_to_price( $percent, $product ) {
-		$product_extended_info = new FPF_Product_Extendend_Info( $product );
-		if ( ! $product_extended_info->is_type_variable() && ! $product_extended_info->is_type_grouped() ) {
-			$product_price = $product->get_price( 'edit' );
-			$price         = $product_price * $percent / 100;
-		} else {
-			$price = 0;
-		}
-		return $price;
-	}
-
-	/**
 	 * Calculate price.
 	 *
 	 * @param float      $price_or_percent Price or percent (percent, if price type is percent).
 	 * @param string     $price_type Price type.
 	 * @param WC_Product $product Product.
+	 * @param string     $calculation_type Calculation type.
+	 * @param float      $product_price Product price.
+	 * @param float      $measurement Measurement.
 	 *
 	 * @return float
 	 */
-	public function calculate_price( $price_or_percent, $price_type, WC_Product $product ) {
-		$sign = 1;
-		if ( $price_or_percent < 0 ) {
-			$sign             = - 1;
-			$price_or_percent = $price_or_percent * $sign;
-		}
+	public function calculate_price( $price_or_percent, $price_type, WC_Product $product, string $calculation_type = '', float $product_price = 0, float $measurement = 1 ) {
+		$sign             = ( $price_or_percent < 0 ) ? -1 : 1;
+		$price_or_percent = abs( $price_or_percent );
+		$product_price    = (int) $product_price === 0 ? (float) $product->get_price( 'edit' ) : $product_price;
 
-		if ( 'percent' === $price_type ) {
-			$price = $this->calculate_percent_to_price( $price_or_percent, $product );
+		if ( $calculation_type === 'per_measurement' ) {
+			$price = $this->calculate_price_per_measurement( $price_or_percent, $price_type, $product_price, $measurement );
 		} else {
-			$price = $price_or_percent;
+			$price = $this->calculate_price_per_item( $price_or_percent, $price_type, $product_price );
 		}
 
 		$price = round( $price, wc_get_price_decimals() );
@@ -81,6 +64,18 @@ class FPF_Product_Price {
 		$price = $sign * $price;
 
 		return $price;
+	}
+
+	private function calculate_price_per_measurement( float $field_price, string $field_price_type, float $product_price, float $measurement ): float {
+		return $field_price_type === 'percent'
+			? ( $product_price * $field_price ) / 100
+			: $field_price * $measurement;
+	}
+
+	private function calculate_price_per_item( float $field_price, string $field_price_type, float $product_price ): float {
+		return $field_price_type === 'percent'
+			? ( $product_price * $field_price ) / 100
+			: $field_price;
 	}
 
 	/**
@@ -122,6 +117,27 @@ class FPF_Product_Price {
 	}
 
 	/**
+	 * Check if pricing settings are valid.
+	 *
+	 * @param string $price_type Price type.
+	 * @param string $price Price value.
+	 * @param string $calculation_type Calculation type.
+	 *
+	 * @return bool
+	 */
+	public function is_valid_pricing_settings( string $price_type, string $price, string $calculation_type ): bool {
+		if ( $price_type === '' || ! is_numeric( $price ) ) {
+			return false;
+		}
+		
+		if ( $calculation_type === 'per_measurement' && ! PluginHelper::is_flexible_quantity_active() ) {
+			return false;
+		}
+
+		return true;
+	}
+
+	/**
 	 * Prepare price to display.
 	 *
 	 * @param WC_Product $product .
@@ -140,5 +156,4 @@ class FPF_Product_Price {
 		}
 		return $price_sign * $price_to_display;
 	}
-
 }
