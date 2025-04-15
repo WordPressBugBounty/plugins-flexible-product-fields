@@ -174,7 +174,7 @@ class FPF_Cart {
 			if ( isset( $field['price_type'] ) && $field['price_type'] != '' && isset( $field['price'] ) && floatval( $field['price'] ) != 0 ) {
 				$field_price            = (float) $field['price'];
 				$field_price_type       = (string) $field['price_type'];
-				$field_calculation_type = (string) $field['calculation_type'];
+				$field_calculation_type = (string) ( $field['calculation_type'] ?? '' );
 
 				$field_price_base_currency    = $this->product_price->calculate_price( $field_price, $field_price_type, $product, $field_calculation_type, $product_price, $measurement );
 				$field_price_current_currency = (float) $this->product_price->multicurrency_calculate_price_to_display( $field_price_base_currency );
@@ -225,10 +225,10 @@ class FPF_Cart {
 				if ( ! isset( $field['price_type'] ) ) {
 					$field['price_type'] = 'fixed';
 				}
-				if ( isset( $field['price_type'] ) && $field['price_type'] != '' && isset( $field['price'] ) && $field['price'] != '' ) {
+				if ( isset( $field['price_type'] ) && $field['price_type'] !== '' && isset( $field['price'] ) && $field['price'] !== '' ) {
 					$ret['price_type']       = $field['price_type'];
 					$ret['price']            = $field['price'];
-					$ret['calculation_type'] = $field['calculation_type'];
+					$ret['calculation_type'] = $field['calculation_type'] ?? '';
 				}
 			}
 			if ( $field_type['has_options'] ) {

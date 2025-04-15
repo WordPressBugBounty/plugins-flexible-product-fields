@@ -29,7 +29,7 @@ $value = ( ( $value === null ) && ( ( $args['default'] ?? '' ) !== '' ) ) ? $arg
 					name="<?php echo esc_attr( $key ); ?>"
 					id="<?php echo esc_attr( $key . '_' . $option_value ); ?>"
 					data-image-props="<?php echo isset( $options_image_props[ $option_value ] ) ? esc_attr( wc_esc_json( wp_json_encode( $options_image_props[ $option_value ] ) ) ) : ''; ?>"
-					<?php echo ( $option_value == $value ) ? 'checked' : ''; ?>
+					<?php checked( (string) $option_value, $value ); ?>
 				>
 				<label for="<?php echo esc_attr( $key . '_' . $option_value ); ?>"
 					title="<?php echo ( ! $preview_show_label ) ? esc_attr( strip_tags( $option_label ) ) : ''; ?>"

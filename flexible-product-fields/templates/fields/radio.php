@@ -26,7 +26,7 @@ $value = ( ( $value === null ) && ( ( $args['default'] ?? '' ) !== '' ) ) ? $arg
 					name="<?php echo esc_attr( $key ); ?>"
 					id="<?php echo esc_attr( $key . '_' . $option_value ); ?>"
 					data-image-props="<?php echo isset( $options_image_props[ $option_value ] ) ? esc_attr( wc_esc_json( wp_json_encode( $options_image_props[ $option_value ] ) ) ) : ''; ?>"
-					<?php echo ( $option_value == $value ) ? 'checked' : ''; ?>
+					<?php checked( (string) $option_value, $value ); ?>
 				>
 				<?php echo wp_kses_post( $option_label ); ?>
 			</label>
