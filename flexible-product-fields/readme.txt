@@ -3,9 +3,9 @@ Contributors: wpdesk,dyszczo,grola,piotrpo,marcinkolanko,mateuszgbiorczyk,sebast
 Donate link: https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/
 Tags: woocommerce customize product, woocommerce product addons, woocommerce product options, woocommerce custom product, woocommerce custom fields
 Requires at least: 5.8
-Tested up to: 6.7
+Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.9.1
+Stable tag: 2.9.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -44,6 +44,7 @@ You may use the plugin to add custom fields, extra options, and edit the WooComm
 * Add warranty, insurance, or product options 🛡️
 * **Charge for extra product options and add-ons** (PRO) 💰
 * Let users **upload files or pick a date** (PRO) 📅
+* Compatible with new units of measure with [Flexible Quantity – Measurement Price Calculator for WooCommerce](https://wordpress.org/plugins/flexible-quantity-measurement-price-calculator-for-woocommerce/)
 
 ### Some examples of using WooCommerce extra product fields
 
@@ -325,6 +326,10 @@ You can also choose one from the list below based on your needs.
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.9.2 - 2025-05-08 =
+* Added support for WordPress 6.8
+* Fixed compatibility issue with Quick Cross-Sells WooCommerce plugin by WPDesk
 
 = 2.9.1 - 2025-04-15 =
 * Fixed an undefined variable warning related to `calculation_type` in cart handling.

@@ -345,6 +345,10 @@ class FPF_Cart {
 			return $cart_item_data;
 		}
 
+		if ( ! in_array( (int) $_POST['_fpf_product_id'], [ $product_id, $variation_id ], true ) ) {
+			return $cart_item_data;
+		}
+
 		$post_data = wc_clean( wp_unslash( $_POST ) );
 
 		if ( ! wp_verify_nonce( $post_data['_fpf_nonce'], 'fpf_add_to_cart_nonce' ) ) {
