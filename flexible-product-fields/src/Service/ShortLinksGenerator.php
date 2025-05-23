@@ -13,7 +13,7 @@ class ShortLinksGenerator implements Hookable, HookablePluginDependant {
 
 	use PluginAccess;
 
-	const SHORTENER_DOMAIN = 'https://wpde.sk/';
+	const SHORTENER_DOMAIN = 'https://wpdesk.link/';
 
 	/**
 	 * {@inheritdoc}

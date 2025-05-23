@@ -411,18 +411,6 @@ if (!\class_exists('VendorFPF\WPDesk_Basic_Requirement_Checker')) {
             if (\function_exists('wp_nonce_url') && \function_exists('wp_create_nonce')) {
                 $install_url = \wp_nonce_url($install_url, 'install-plugin_' . $slug);
             }
-            \add_filter('plugins_api', function ($api, $action, $args) use ($plugin_info, $slug) {
-                if ('plugin_information' !== $action || \false !== $api || !isset($args->slug) || $slug !== $args->slug) {
-                    return $api;
-                }
-                $api = new \stdClass();
-                $api->name = $plugin_info['nice_name'];
-                // self in closures requires 5.4
-                $api->version = '';
-                $api->download_link = \esc_url($plugin_info['repository_url']);
-                // self in closures requires 5.4
-                return $api;
-            }, 10, 3);
             return $install_url;
         }
         /**

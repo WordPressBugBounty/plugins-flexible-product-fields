@@ -215,7 +215,7 @@ final class DashboardWidget
     {
         $widget_data = $this->get_widget_data();
         if (!empty($widget_data)) {
-            echo '<div class="wpdesk_ltv_dashboard_widget">';
+            echo '<div class="flexible-product-fields">';
             if ($this->show_widget_header && $widget_data['header']) {
                 echo wp_kses_post($widget_data['header']);
             }
@@ -294,7 +294,7 @@ final class DashboardWidget
                 $add_to_cart_url = $plugin_url;
             } else if ($plugin['add_to_cart_id'] === self::AUTOPAY_ID) {
                 $add_to_cart_button_label = esc_html__('Download', 'flexible-product-fields');
-                $add_to_cart_url = esc_url("https://wpde.sk/autopay-wpdeskpl");
+                $add_to_cart_url = esc_url("https://wpdesk.link/autopay-wpdeskpl");
             }
             echo '<li class="ltv-row">';
             if ($plugin['image']) {

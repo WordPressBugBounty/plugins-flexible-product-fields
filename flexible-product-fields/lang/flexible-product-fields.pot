@@ -2,16 +2,16 @@
 # This file is distributed under the same license as the Flexible Product Fields plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Flexible Product Fields 2.9.2\n"
+"Project-Id-Version: Flexible Product Fields 2.9.3\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/flexible-product-fields\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-05-08T13:30:13+00:00\n"
+"POT-Creation-Date: 2025-05-23T14:07:25+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
-"X-Generator: WP-CLI 2.11.0\n"
+"X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: flexible-product-fields\n"
 
 #. Plugin Name of the plugin
@@ -315,6 +315,7 @@ msgstr ""
 
 #. translators: %1$s and %3$s: anchor opening tags, %2$s and %4$s: anchor closing tags
 #: src/Settings/Option/GroupAdvOption.php:42
+#, php-format
 msgid "The plugin in the PRO version allows you to assign groups to specific categories or tags and to all products. You can also set the order in which the field groups are arranged. %1$sUpgrade to PRO%2$s"
 msgstr ""
 
@@ -340,6 +341,7 @@ msgstr ""
 
 #. translators: %1$s and %3$s: anchor opening tags, %2$s and %4$s: anchor closing tags
 #: src/Settings/Option/LogicAdvOption.php:42
+#, php-format
 msgid "Conditional logic is available in the PRO version. %1$sUpgrade to PRO%2$s"
 msgstr ""
 
@@ -355,6 +357,7 @@ msgstr ""
 #. translators: %s row index
 #: src/Settings/Option/OptionsCheckboxOption.php:56
 #: src/Settings/Option/OptionsOption.php:63
+#, php-format
 msgid "Option #%s"
 msgstr ""
 
@@ -385,6 +388,7 @@ msgstr ""
 
 #. translators: %1$s and %3$s: anchor opening tags, %2$s and %4$s: anchor closing tags
 #: src/Settings/Option/PricingAdvOption.php:42
+#, php-format
 msgid "Price settings are available in the PRO version. %1$sUpgrade to PRO%2$s"
 msgstr ""
 
@@ -524,6 +528,7 @@ msgstr ""
 
 #. translators: %1$s: break line, %2$s: anchor opening tag, %3$s: anchor closing tag
 #: src/Settings/Page.php:168
+#, php-format
 msgid "This field is available in the PRO version.%1$s %2$sUpgrade to PRO%3$s"
 msgstr ""
 
@@ -533,11 +538,13 @@ msgstr ""
 
 #. translators: %1$s: break-line tag, %2$s: anchor opening tag, %3$s: anchor closing tag
 #: src/Settings/Page.php:176
+#, php-format
 msgid "Add fields using the settings at the bottom. Then it will be possible to edit the fields. %1$sRead more in the %2$splugin documentation%3$s"
 msgstr ""
 
 #. translators: %1$s: anchor opening tag, %2$s: anchor closing tag
 #: src/Settings/Page.php:183
+#, php-format
 msgid "Read more in the %1$splugin documentation%2$s"
 msgstr ""
 
@@ -567,6 +574,7 @@ msgstr ""
 
 #. translators: %1$s: anchor opening tag, %2$s: anchor closing tag
 #: src/Settings/Validation/Error/GroupAssignProError.php:17
+#, php-format
 msgid "This option is available in the PRO version. %1$sUpgrade to PRO%2$s"
 msgstr ""
 
@@ -579,6 +587,7 @@ msgid "The plugin does not work properly"
 msgstr ""
 
 #: src/Tracker/DeactivationTracker.php:54
+#, php-format
 msgid "Contact us on %1$sthe support forum%2$s or read %3$sthe plugin FAQ%4$s for help."
 msgstr ""
 
@@ -591,6 +600,7 @@ msgid "The plugin is difficult to use"
 msgstr ""
 
 #: src/Tracker/DeactivationTracker.php:69
+#, php-format
 msgid "Check %1$sthe documentation%2$s or contact us on %3$sthe support forum%4$s for help."
 msgstr ""
 
@@ -641,91 +651,109 @@ msgstr ""
 
 #. translators: %1$s: field label
 #: src/Validation/Rule/ColorHexRule.php:30
+#, php-format
 msgid "The value provided is not valid for the %1$s field."
 msgstr ""
 
 #. translators: %s: field label
 #: src/Validation/Rule/DateFormatRule.php:41
+#, php-format
 msgid "%s has an invalid date format."
 msgstr ""
 
 #. translators: %s: field label
 #: src/Validation/Rule/DatesExcludedRule.php:44
+#, php-format
 msgid "%s has an excluded date."
 msgstr ""
 
 #. translators: %s: field label
 #: src/Validation/Rule/DaysAfterRule.php:43
+#, php-format
 msgid "%s has a date set too late."
 msgstr ""
 
 #. translators: %s: field label
 #: src/Validation/Rule/DaysBeforeRule.php:43
+#, php-format
 msgid "%s has a date set too early."
 msgstr ""
 
 #. translators: %s: field label
 #: src/Validation/Rule/DaysLimitRule.php:33
+#, php-format
 msgid "%s has too many dates."
 msgstr ""
 
 #. translators: %1$s: field label
 #: src/Validation/Rule/EmailAddressRule.php:31
+#, php-format
 msgid "The e-mail address provided is not valid for the %1$s field."
 msgstr ""
 
 #. translators: %1$s: field label, %2$s: limit of chars
 #: src/Validation/Rule/LengthRule.php:27
+#, php-format
 msgid "Exceeded maximum number of characters for the %1$s field. (max: %2$s)"
 msgstr ""
 
 #. translators: %s: field label
 #: src/Validation/Rule/OptionRule.php:39
+#, php-format
 msgid "%s has invalid value."
 msgstr ""
 
 #. translators: %s: field label
 #: src/Validation/Rule/RequiredRule.php:27
+#, php-format
 msgid "%s is required field."
 msgstr ""
 
 #. translators: %1$s: field label, %2$s: minimum of values
 #: src/Validation/Rule/SelectedMaximumRule.php:30
+#, php-format
 msgid "The number of selected options for the %1$s is field greater than allowed %2$s."
 msgstr ""
 
 #. translators: %1$s: field label, %2$s: minimum of values
 #: src/Validation/Rule/SelectedMinimumRule.php:30
+#, php-format
 msgid "The number of selected options for the %1$s is field less than required %2$s."
 msgstr ""
 
 #. translators: %s: field label
 #: src/Validation/Rule/TimeFormatRule.php:35
+#, php-format
 msgid "%s has an invalid time format."
 msgstr ""
 
 #. translators: %1$s: field label, %2$s: minute step value
 #: src/Validation/Rule/TimeStepMinuteRule.php:35
+#, php-format
 msgid "%1$s is not within the time interval of %2$s minutes."
 msgstr ""
 
 #. translators: %s: field label
 #: src/Validation/Rule/TodayMaxHourRule.php:39
+#, php-format
 msgid "%s has a current date that is no longer available."
 msgstr ""
 
 #. translators: %1$s: field label
 #: src/Validation/Rule/UrlAddressRule.php:35
+#, php-format
 msgid "The URL address provided is not valid for the %1$s field."
 msgstr ""
 
 #. translators: %s: field label
 #: src/Validation/Rule/WeekDaysExcludedRule.php:38
+#, php-format
 msgid "%s has a date with an excluded day of the week."
 msgstr ""
 
 #. translators: %1$s: link opening tag, %2$s: link closing tag
 #: templates/config/button-save.php:19
+#, php-format
 msgid "This button is visible to the Store Admin and no one else. More information about generating a link to a predefined product configuration can be found in %1$s[the documentation]%2$s."
 msgstr ""
 
@@ -751,11 +779,13 @@ msgstr ""
 
 #. translators: %s: minimum number of values that can be selected within multicheckbox field
 #: templates/fields/multi-checkbox.php:31
+#, php-format
 msgid "Minimum: %s."
 msgstr ""
 
 #. translators: %s: maximum number of values that can be selected within multicheckbox field
 #: templates/fields/multi-checkbox.php:42
+#, php-format
 msgid "Limit: %s."
 msgstr ""
 
@@ -805,6 +835,7 @@ msgstr ""
 
 #. translators: %1$s: open strong tag, %2$s: open strong tag, %3$s: heart icon, %4$s: open anchor tag, %5$s: open anchor tag
 #: templates/notices/flexible-wishlist.php:27
+#, php-format
 msgid "Introducing our new %1$sWooCommerce Wishlist plugin%2$s %3$s It's lightweight. It's free. Fits any theme. 100%% customizable and flexible. %4$sRead more%5$s and try it now. Uninstall any time with just one click."
 msgstr ""
 
@@ -822,6 +853,7 @@ msgstr ""
 
 #. translators: %1$s: dashicon, %2$s: break-line tag
 #: templates/notices/review.php:24
+#, php-format
 msgid "We are glad that (with our little help %1$s) the shop is now better suited to the needs. We will be grateful for the rating and feedback. %2$sIt will take less than reading this and it will help us a lot!"
 msgstr ""
 
@@ -835,6 +867,7 @@ msgstr ""
 
 #. translators: %$1s: love icon, %$2s: anchor opening tag, %$3s: anchor closing tag, %$4s: anchor opening tag, %$5s: anchor closing tag
 #: templates/views/admin-page.php:28
+#, php-format
 msgid "Created with %1$s by %2$sWP Desk%3$s - if you like FPF %4$srate us%5$s"
 msgstr ""
 
@@ -894,6 +927,7 @@ msgstr ""
 
 #. translators: %1$s: plugin name
 #: vendor_prefixed/wpdesk/wp-wpdesk-deactivation-modal/src/Model/FormTemplate.php:38
+#, php-format
 msgid "You are deactivating %1$s plugin"
 msgstr ""
 
@@ -909,7 +943,12 @@ msgstr ""
 msgid "Skip and Deactivate"
 msgstr ""
 
-#: vendor_prefixed/wpdesk/wp-wpdesk-tracker/src/PSR/WPDesk/Tracker/OptOut.php:41
+#: vendor_prefixed/wpdesk/wp-wpdesk-tracker/src/class-wpdesk-tracker.php:160
+msgid "Submit &amp; Deactivate"
+msgstr ""
+
+#: vendor_prefixed/wpdesk/wp-wpdesk-tracker/src/PSR/WPDesk/Tracker/OptOut.php:42
+#, php-format
 msgid "You successfully opted out of collecting usage data by %1$s. If you change your mind, you can always opt in later in the plugin's quick links."
 msgstr ""
 
@@ -925,6 +964,7 @@ msgstr ""
 #: vendor_prefixed/wpdesk/wp-wpdesk-tracker/src/PSR/WPDesk/Tracker/views/tracker-connect.php:23
 #: vendor_prefixed/wpdesk/wp-wpdesk-tracker/src/views/tracker-connect.php:15
 #: vendor_prefixed/wpdesk/wp-wpdesk-tracker/src/views/tracker-notice.php:19
+#, php-format
 msgid "Hey %s,"
 msgstr ""
 
@@ -964,6 +1004,7 @@ msgid "Plugin Usage"
 msgstr ""
 
 #: vendor_prefixed/wpdesk/wp-wpdesk-tracker/src/PSR/WPDesk/Tracker/views/tracker-connect.php:70
+#, php-format
 msgid "Current settings and usage information of %1$s plugins"
 msgstr ""
 
@@ -988,6 +1029,7 @@ msgid "Current settings and usage information of WP Desk plugins"
 msgstr ""
 
 #: vendor_prefixed/wpdesk/wp-wpdesk-tracker/src/views/tracker-deactivate.php:11
+#, php-format
 msgid "You are deactivating %s plugin."
 msgstr ""
 

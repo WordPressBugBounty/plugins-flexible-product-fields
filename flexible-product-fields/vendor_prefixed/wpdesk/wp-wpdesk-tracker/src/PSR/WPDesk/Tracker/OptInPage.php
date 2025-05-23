@@ -70,7 +70,7 @@ class OptInPage implements Hookable
     public function admin_init()
     {
         if (isset($_GET['wpdesk_tracker']) && $_GET['wpdesk_tracker'] === $this->plugin_slug) {
-            if (isset($_GET['allow']) && isset($_GET['security']) && wp_verify_nonce($_GET['security'], $this->plugin_slug)) {
+            if (isset($_GET['allow']) && current_user_can('manage_woocommerce') && isset($_GET['security']) && wp_verify_nonce(sanitize_text_field(wp_unslash($_GET['security'])), $this->plugin_slug)) {
                 if ($_GET['allow'] === '1') {
                     $persistence = new \VendorFPF\WPDesk_Tracker_Persistence_Consent();
                     $persistence->set_active(\true);

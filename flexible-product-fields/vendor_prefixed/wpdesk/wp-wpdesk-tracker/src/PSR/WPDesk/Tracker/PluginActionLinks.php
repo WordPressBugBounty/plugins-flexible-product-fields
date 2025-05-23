@@ -82,7 +82,8 @@ class PluginActionLinks implements Hookable
     private function tracker_enabled()
     {
         $tracker_enabled = \true;
-        if (!empty($_SERVER['SERVER_ADDR']) && $this->is_localhost($_SERVER['SERVER_ADDR'])) {
+        $server = sanitize_text_field(wp_unslash($_SERVER['SERVER_NAME'] ?? ''));
+        if (!empty($server) && $this->is_localhost($server)) {
             $tracker_enabled = \false;
         }
         return (bool) apply_filters('wpdesk_tracker_enabled', $tracker_enabled);
