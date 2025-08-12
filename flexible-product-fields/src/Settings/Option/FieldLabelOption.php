@@ -4,6 +4,7 @@ namespace WPDesk\FPF\Free\Settings\Option;
 
 use WPDesk\FPF\Free\Settings\Tab\GeneralTab;
 use WPDesk\FPF\Free\Settings\Validation\Error\FieldRequiredError;
+use WPDesk\FPF\Free\Settings\Validation\Error\FieldMaxLengthError;
 
 /**
  * {@inheritdoc}
@@ -45,7 +46,8 @@ class FieldLabelOption extends OptionAbstract {
 	 */
 	public function get_validation_rules(): array {
 		return [
-			'^.{1,}$' => new FieldRequiredError(),
+			'^.{1,}$'    => new FieldRequiredError(),
+			'^.{1,255}$' => new FieldMaxLengthError(),
 		];
 	}
 

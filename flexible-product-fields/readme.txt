@@ -5,7 +5,7 @@ Tags: woocommerce customize product, woocommerce product addons, woocommerce pro
 Requires at least: 5.8
 Tested up to: 6.8
 Requires PHP: 7.4
-Stable tag: 2.9.5
+Stable tag: 2.9.6
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -330,6 +330,11 @@ You can also choose one from the list below based on your needs.
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.9.6 - 2025-08-12 =
+* Fixed main product image changes (to default one) even when radio or select fields option has image setting empty.
+* Fixed can add fields with label exceeding the limit of 255 characters (which then won't be saved in the order process)
+* Added support for WooCommerce 10.1
 
 = 2.9.5 - 2025-07-24 =
 * Fixed main product image changes twice, when variation is selected and product has fields with images assigned and selected.

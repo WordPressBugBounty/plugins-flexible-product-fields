@@ -453,6 +453,7 @@ class ComposerStaticInit8e5aea80b312e88993f9380e32cdf924
         'WPDesk\\FPF\\Free\\Settings\\Tab\\TabIntegration' => __DIR__ . '/../..' . '/src/Settings/Tab/TabIntegration.php',
         'WPDesk\\FPF\\Free\\Settings\\Tab\\TabInterface' => __DIR__ . '/../..' . '/src/Settings/Tab/TabInterface.php',
         'WPDesk\\FPF\\Free\\Settings\\Tabs' => __DIR__ . '/../..' . '/src/Settings/Tabs.php',
+        'WPDesk\\FPF\\Free\\Settings\\Validation\\Error\\FieldMaxLengthError' => __DIR__ . '/../..' . '/src/Settings/Validation/Error/FieldMaxLengthError.php',
         'WPDesk\\FPF\\Free\\Settings\\Validation\\Error\\FieldRequiredError' => __DIR__ . '/../..' . '/src/Settings/Validation/Error/FieldRequiredError.php',
         'WPDesk\\FPF\\Free\\Settings\\Validation\\Error\\GroupAssignProError' => __DIR__ . '/../..' . '/src/Settings/Validation/Error/GroupAssignProError.php',
         'WPDesk\\FPF\\Free\\Settings\\Validation\\Error\\InvalidOptionValueError' => __DIR__ . '/../..' . '/src/Settings/Validation/Error/InvalidOptionValueError.php',

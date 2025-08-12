@@ -4,7 +4,7 @@ namespace WPDesk\FPF\Free\Field\Type;
 
 use WPDesk\FPF\Free\Field\Types;
 use WPDesk\FPF\Free\Settings\Option\CssOption;
-use WPDesk\FPF\Free\Settings\Option\FieldLabelOption;
+use WPDesk\FPF\Free\Settings\Option\FieldLabelMultilineOption;
 use WPDesk\FPF\Free\Settings\Option\FieldNameOption;
 use WPDesk\FPF\Free\Settings\Option\FieldPriorityOption;
 use WPDesk\FPF\Free\Settings\Option\FieldTypeOption;
@@ -53,11 +53,11 @@ class HeadingType extends TypeAbstract {
 	public function get_options_objects(): array {
 		return [
 			GeneralTab::TAB_NAME => [
-				FieldPriorityOption::FIELD_NAME => new FieldPriorityOption(),
-				FieldTypeOption::FIELD_NAME     => new FieldTypeOption(),
-				FieldLabelOption::FIELD_NAME    => new FieldLabelOption(),
-				CssOption::FIELD_NAME           => new CssOption(),
-				FieldNameOption::FIELD_NAME     => new FieldNameOption(),
+				FieldPriorityOption::FIELD_NAME       => new FieldPriorityOption(),
+				FieldTypeOption::FIELD_NAME           => new FieldTypeOption(),
+				FieldLabelMultilineOption::FIELD_NAME => new FieldLabelMultilineOption(),
+				CssOption::FIELD_NAME                 => new CssOption(),
+				FieldNameOption::FIELD_NAME           => new FieldNameOption(),
 			],
 			LogicTab::TAB_NAME   => [
 				LogicAdvOption::FIELD_NAME => new LogicAdvOption(),

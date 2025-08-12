@@ -88,7 +88,7 @@ class RadioType extends TypeAbstract {
 
 		$options_image_props = [];
 		foreach ( $field_data[ OptionsWithProductImageOption::FIELD_NAME ] as $option ) {
-			if ( ! isset( $option[ OptionsImageOptionOptional::FIELD_NAME ] ) ) {
+			if ( ! isset( $option[ OptionsImageOptionOptional::FIELD_NAME ] ) || $option[ OptionsImageOptionOptional::FIELD_NAME ] === '' ) {
 				continue;
 			}
 

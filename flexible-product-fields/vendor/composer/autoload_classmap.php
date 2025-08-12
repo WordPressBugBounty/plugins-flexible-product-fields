@@ -430,6 +430,7 @@ return array(
     'WPDesk\\FPF\\Free\\Settings\\Tab\\TabIntegration' => $baseDir . '/src/Settings/Tab/TabIntegration.php',
     'WPDesk\\FPF\\Free\\Settings\\Tab\\TabInterface' => $baseDir . '/src/Settings/Tab/TabInterface.php',
     'WPDesk\\FPF\\Free\\Settings\\Tabs' => $baseDir . '/src/Settings/Tabs.php',
+    'WPDesk\\FPF\\Free\\Settings\\Validation\\Error\\FieldMaxLengthError' => $baseDir . '/src/Settings/Validation/Error/FieldMaxLengthError.php',
     'WPDesk\\FPF\\Free\\Settings\\Validation\\Error\\FieldRequiredError' => $baseDir . '/src/Settings/Validation/Error/FieldRequiredError.php',
     'WPDesk\\FPF\\Free\\Settings\\Validation\\Error\\GroupAssignProError' => $baseDir . '/src/Settings/Validation/Error/GroupAssignProError.php',
     'WPDesk\\FPF\\Free\\Settings\\Validation\\Error\\InvalidOptionValueError' => $baseDir . '/src/Settings/Validation/Error/InvalidOptionValueError.php',

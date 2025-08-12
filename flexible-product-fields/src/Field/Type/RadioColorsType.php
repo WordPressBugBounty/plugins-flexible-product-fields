@@ -109,7 +109,7 @@ class RadioColorsType extends TypeAbstract {
 		foreach ( $field_data[ OptionsOption::FIELD_NAME ] as $option ) {
 			$color_values[ $option[ OptionsValueOption::FIELD_NAME ] ] = $option[ OptionsColorOption::FIELD_NAME ];
 
-			if ( ! isset( $option[ OptionsImageOptionOptional::FIELD_NAME ] ) ) {
+			if ( ! isset( $option[ OptionsImageOptionOptional::FIELD_NAME ] ) || $option[ OptionsImageOptionOptional::FIELD_NAME ] === '' ) {
 				continue;
 			}
 
