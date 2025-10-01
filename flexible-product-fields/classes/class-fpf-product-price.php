@@ -129,7 +129,7 @@ class FPF_Product_Price {
 		if ( $price_type === '' || ! is_numeric( $price ) ) {
 			return false;
 		}
-		
+
 		if ( $calculation_type === 'per_measurement' && ! PluginHelper::is_flexible_quantity_active() ) {
 			return false;
 		}

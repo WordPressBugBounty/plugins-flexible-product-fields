@@ -52,5 +52,4 @@ class FPF_Product_Extendend_Info {
 	public function is_type_variable() {
 		return $this->product->is_type( self::PRODUCT_TYPE_VARIABLE );
 	}
-
 }

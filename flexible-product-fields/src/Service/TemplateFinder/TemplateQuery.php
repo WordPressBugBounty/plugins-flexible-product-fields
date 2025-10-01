@@ -61,11 +61,7 @@ class TemplateQuery {
 		$result = array_reduce(
 			$this->query->posts,
 			function ( array $carry, WP_Post $post ) {
-				$raw_fields_meta    = \get_post_meta( $post->ID, '_fields', true );
-				$post->fields_meta  = array_map( // @phpstan-ignore-line
-					fn ( array $field ) => array_merge( $field, [ '_group_id' => $post->ID ] ),
-					$raw_fields_meta
-				);
+				$post->fields_meta  = $this->prepare_fields_meta( $post->ID ); /** @phpstan-ignore property.notFound */
 				$carry[ $post->ID ] = $post;
 				return $carry;
 			},
@@ -74,6 +70,17 @@ class TemplateQuery {
 
 		\wp_cache_set( $cache_key, $result );
 		return $result;
+	}
+
+	public function get_template_by_id( int $template_id ): ?WP_Post {
+		$post = \get_post( $template_id );
+		if ( ! $post || $post->post_type !== self::TEMPLATE_POST_TYPE ) {
+			return null;
+		}
+
+		$post->fields_meta = $this->prepare_fields_meta( $template_id ); /** @phpstan-ignore property.notFound */
+
+		return $post;
 	}
 
 	/**
@@ -89,5 +96,16 @@ class TemplateQuery {
 			'value'   => $this->section_hook,
 			'compare' => '=',
 		];
+	}
+
+	/**
+	 * @return array<string, mixed>
+	 */
+	private function prepare_fields_meta( int $template_id ): array {
+		$raw_fields_meta = \get_post_meta( $template_id, '_fields', true );
+		return array_map(
+			fn ( array $field ) => array_merge( $field, [ '_group_id' => $template_id ] ),
+			$raw_fields_meta
+		);
 	}
 }

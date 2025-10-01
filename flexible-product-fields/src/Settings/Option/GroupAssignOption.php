@@ -45,7 +45,7 @@ class GroupAssignOption extends OptionAbstract {
 	 */
 	public function get_validation_rules(): array {
 		return [
-			'^(' . self::OPTION_ASSIGN_TO_PRODUCT . ')$' => new GroupAssignProError(),
+			'^(' . self::OPTION_ASSIGN_TO_PRODUCT . '|)$' => new GroupAssignProError(),
 		];
 	}
 
@@ -54,6 +54,7 @@ class GroupAssignOption extends OptionAbstract {
 	 */
 	public function get_values(): array {
 		return [
+			''                                       => __( 'None', 'flexible-product-fields' ),
 			self::OPTION_ASSIGN_TO_PRODUCT           => __( 'Product', 'flexible-product-fields' ),
 			self::OPTION_ASSIGN_TO_PRODUCT_EXCLUDED  => __( 'Product excluded', 'flexible-product-fields' ),
 			self::OPTION_ASSIGN_TO_CATEGORY          => __( 'Category', 'flexible-product-fields' ),
@@ -68,7 +69,7 @@ class GroupAssignOption extends OptionAbstract {
 	 * {@inheritdoc}
 	 */
 	public function get_default_value() {
-		return self::OPTION_ASSIGN_TO_PRODUCT;
+		return '';
 	}
 
 	public function get_disabled_values(): array {

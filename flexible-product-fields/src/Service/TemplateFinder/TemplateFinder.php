@@ -15,6 +15,7 @@ use WPDesk\FPF\Free\Service\TemplateFinder\Finder\ProductExludedTemplateFinder;
 use WPDesk\FPF\Free\Service\TemplateFinder\Finder\CategoryExludedTemplateFinder;
 use WPDesk\FPF\Free\Service\TemplateFinder\ProductHandler\ProductHandlerInterface;
 use WPDesk\FPF\Free\Service\TemplateFinder\ProductHandler\VariationProductHandler;
+use FPF_Product_Fields;
 
 /**
  * Finds templates (we can have multiple) for a given product.
@@ -29,21 +30,17 @@ class TemplateFinder {
 
 	protected TemplateFinderCache $cache;
 
-	/**
-	 * @var array<string, array<string, mixed>>
-	 */
-	protected array $fields_definitions = [];
+	protected FPF_Product_Fields $product_fields;
 
-	public function __construct() {
-		$this->template_query     = new TemplateQuery();
-		$this->finders            = new FinderCollection();
-		$this->cache              = new TemplateFinderCache();
+	public function __construct( TemplateQuery $template_query, FPF_Product_Fields $product_fields ) {
+		$this->template_query = $template_query;
+		$this->product_fields = $product_fields;
+		$this->finders        = new FinderCollection();
+		$this->cache          = new TemplateFinderCache();
 		$this->init_finders();
 	}
 
 	public function find( \WC_Product $product, string $section = '' ): TemplateCollection {
-		$this->setup_fields_definitions();
-
 		if ( $this->cache->has( $product, $section ) ) {
 			return $this->cache->get( $product, $section );
 		}
@@ -60,7 +57,7 @@ class TemplateFinder {
 			$templates->merge( $new_templates );
 		}
 
-		$templates->init_fields( $this->fields_definitions );
+		$templates->init_fields( $this->product_fields->get_field_types() );
 
 		$this->cache->set( $product, $section, $templates );
 
@@ -85,9 +82,7 @@ class TemplateFinder {
 		$this->finders->add( new TagExludedTemplateFinder() );
 	}
 
-	private function setup_fields_definitions(): void {
-		if ( count( $this->fields_definitions ) === 0 ) {
-			$this->fields_definitions = apply_filters( 'flexible_product_fields_field_types', [] );
-		}
+	public function get_template_query(): TemplateQuery {
+		return $this->template_query;
 	}
 }

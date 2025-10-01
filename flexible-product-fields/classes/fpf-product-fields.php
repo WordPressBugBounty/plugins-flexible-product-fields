@@ -55,13 +55,11 @@ class FPF_Product_Fields {
 		return $ret;
 	}
 
+	/**
+	 * @return array<string, array<string, mixed>>
+	 */
 	public function get_field_types() {
-		$types       = apply_filters( 'flexible_product_fields_field_types', [] );
-		$field_types = [];
-		foreach ( $types as $field_type ) {
-			$field_types[] = $field_type;
-		}
-		return $field_types;
+		return apply_filters( 'flexible_product_fields_field_types', [] );
 	}
 
 	/**
@@ -102,8 +100,8 @@ class FPF_Product_Fields {
 		$options    = [];
 		$search     = $request->get_param( 'search' );
 		$categories = get_terms(
-			'product_cat',
 			[
+				'taxonomy'   => 'product_cat',
 				'hide_empty' => false,
 				'search'     => $search,
 			]
@@ -129,8 +127,8 @@ class FPF_Product_Fields {
 		$options    = [];
 		$search     = $request->get_param( 'search' );
 		$categories = get_terms(
-			'product_tag',
 			[
+				'taxonomy'   => 'product_tag',
 				'hide_empty' => false,
 				'search'     => $search,
 			]
@@ -149,7 +147,7 @@ class FPF_Product_Fields {
 		global $wpdb;
 		$ret  = [];
 		$sql  = "select meta_value from {$wpdb->postmeta} m, {$wpdb->posts} p where p.post_type = 'fpf_fields' and p.ID = m.post_id and  m.meta_key = '_fields'";
-		$rows = $wpdb->get_results( $sql );
+		$rows = $wpdb->get_results( $sql ); // phpcs:ignore WordPress.DB.PreparedSQL.NotPrepared
 		foreach ( $rows as $row ) {
 			$fields = unserialize( $row->meta_value );
 			if ( is_array( $fields ) ) {
@@ -162,7 +160,7 @@ class FPF_Product_Fields {
 	}
 
 
-	function init_wpml() {
+	public function init_wpml() {
 		$icl_language_code = defined( 'ICL_LANGUAGE_CODE' ) ? ICL_LANGUAGE_CODE : get_bloginfo( 'language' );
 		$fields            = $this->get_all_fields();
 		foreach ( $fields as $field ) {
@@ -185,7 +183,7 @@ class FPF_Product_Fields {
 		}
 	}
 
-	function init_polylang() {
+	public function init_polylang() {
 		$fields = $this->get_all_fields();
 		foreach ( $fields as $field ) {
 			if ( ! empty( $field['title'] ) ) {
@@ -219,7 +217,7 @@ class FPF_Product_Fields {
 			[
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'handle_rest_api_products' ],
-				'permission_callback' => function() {
+				'permission_callback' => function () {
 					return current_user_can( 'manage_woocommerce' );
 				},
 			]
@@ -230,7 +228,7 @@ class FPF_Product_Fields {
 			[
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'handle_rest_api_categories' ],
-				'permission_callback' => function() {
+				'permission_callback' => function () {
 					return current_user_can( 'manage_woocommerce' );
 				},
 			]
@@ -241,11 +239,10 @@ class FPF_Product_Fields {
 			[
 				'methods'             => 'GET',
 				'callback'            => [ $this, 'handle_rest_api_tags' ],
-				'permission_callback' => function() {
+				'permission_callback' => function () {
 					return current_user_can( 'manage_woocommerce' );
 				},
 			]
 		);
 	}
-
 }

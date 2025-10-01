@@ -1,4 +1,7 @@
 <?php
+
+use WPDesk\FPF\Free\Block\Settings\BlockTemplateSettings;
+
 /**
  * Handles WooCommerce add to cart.
  */
@@ -356,7 +359,15 @@ class FPF_Cart {
 		}
 
 		$product_data = wc_get_product( $post_data['_fpf_product_id'] );
-		$fields       = $this->_product->get_translated_fields_for_product( $product_data );
+
+		$block_settings = null;
+		if ( isset( $post_data['_fpf_block_template_id'] ) && (int) $post_data['_fpf_block_template_id'] > 0 ) {
+			$template_id = (int) $post_data['_fpf_block_template_id'];
+			$show_other_templates = (bool) $post_data['_fpf_block_show_other_templates'] ?? false;
+			$block_settings = new BlockTemplateSettings( $template_id, $show_other_templates );
+		}
+
+		$fields = $this->_product->get_translated_fields_for_product( $product_data, false, $block_settings );
 
 		$fields       = apply_filters( 'flexible_product_fields_apply_logic_rules', $fields, $post_data );
 		$fields_types = $this->_product_fields->get_field_types_by_type();

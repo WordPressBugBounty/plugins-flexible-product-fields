@@ -97,5 +97,4 @@ class FPF_Add_To_Cart_Filters implements VendorFPF\WPDesk\PluginBuilder\Plugin\H
 		}
 		return $url;
 	}
-
 }

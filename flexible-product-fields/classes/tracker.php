@@ -72,13 +72,13 @@ if ( ! class_exists( 'WPDesk_Flexible_Product_Fields_Tracker' ) ) {
 				if ( ! isset( $data['section'][ $group['section'] ] ) ) {
 					$data['section'][ $group['section'] ] = 0;
 				}
-				$data['section'][ $group['section'] ]++;
+				++$data['section'][ $group['section'] ];
 				if ( ! isset( $data['assign_to'][ $group['assign_to'] ] ) ) {
 					$data['assign_to'][ $group['assign_to'] ] = 0;
 				}
-				$data['assign_to'][ $group['assign_to'] ]++;
+				++$data['assign_to'][ $group['assign_to'] ];
 				if ( isset( $group['menu_order'] ) && $group['menu_order'] ) {
-					$data['menu_order']++;
+					++$data['menu_order'];
 				}
 			}
 			return $data;
@@ -120,37 +120,37 @@ if ( ! class_exists( 'WPDesk_Flexible_Product_Fields_Tracker' ) ) {
 					if ( ! isset( $data[ $field['type'] ] ) ) {
 						$data[ $field['type'] ] = $default_data;
 					}
-					$data[ $field['type'] ]['count']++;
+					++$data[ $field['type'] ]['count'];
 
 					if ( isset( $field['required'] ) && $field['required'] ) {
-						$data[ $field['type'] ]['required']++;
+						++$data[ $field['type'] ]['required'];
 					}
 					if ( isset( $field['max_length'] ) && $field['max_length'] ) {
-						$data[ $field['type'] ]['max_length']++;
+						++$data[ $field['type'] ]['max_length'];
 					}
 					if ( isset( $field['placeholder'] ) && $field['placeholder'] ) {
-						$data[ $field['type'] ]['required']++;
+						++$data[ $field['type'] ]['required'];
 					}
 					if ( isset( $field['value_min'] ) && $field['value_min'] ) {
-						$data[ $field['type'] ]['value']['min']++;
+						++$data[ $field['type'] ]['value']['min'];
 					}
 					if ( isset( $field['value_max'] ) && $field['value_max'] ) {
-						$data[ $field['type'] ]['value']['max']++;
+						++$data[ $field['type'] ]['value']['max'];
 					}
 					if ( isset( $field['value_step'] ) && $field['value_step'] ) {
-						$data[ $field['type'] ]['value']['step']++;
+						++$data[ $field['type'] ]['value']['step'];
 					}
 					if ( isset( $field['css_class'] ) && $field['css_class'] ) {
-						$data[ $field['type'] ]['css_class']++;
+						++$data[ $field['type'] ]['css_class'];
 					}
 					if ( isset( $field['tooltip'] ) && $field['tooltip'] ) {
-						$data[ $field['type'] ]['tooltip']++;
+						++$data[ $field['type'] ]['tooltip'];
 					}
 					if ( isset( $field['options'] ) && ( $count = count( $field['options'] ) ) ) {
 						if ( ! isset( $data[ $field['type'] ]['options'][ $count ] ) ) {
 							$data[ $field['type'] ]['options'][ $count ] = 0;
 						}
-						$data[ $field['type'] ]['options'][ $count ]++;
+						++$data[ $field['type'] ]['options'][ $count ];
 						foreach ( $field['options'] as $option ) {
 							$data[ $field['type'] ]['pricing'] = $this->get_pricing_data( $option, $data[ $field['type'] ]['pricing'] );
 						}
@@ -159,19 +159,19 @@ if ( ! class_exists( 'WPDesk_Flexible_Product_Fields_Tracker' ) ) {
 						if ( ! isset( $data[ $field['type'] ]['date_format'][ $field['date_format'] ] ) ) {
 							$data[ $field['type'] ]['date_format'][ $field['date_format'] ] = 0;
 						}
-						$data[ $field['type'] ]['date_format'][ $field['date_format'] ]++;
+						++$data[ $field['type'] ]['date_format'][ $field['date_format'] ];
 					}
 					if ( isset( $field['days_before'] ) && $field['days_before'] ) {
-						$data[ $field['type'] ]['days_before']++;
+						++$data[ $field['type'] ]['days_before'];
 					}
 					if ( isset( $field['days_after'] ) && $field['days_after'] ) {
-						$data[ $field['type'] ]['days_after']++;
+						++$data[ $field['type'] ]['days_after'];
 					}
 					if ( isset( $field['days_after'] ) && $field['days_after'] ) {
-						$data[ $field['type'] ]['days_after']++;
+						++$data[ $field['type'] ]['days_after'];
 					}
 					if ( isset( $field['days_after'] ) && $field['days_after'] ) {
-						$data[ $field['type'] ]['days_after']++;
+						++$data[ $field['type'] ]['days_after'];
 					}
 					$data[ $field['type'] ]['conditional_logic'] = $this->get_conditional_logic_data( $field, $data[ $field['type'] ]['conditional_logic'] );
 					$data[ $field['type'] ]['pricing']           = $this->get_pricing_data( $field, $data[ $field['type'] ]['pricing'] );
@@ -183,7 +183,7 @@ if ( ! class_exists( 'WPDesk_Flexible_Product_Fields_Tracker' ) ) {
 
 		private function get_conditional_logic_data( $field, $current_data ) {
 			if ( isset( $field['logic'] ) && $field['logic'] ) {
-				$current_data['enabled']++;
+				++$current_data['enabled'];
 			} else {
 				return $current_data;
 			}
@@ -192,14 +192,14 @@ if ( ! class_exists( 'WPDesk_Flexible_Product_Fields_Tracker' ) ) {
 				if ( ! isset( $current_data['operator'][ $field['logic_operator'] ] ) ) {
 					$current_data['operator'][ $field['logic_operator'] ] = 0;
 				}
-				$current_data['operator'][ $field['logic_operator'] ]++;
+				++$current_data['operator'][ $field['logic_operator'] ];
 			}
 			if ( isset( $field['logic_rules'] ) && $field['logic_rules'] ) {
 				foreach ( $field['logic_rules'] as $rule ) {
 					if ( ! isset( $current_data['rule_operator'][ $rule['compare'] ] ) ) {
 						$current_data['rule_operator'][ $rule['compare'] ] = 0;
 					}
-					$current_data['rule_operator'][ $rule['compare'] ]++;
+					++$current_data['rule_operator'][ $rule['compare'] ];
 				}
 			}
 
@@ -208,11 +208,11 @@ if ( ! class_exists( 'WPDesk_Flexible_Product_Fields_Tracker' ) ) {
 
 		private function get_pricing_data( $field, $current_data ) {
 			if ( isset( $field['price'] ) && $field['price'] ) {
-				$current_data['enabled']++;
+				++$current_data['enabled'];
 				if ( $field['price'] > 0 ) {
-					$current_data['value_positive']++;
+					++$current_data['value_positive'];
 				} elseif ( $field['price'] < 0 ) {
-					$current_data['value_negative']++;
+					++$current_data['value_negative'];
 				}
 			} else {
 				return $current_data;
@@ -222,7 +222,7 @@ if ( ! class_exists( 'WPDesk_Flexible_Product_Fields_Tracker' ) ) {
 				if ( ! isset( $current_data['type'][ $field['price_type'] ] ) ) {
 					$current_data['type'][ $field['price_type'] ] = 0;
 				}
-				$current_data['type'][ $field['price_type'] ]++;
+				++$current_data['type'][ $field['price_type'] ];
 			}
 
 			return $current_data;
@@ -289,7 +289,6 @@ if ( ! class_exists( 'WPDesk_Flexible_Product_Fields_Tracker' ) ) {
 				}
 			}
 		}
-
 	}
 
 }

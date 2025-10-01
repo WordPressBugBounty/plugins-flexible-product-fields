@@ -314,7 +314,7 @@ class FPF_Post_Type {
 		return $actions;
 	}
 
-	function bulk_actions( $actions ) {
+	public function bulk_actions( $actions ) {
 		unset( $actions['edit'] );
 		return $actions;
 	}

@@ -6,7 +6,9 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use WPDesk\FPF\Free\Field\TemplateArgs;
 use WPDesk\FPF\Free\Service\TemplateFinder\TemplateFinder;
-use WPDesk\FPF\Free\Helper\PluginHelper;
+use WPDesk\FPF\Free\Service\TemplateFinder\TemplateQuery;
+use WPDesk\FPF\Free\Service\TemplateFinder\Collections\TemplateCollection;
+use WPDesk\FPF\Free\Block\Settings\BlockTemplateSettings;
 
 class FPF_Product {
 
@@ -46,6 +48,8 @@ class FPF_Product {
 
 	private TemplateFinder $template_finder;
 
+	private $has_fpf_block = false;
+
 	/**
 	 * FPF_Product constructor.
 	 *
@@ -56,7 +60,7 @@ class FPF_Product {
 		$this->_plugin         = $plugin;
 		$this->_product_fields = $product_fields;
 		$this->product_price   = $product_price;
-		$this->template_finder = new TemplateFinder();
+		$this->template_finder = $this->_plugin->get_template_finder();
 		$this->hooks();
 	}
 
@@ -125,22 +129,38 @@ class FPF_Product {
 	 *
 	 * @return array<string, array<string, mixed>>
 	 */
-	public function get_translated_fields_for_product( $product, $hook = false ): array {
+	public function get_translated_fields_for_product( $product, $hook = false, ?BlockTemplateSettings $block_settings = null ): array {
 		if ( ! $product instanceof \WC_Product ) {
 			return [];
 		}
 
-		$templates = $this->template_finder->find( $product, $hook );
-		return $this->translate_fields_titles_and_labels( $templates->legacy_results() );
+		if ( $block_settings === null ) {
+			$templates = $this->template_finder->find( $product, $hook );
+			return $this->translate_fields_titles_and_labels( $templates->legacy_results() );
+		}
+
+		$template_query = $this->template_finder->get_template_query();
+		$block_template = $template_query->get_template_by_id( $block_settings->get_template_id() );
+		$block_template = new TemplateCollection( [ $block_template ] );
+
+		if ( $block_settings->should_show_other_templates() ) {
+			$templates = $this->template_finder->find( $product );
+			$block_template->merge( $templates );
+		}
+
+		$block_template->init_fields( $this->_product_fields->get_field_types() );
+
+		return $this->translate_fields_titles_and_labels( $block_template->legacy_results() );
 	}
 
 	/**
 	 * @param WC_Product $product
+	 * @param BlockTemplateSettings|null $block_settings
 	 *
 	 * @return array
 	 */
-	public function get_logic_rules_for_product( $product ) {
-		$fields = $this->get_translated_fields_for_product( $product );
+	public function get_logic_rules_for_product( $product, ?BlockTemplateSettings $block_settings = null ) {
+		$fields = $this->get_translated_fields_for_product( $product, false, $block_settings );
 		$rules  = [];
 		foreach ( $fields['fields'] as $field ) {
 			if ( isset( $field['logic'] ) && $field['logic'] == '1' && isset( $field['logic_operator'] ) && isset( $field['logic_rules'] ) ) {
@@ -159,8 +179,8 @@ class FPF_Product {
 	 * @return array
 	 * @internal
 	 */
-	public function create_fields_for_product( $product, $hook ) {
-		$fields = $this->get_translated_fields_for_product( $product, $hook );
+	public function create_fields_for_product( $product, $hook, ?BlockTemplateSettings $block_settings = null ) {
+		$fields = $this->get_translated_fields_for_product( $product, $hook, $block_settings );
 		foreach ( $fields['fields'] as $field ) {
 			$fields['display_fields'][] = $this->create_field( $field, $product );
 		}
@@ -195,28 +215,6 @@ class FPF_Product {
 	}
 
 	/**
-	 * @param bool|string $hook
-	 *
-	 * @deprecated version 2.7.0 use render_fields_before_add_to_cart and render_fields_after_add_to_cart instead
-	 * @internal
-	 */
-	public function show_fields( $hook ) {
-		global $product;
-		$fields = $this->create_fields_for_product( $product, $hook );
-		if ( count( $fields['display_fields'] ) ) {
-			echo $this->_plugin->load_template( // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				$hook,
-				'hooks',
-				[
-					'fields'     => $fields['display_fields'], // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					'fpf_nonce'  => wp_create_nonce( 'fpf_add_to_cart_nonce' ), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-					'product_id' => $product->get_id(), // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
-				]
-			);
-		}
-	}
-
-	/**
 	 * Translate fields titles and labels.
 	 *
 	 * @param array $fields
@@ -229,7 +227,7 @@ class FPF_Product {
 			if ( isset( $field['placeholder'] ) ) {
 				$field['placeholder'] = wpdesk__( $field['placeholder'], 'flexible-product-fields' );
 			}
-			if ( $field['has_options'] ) {
+			if ( isset( $field['has_options'] ) && $field['has_options'] ) {
 				foreach ( $field['options'] as $option_key => $option ) {
 					$field['options'][ $option_key ]['label'] = wpdesk__( $option['label'], 'flexible-product-fields' );
 				}
@@ -264,6 +262,20 @@ class FPF_Product {
 		);
 	}
 
+	public function render_fields( WC_Product $product, BlockTemplateSettings $block_settings ): string {
+		$fields = $this->create_fields_for_product( $product, false, $block_settings );
+		return $this->_plugin->load_template(
+			'block_fields',
+			'hooks',
+			[
+				'fields'         => $fields['display_fields'],
+				'product_id'     => $product->get_id(),
+				'block_settings' => $block_settings,
+				'fpf_nonce'      => \wp_create_nonce( 'fpf_add_to_cart_nonce' ),
+			]
+		);
+	}
+
 	/**
 	 * Fired by woocommerce_after_add_to_cart_button hook.
 	 */
@@ -271,6 +283,10 @@ class FPF_Product {
 		global $product;
 
 		if ( ! $product instanceof \WC_Product ) {
+			return;
+		}
+
+		if ( $this->has_fpf_block ) {
 			return;
 		}
 
@@ -285,7 +301,13 @@ class FPF_Product {
 		if ( $this->is_woocommerce_before_add_to_cart_button_fired ) {
 			return;
 		}
+
 		$this->is_woocommerce_before_add_to_cart_button_fired = true;
+
+		$this->has_fpf_block = $this->_plugin->has_block( 'fpf/template-selector' );
+		if ( $this->has_fpf_block ) {
+			return;
+		}
 
 		global $product;
 
@@ -299,8 +321,8 @@ class FPF_Product {
 	/**
 	* @return array<string, mixed> The fields data with calculated price values and display values.
 	*/
-	public function get_fields_data( WC_Product $product ): array {
-		$fields = $this->get_translated_fields_for_product( $product );
+	public function get_fields_data( WC_Product $product, ?BlockTemplateSettings $block_settings = null ): array {
+		$fields = $this->get_translated_fields_for_product( $product, false, $block_settings );
 
 		foreach ( $fields['fields'] as $key => $field ) {
 			$fields['fields'][ $key ] = $this->process_field_prices( $field, $product );
@@ -318,7 +340,7 @@ class FPF_Product {
 
 	/**
 	 * Process prices for a single field.
-	 * 
+	 *
 	 * @param array<string, mixed> $field
 	 * @param WC_Product $product
 	 *
@@ -350,7 +372,7 @@ class FPF_Product {
 
 	/**
 	* Process prices for field options.
-	* 
+	*
 	* @param array<string, mixed> $field
 	* @param WC_Product $product
 	*
@@ -378,11 +400,11 @@ class FPF_Product {
 
 	/**
 	 * Process price for a single option.
-	 * 
+	 *
 	 * @param array<string, mixed> $option
 	 * @param array<string, mixed> $price_values
 	 * @param WC_Product $product
-	 * 
+	 *
 	 * @return array<string, mixed>
 	 */
 	private function process_single_option_price(

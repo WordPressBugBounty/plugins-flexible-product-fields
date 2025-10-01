@@ -1,0 +1,60 @@
+{
+	"name": "flexible-product-fields",
+	"description": "Flexible Product Fields",
+	"license": "GPL-2.0+",
+	"author": {
+		"name": "Mateusz Gbiorczyk",
+		"email": "mateusz.gbiorczyk@wpdesk.net",
+		"url": "https://www.wpdesk.net/"
+	},
+	"dependencies": {
+		"@hello-pangea/dnd": "^16.6.0",
+		"@wordpress/block-editor": "^12.25.0",
+		"@wordpress/blocks": "^12.35.0",
+		"@wordpress/components": "^28.8.0",
+		"@wordpress/element": "^6.8.0",
+		"@wordpress/i18n": "^5.8.0",
+		"@wordpress/server-side-render": "^5.8.0",
+		"axios": "^0.21.1",
+		"react": "^18.2.0",
+		"react-dom": "^18.2.0",
+		"react-select": "^5.8.0",
+		"react-sticky": "^6.0.3",
+		"sort-css-media-queries": "2.4.0",
+		"vanilla-picker": "^2.12.1"
+	},
+	"devDependencies": {
+		"@babel/core": "^7.14.0",
+		"@babel/preset-env": "^7.14.0",
+		"@babel/preset-react": "^7.12.13",
+		"@wordpress/eslint-plugin": "^22.1.1",
+		"@wordpress/scripts": "^30.22.0",
+		"babel-loader": "^8.2.2",
+		"copy-webpack-plugin": "^9.0.1",
+		"css-loader": "^5.2.6",
+		"eslint": "^8.57.1",
+		"mini-css-extract-plugin": "^1.6.0",
+		"prettier": "^3.4.2",
+		"sass": "^1.35.1",
+		"sass-loader": "^12.1.0",
+		"style-loader": "^2.0.0",
+		"webpack": "^5.39.1",
+		"webpack-cli": "^4.7.2"
+	},
+	"browserslist": [
+		"chrome 80",
+		"firefox 72",
+		"safari 13",
+		"edge 80",
+		"ie 11"
+	],
+	"main": "webpack.config.js",
+	"scripts": {
+		"prod": "npm run build:webpack && npm run build:blocks",
+		"watch": "npm run watch:webpack && npm run watch:blocks",
+		"watch:regular": "webpack --config regular.config.js --mode=development --watch",
+		"watch:blocks": "wp-scripts start --source-path=assets-src/js/blocks --webpack-copy-php --blocks-manifest",
+		"build:regular": "webpack --config regular.config.js --mode=production",
+		"build:blocks": "wp-scripts build --source-path=assets-src/js/blocks --webpack-copy-php --blocks-manifest"
+	}
+}
