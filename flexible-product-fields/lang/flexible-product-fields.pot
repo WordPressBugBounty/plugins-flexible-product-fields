@@ -1,15 +1,15 @@
-# Copyright (C) 2025 WP Desk
+# Copyright (C) 2026 WP Desk
 # This file is distributed under the same license as the Flexible Product Fields plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Flexible Product Fields 2.10.0\n"
+"Project-Id-Version: Flexible Product Fields 2.12.2\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/flexible-product-fields\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2025-10-01T07:15:49+00:00\n"
+"POT-Creation-Date: 2026-01-27T13:45:41+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: flexible-product-fields\n"
@@ -42,22 +42,22 @@ msgstr ""
 
 #. Author URI of the plugin
 #: flexible-product-fields.php
-msgid "https://www.wpdesk.net/"
+msgid "https://www.wpdesk.net/sk/flexible-product-fields-author/"
 msgstr ""
 
 #: classes/fpf-add-to-cart-filters.php:77
 msgid "Select options"
 msgstr ""
 
-#: classes/fpf-cart.php:222
+#: classes/fpf-cart.php:271
 msgid "yes"
 msgstr ""
 
-#: classes/fpf-plugin.php:136
+#: classes/fpf-plugin.php:139
 msgid "Total"
 msgstr ""
 
-#: classes/fpf-plugin.php:321
+#: classes/fpf-plugin.php:325
 #: src/Settings/Page.php:145
 #: vendor_prefixed/wpdesk/wp-builder/src/Plugin/AbstractPlugin.php:188
 #: assets-src/js/blocks/fpf-template-selector/edit.js:108
@@ -65,16 +65,16 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: classes/fpf-plugin.php:322
+#: classes/fpf-plugin.php:326
 #: vendor_prefixed/wpdesk/wp-builder/src/Plugin/AbstractPlugin.php:184
 msgid "Docs"
 msgstr ""
 
-#: classes/fpf-plugin.php:326
+#: classes/fpf-plugin.php:330
 msgid "Upgrade to PRO &rarr;"
 msgstr ""
 
-#: classes/fpf-plugin.php:327
+#: classes/fpf-plugin.php:331
 #: templates/metabox/start-here.php:7
 msgid "Start here"
 msgstr ""
@@ -139,19 +139,19 @@ msgid "Fields"
 msgstr ""
 
 #: classes/fpf-post-type.php:105
-#: src/Settings/FieldsGroup.php:34
+#: src/Settings/FieldsGroup.php:36
 #: src/Settings/Option/GroupAssignOption.php:58
 msgid "Product"
 msgstr ""
 
 #: classes/fpf-post-type.php:122
-#: src/Settings/FieldsGroup.php:39
+#: src/Settings/FieldsGroup.php:41
 #: src/Settings/Option/GroupAssignOption.php:60
 msgid "Category"
 msgstr ""
 
 #: classes/fpf-post-type.php:139
-#: src/Settings/FieldsGroup.php:44
+#: src/Settings/FieldsGroup.php:46
 #: src/Settings/Option/GroupAssignOption.php:62
 msgid "Tag"
 msgstr ""
@@ -172,7 +172,7 @@ msgid "Tag excluded"
 msgstr ""
 
 #: classes/fpf-post-type.php:207
-#: src/Settings/FieldsGroup.php:49
+#: src/Settings/FieldsGroup.php:51
 #: src/Settings/Option/GroupAssignOption.php:64
 msgid "All products"
 msgstr ""
@@ -210,7 +210,7 @@ msgstr ""
 msgid "No fields found in this template."
 msgstr ""
 
-#: src/Field/TemplateArgs.php:75
+#: src/Field/TemplateArgs.php:56
 #: src/Settings/Option/RequiredOption.php:39
 msgid "Required field"
 msgstr ""
@@ -296,6 +296,10 @@ msgstr ""
 
 #: src/Field/Type/UrlType.php:38
 msgid "URL"
+msgstr ""
+
+#: src/Service/BookingCartFormatter.php:78
+msgid "Included"
 msgstr ""
 
 #: src/Settings/Option/CssOption.php:39
@@ -677,31 +681,31 @@ msgid "The value provided is not valid for the %1$s field."
 msgstr ""
 
 #. translators: %s: field label
-#: src/Validation/Rule/DateFormatRule.php:41
+#: src/Validation/Rule/DateFormatRule.php:57
 #, php-format
 msgid "%s has an invalid date format."
 msgstr ""
 
 #. translators: %s: field label
-#: src/Validation/Rule/DatesExcludedRule.php:44
+#: src/Validation/Rule/DatesExcludedRule.php:56
 #, php-format
 msgid "%s has an excluded date."
 msgstr ""
 
 #. translators: %s: field label
-#: src/Validation/Rule/DaysAfterRule.php:43
+#: src/Validation/Rule/DaysAfterRule.php:51
 #, php-format
 msgid "%s has a date set too late."
 msgstr ""
 
 #. translators: %s: field label
-#: src/Validation/Rule/DaysBeforeRule.php:43
+#: src/Validation/Rule/DaysBeforeRule.php:51
 #, php-format
 msgid "%s has a date set too early."
 msgstr ""
 
 #. translators: %s: field label
-#: src/Validation/Rule/DaysLimitRule.php:33
+#: src/Validation/Rule/DaysLimitRule.php:46
 #, php-format
 msgid "%s has too many dates."
 msgstr ""
@@ -725,7 +729,7 @@ msgid "%s has invalid value."
 msgstr ""
 
 #. translators: %s: field label
-#: src/Validation/Rule/RequiredRule.php:27
+#: src/Validation/Rule/RequiredRule.php:31
 #, php-format
 msgid "%s is required field."
 msgstr ""
@@ -755,7 +759,7 @@ msgid "%1$s is not within the time interval of %2$s minutes."
 msgstr ""
 
 #. translators: %s: field label
-#: src/Validation/Rule/TodayMaxHourRule.php:39
+#: src/Validation/Rule/TodayMaxHourRule.php:55
 #, php-format
 msgid "%s has a current date that is no longer available."
 msgstr ""
@@ -767,7 +771,7 @@ msgid "The URL address provided is not valid for the %1$s field."
 msgstr ""
 
 #. translators: %s: field label
-#: src/Validation/Rule/WeekDaysExcludedRule.php:38
+#: src/Validation/Rule/WeekDaysExcludedRule.php:48
 #, php-format
 msgid "%s has a date with an excluded day of the week."
 msgstr ""
@@ -780,6 +784,14 @@ msgstr ""
 
 #: templates/config/button-save.php:27
 msgid "Save product config"
+msgstr ""
+
+#: templates/fields/date-range.php:28
+msgid "(Start)"
+msgstr ""
+
+#: templates/fields/date-range.php:37
+msgid "(End)"
 msgstr ""
 
 #: templates/fields/file.php:27
@@ -908,6 +920,61 @@ msgstr ""
 msgid "More info"
 msgstr ""
 
+#: vendor_prefixed/wpdesk/wp-basic-requirements/src/Basic_Requirement_Checker.php:206
+#, php-format
+msgid "The &#8220;%s&#8221; plugin cannot run on PHP versions older than %s. Please contact your host and ask them to upgrade."
+msgstr ""
+
+#: vendor_prefixed/wpdesk/wp-basic-requirements/src/Basic_Requirement_Checker.php:209
+#, php-format
+msgid "The &#8220;%s&#8221; plugin cannot run on WordPress versions older than %s. Please update WordPress."
+msgstr ""
+
+#: vendor_prefixed/wpdesk/wp-basic-requirements/src/Basic_Requirement_Checker.php:212
+#, php-format
+msgid "The &#8220;%s&#8221; plugin cannot run on WooCommerce versions older than %s. Please update WooCommerce."
+msgstr ""
+
+#: vendor_prefixed/wpdesk/wp-basic-requirements/src/Basic_Requirement_Checker.php:215
+#, php-format
+msgid "The &#8220;%s&#8221; plugin cannot run without OpenSSL module version at least %s. Please update OpenSSL module."
+msgstr ""
+
+#: vendor_prefixed/wpdesk/wp-basic-requirements/src/Basic_Requirement_Checker.php:310
+#, php-format
+msgid "The &#8220;%1$s&#8221; plugin requires at least %2$s version of %3$s to work correctly. Please update it to its latest release."
+msgstr ""
+
+#: vendor_prefixed/wpdesk/wp-basic-requirements/src/Basic_Requirement_Checker.php:416
+#, php-format
+msgid "The &#8220;%s&#8221; plugin cannot run without %s active. Please install and activate %s plugin."
+msgstr ""
+
+#: vendor_prefixed/wpdesk/wp-basic-requirements/src/Basic_Requirement_Checker.php:468
+#, php-format
+msgid "The &#8220;%s&#8221; plugin requires free %s plugin. <a href=\"%s\">Install %s</a>"
+msgstr ""
+
+#: vendor_prefixed/wpdesk/wp-basic-requirements/src/Basic_Requirement_Checker.php:474
+#, php-format
+msgid "The &#8220;%s&#8221; plugin requires activating %s plugin. <a href=\"%s\">Activate %s</a>"
+msgstr ""
+
+#: vendor_prefixed/wpdesk/wp-basic-requirements/src/Basic_Requirement_Checker.php:516
+#, php-format
+msgid "The &#8220;%s&#8221; plugin cannot run without %s PHP module installed. Please contact your host and ask them to install %s."
+msgstr ""
+
+#: vendor_prefixed/wpdesk/wp-basic-requirements/src/Basic_Requirement_Checker.php:541
+#, php-format
+msgid "The &#8220;%s&#8221; plugin cannot run without %s PHP setting set to %s. Please contact your host and ask them to set %s."
+msgstr ""
+
+#: vendor_prefixed/wpdesk/wp-basic-requirements/src/Basic_Requirement_Checker_With_Update_Disable.php:29
+#, php-format
+msgid "The &#8220;%s&#8221; plugin is temporarily disabled since the required %s plugin is being upgraded."
+msgstr ""
+
 #: vendor_prefixed/wpdesk/wp-builder/src/Plugin/AbstractPlugin.php:181
 msgid "Support"
 msgstr ""
@@ -960,7 +1027,7 @@ msgstr ""
 msgid "Skip and Deactivate"
 msgstr ""
 
-#: vendor_prefixed/wpdesk/wp-wpdesk-tracker/src/class-wpdesk-tracker.php:160
+#: vendor_prefixed/wpdesk/wp-wpdesk-tracker/src/class-wpdesk-tracker.php:164
 msgid "Submit &amp; Deactivate"
 msgstr ""
 

@@ -15,18 +15,33 @@ class ProductExludedTemplateFinder implements TemplateFinderInterface {
 	private const TEMPLATE_META_KEY = '_excluded_product_id';
 
 	public function find_templates( ProductHandlerInterface $product_handler, TemplateQuery $template_query ): TemplateCollection {
-		$values          = $product_handler->get_product_ids();
-		$meta_query_args = [
-			'key'     => self::TEMPLATE_META_KEY,
-			'value'   => count( $values ) === 1 ? $values[0] : $values,
-			'compare' => count( $values ) === 1 ? '!=' : 'NOT IN',
-		];
+		$product_ids = $product_handler->get_product_ids();
 
-		$templates = $template_query->get_templates(
-			self::TEMPLATE_TYPE,
-			$meta_query_args
+		$templates = $template_query->get_templates( self::TEMPLATE_TYPE );
+
+		if ( empty( $templates ) ) {
+			return new TemplateCollection( [] );
+		}
+
+		$filtered_templates = array_filter(
+			$templates,
+			function ( $template ) use ( $product_ids ) {
+				$excluded_product_ids = get_post_meta( $template->ID, self::TEMPLATE_META_KEY );
+
+				if ( empty( $excluded_product_ids ) ) {
+					return true;
+				}
+
+				foreach ( $product_ids as $product_id ) {
+					if ( in_array( (string) $product_id, $excluded_product_ids, true ) ) {
+						return false;
+					}
+				}
+
+				return true;
+			}
 		);
 
-		return new TemplateCollection( $templates );
+		return new TemplateCollection( $filtered_templates );
 	}
 }

@@ -24,6 +24,7 @@ abstract class OptionAbstract implements OptionInterface {
 	const FIELD_TYPE_TEXT          = 'TextField';
 	const FIELD_TYPE_IMAGE         = 'ImageField';
 	const FIELD_TYPE_COLOR         = 'ColorField';
+	const FIELD_TYPE_TIME          = 'TimeField';
 
 	/**
 	 * {@inheritdoc}

@@ -8,6 +8,8 @@ use VendorFPF\WPDesk\PluginBuilder\Plugin\PluginAccess;
 
 /**
  * Supports list of setting options for field groups.
+ *
+ * @deprecated will be removed in the future release.
  */
 class FieldsGroup implements Hookable, HookablePluginDependant {
 

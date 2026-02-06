@@ -2,6 +2,10 @@
 
 namespace WPDesk\FPF\Free\Validation\Rule;
 
+use WPDesk\FPF\Free\Helper\DateFormatConverter;
+use WPDesk\FPF\Free\DTO\DateDTOInterface;
+use WPDesk\FPF\Free\Helper\FieldSettingFilters;
+
 /**
  * Supports "Time of day closing" validation rule for fields.
  */
@@ -11,19 +15,31 @@ class TodayMaxHourRule implements RuleInterface {
 	 * {@inheritdoc}
 	 */
 	public function validate_value( array $field_data, array $field_type, $value ): bool {
+		if ( ! $value instanceof DateDTOInterface ) {
+			return true;
+		}
+
 		if ( ! ( $field_type['has_today_max_hour'] ?? false ) ) {
 			return true;
 		}
 
-		$max_hour = $field_data['today_max_hour'] ?? '';
-		if ( ! $max_hour || ( wp_date( 'H:i' ) <= gmdate( 'H:i', strtotime( $max_hour ) ) ) ) {
+		$max_hour = FieldSettingFilters::get_today_max_hour( $field_data );
+		if ( $max_hour === '' ) {
+			return true;
+		}
+		$max_hour_datetime = \DateTime::createFromFormat( 'H:i', $max_hour );
+		if ( $max_hour_datetime === false || wp_date( 'H:i' ) <= $max_hour_datetime->format( 'H:i' ) ) {
 			return true;
 		}
 
 		$date_today = wp_date( 'Ymd' );
-		$dates      = ( $value ) ? explode( ',', $value ) : [];
-		foreach ( $dates as $date ) {
-			if ( gmdate( 'Ymd', strtotime( $date ) ) === $date_today ) {
+
+		$date_format = $field_data['date_format'] ?? DateFormatConverter::DEFAULT_DATE_FORMAT;
+		$date_format = DateFormatConverter::to_php( $date_format );
+
+		foreach ( $value as $date ) {
+			$datetime = \DateTime::createFromFormat( $date_format, $date );
+			if ( $datetime === false || $datetime->format( 'Ymd' ) === $date_today ) {
 				return false;
 			}
 		}

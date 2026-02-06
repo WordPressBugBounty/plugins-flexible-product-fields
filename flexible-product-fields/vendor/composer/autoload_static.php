@@ -4,25 +4,25 @@
 
 namespace Composer\Autoload;
 
-class ComposerStaticInit8e5aea80b312e88993f9380e32cdf924
+class ComposerStaticInitc72ca6fd070ba214ffbaa5e5f5801d41
 {
     public static $prefixLengthsPsr4 = array (
-        'W' => 
+        'W' =>
         array (
             'WPDesk\\FPF\\Free\\' => 16,
         ),
-        'P' => 
+        'P' =>
         array (
             'Psr\\Log\\' => 8,
         ),
     );
 
     public static $prefixDirsPsr4 = array (
-        'WPDesk\\FPF\\Free\\' => 
+        'WPDesk\\FPF\\Free\\' =>
         array (
             0 => __DIR__ . '/../..' . '/src',
         ),
-        'Psr\\Log\\' => 
+        'Psr\\Log\\' =>
         array (
             0 => __DIR__ . '/..' . '/psr/log/Psr/Log',
         ),
@@ -165,7 +165,6 @@ class ComposerStaticInit8e5aea80b312e88993f9380e32cdf924
         'VendorFPF\\Monolog\\SignalHandler' => __DIR__ . '/../..' . '/vendor_prefixed/monolog/monolog/src/Monolog/SignalHandler.php',
         'VendorFPF\\Monolog\\Test\\TestCase' => __DIR__ . '/../..' . '/vendor_prefixed/monolog/monolog/src/Monolog/Test/TestCase.php',
         'VendorFPF\\Monolog\\Utils' => __DIR__ . '/../..' . '/vendor_prefixed/monolog/monolog/src/Monolog/Utils.php',
-        'VendorFPF\\Psr\\Clock\\ClockInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/clock/src/ClockInterface.php',
         'VendorFPF\\Psr\\Container\\ContainerExceptionInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/container/src/ContainerExceptionInterface.php',
         'VendorFPF\\Psr\\Container\\ContainerInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/container/src/ContainerInterface.php',
         'VendorFPF\\Psr\\Container\\NotFoundExceptionInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/container/src/NotFoundExceptionInterface.php',
@@ -200,9 +199,6 @@ class ComposerStaticInit8e5aea80b312e88993f9380e32cdf924
         'VendorFPF\\Psr\\Log\\Test\\DummyTest' => __DIR__ . '/../..' . '/vendor_prefixed/psr/log/Psr/Log/Test/DummyTest.php',
         'VendorFPF\\Psr\\Log\\Test\\LoggerInterfaceTest' => __DIR__ . '/../..' . '/vendor_prefixed/psr/log/Psr/Log/Test/LoggerInterfaceTest.php',
         'VendorFPF\\Psr\\Log\\Test\\TestLogger' => __DIR__ . '/../..' . '/vendor_prefixed/psr/log/Psr/Log/Test/TestLogger.php',
-        'VendorFPF\\Psr\\SimpleCache\\CacheException' => __DIR__ . '/../..' . '/vendor_prefixed/psr/simple-cache/src/CacheException.php',
-        'VendorFPF\\Psr\\SimpleCache\\CacheInterface' => __DIR__ . '/../..' . '/vendor_prefixed/psr/simple-cache/src/CacheInterface.php',
-        'VendorFPF\\Psr\\SimpleCache\\InvalidArgumentException' => __DIR__ . '/../..' . '/vendor_prefixed/psr/simple-cache/src/InvalidArgumentException.php',
         'VendorFPF\\WPDesk\\Dashboard\\DashboardWidget' => __DIR__ . '/../..' . '/vendor_prefixed/wpdesk/ltv-dashboard-widget/src/DashboardWidget.php',
         'VendorFPF\\WPDesk\\DeactivationModal\\Exception\\DuplicatedFormOptionKeyException' => __DIR__ . '/../..' . '/vendor_prefixed/wpdesk/wp-wpdesk-deactivation-modal/src/Exception/DuplicatedFormOptionKeyException.php',
         'VendorFPF\\WPDesk\\DeactivationModal\\Exception\\DuplicatedFormValueKeyException' => __DIR__ . '/../..' . '/vendor_prefixed/wpdesk/wp-wpdesk-deactivation-modal/src/Exception/DuplicatedFormValueKeyException.php',
@@ -335,6 +331,10 @@ class ComposerStaticInit8e5aea80b312e88993f9380e32cdf924
         'WPDesk\\FPF\\Free\\Block\\BlockIntegration' => __DIR__ . '/../..' . '/src/Block/BlockIntegration.php',
         'WPDesk\\FPF\\Free\\Block\\Settings\\BlockTemplateSettings' => __DIR__ . '/../..' . '/src/Block/Settings/BlockTemplateSettings.php',
         'WPDesk\\FPF\\Free\\Block\\TemplateBlockContext' => __DIR__ . '/../..' . '/src/Block/TemplateBlockContext.php',
+        'WPDesk\\FPF\\Free\\DTO\\DateDTO' => __DIR__ . '/../..' . '/src/DTO/DateDTO.php',
+        'WPDesk\\FPF\\Free\\DTO\\DateDTOInterface' => __DIR__ . '/../..' . '/src/DTO/DateDTOInterface.php',
+        'WPDesk\\FPF\\Free\\DTO\\DateRangeDTO' => __DIR__ . '/../..' . '/src/DTO/DateRangeDTO.php',
+        'WPDesk\\FPF\\Free\\DTO\\TimeSlotsDTO' => __DIR__ . '/../..' . '/src/DTO/TimeSlotsDTO.php',
         'WPDesk\\FPF\\Free\\Field\\FieldData' => __DIR__ . '/../..' . '/src/Field/FieldData.php',
         'WPDesk\\FPF\\Free\\Field\\TemplateArgs' => __DIR__ . '/../..' . '/src/Field/TemplateArgs.php',
         'WPDesk\\FPF\\Free\\Field\\Type\\CheckboxType' => __DIR__ . '/../..' . '/src/Field/Type/CheckboxType.php',
@@ -362,6 +362,8 @@ class ComposerStaticInit8e5aea80b312e88993f9380e32cdf924
         'WPDesk\\FPF\\Free\\Field\\Type\\UrlType' => __DIR__ . '/../..' . '/src/Field/Type/UrlType.php',
         'WPDesk\\FPF\\Free\\Field\\Types' => __DIR__ . '/../..' . '/src/Field/Types.php',
         'WPDesk\\FPF\\Free\\Helper\\CalendarAttributeHelper' => __DIR__ . '/../..' . '/src/Helper/CalendarAttributeHelper.php',
+        'WPDesk\\FPF\\Free\\Helper\\DateFormatConverter' => __DIR__ . '/../..' . '/src/Helper/DateFormatConverter.php',
+        'WPDesk\\FPF\\Free\\Helper\\FieldSettingFilters' => __DIR__ . '/../..' . '/src/Helper/FieldSettingFilters.php',
         'WPDesk\\FPF\\Free\\Helper\\PluginHelper' => __DIR__ . '/../..' . '/src/Helper/PluginHelper.php',
         'WPDesk\\FPF\\Free\\Integration\\Integrator' => __DIR__ . '/../..' . '/src/Integration/Integrator.php',
         'WPDesk\\FPF\\Free\\Integration\\IntegratorIntegration' => __DIR__ . '/../..' . '/src/Integration/IntegratorIntegration.php',
@@ -373,6 +375,8 @@ class ComposerStaticInit8e5aea80b312e88993f9380e32cdf924
         'WPDesk\\FPF\\Free\\Notice\\ReviewNotice' => __DIR__ . '/../..' . '/src/Notice/ReviewNotice.php',
         'WPDesk\\FPF\\Free\\Plugin' => __DIR__ . '/../..' . '/src/Plugin.php',
         'WPDesk\\FPF\\Free\\Product\\FieldsConfig' => __DIR__ . '/../..' . '/src/Product/FieldsConfig.php',
+        'WPDesk\\FPF\\Free\\Service\\BookingCartFormatter' => __DIR__ . '/../..' . '/src/Service/BookingCartFormatter.php',
+        'WPDesk\\FPF\\Free\\Service\\BookingUnitsCalculator' => __DIR__ . '/../..' . '/src/Service/BookingUnitsCalculator.php',
         'WPDesk\\FPF\\Free\\Service\\ShortLinksGenerator' => __DIR__ . '/../..' . '/src/Service/ShortLinksGenerator.php',
         'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\Collections\\FinderCollection' => __DIR__ . '/../..' . '/src/Service/TemplateFinder/Collections/FinderCollection.php',
         'WPDesk\\FPF\\Free\\Service\\TemplateFinder\\Collections\\TemplateCollection' => __DIR__ . '/../..' . '/src/Service/TemplateFinder/Collections/TemplateCollection.php',
@@ -494,9 +498,9 @@ class ComposerStaticInit8e5aea80b312e88993f9380e32cdf924
     public static function getInitializer(ClassLoader $loader)
     {
         return \Closure::bind(function () use ($loader) {
-            $loader->prefixLengthsPsr4 = ComposerStaticInit8e5aea80b312e88993f9380e32cdf924::$prefixLengthsPsr4;
-            $loader->prefixDirsPsr4 = ComposerStaticInit8e5aea80b312e88993f9380e32cdf924::$prefixDirsPsr4;
-            $loader->classMap = ComposerStaticInit8e5aea80b312e88993f9380e32cdf924::$classMap;
+            $loader->prefixLengthsPsr4 = ComposerStaticInitc72ca6fd070ba214ffbaa5e5f5801d41::$prefixLengthsPsr4;
+            $loader->prefixDirsPsr4 = ComposerStaticInitc72ca6fd070ba214ffbaa5e5f5801d41::$prefixDirsPsr4;
+            $loader->classMap = ComposerStaticInitc72ca6fd070ba214ffbaa5e5f5801d41::$classMap;
 
         }, null, ClassLoader::class);
     }

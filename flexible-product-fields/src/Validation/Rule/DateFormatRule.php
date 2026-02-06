@@ -2,7 +2,8 @@
 
 namespace WPDesk\FPF\Free\Validation\Rule;
 
-use WPDesk\FPF\Free\Field\TemplateArgs;
+use WPDesk\FPF\Free\Helper\DateFormatConverter;
+use WPDesk\FPF\Free\DTO\DateDTOInterface;
 
 /**
  * Supports "Date format" validation rule for fields.
@@ -13,6 +14,10 @@ class DateFormatRule implements RuleInterface {
 	 * {@inheritdoc}
 	 */
 	public function validate_value( array $field_data, array $field_type, $value ): bool {
+		if ( ! $value instanceof DateDTOInterface ) {
+			return true;
+		}
+
 		if ( ! ( $field_type['has_date_format'] ?? false ) ) {
 			return true;
 		}
@@ -22,10 +27,21 @@ class DateFormatRule implements RuleInterface {
 			return true;
 		}
 
-		$date_format = TemplateArgs::convert_date_format_for_php( $date_format );
-		$dates       = ( $value ) ? explode( ',', $value ) : [];
-		foreach ( $dates as $date ) {
-			if ( gmdate( $date_format, strtotime( $date ) ) !== $date ) {
+		$date_format = DateFormatConverter::to_php( $date_format );
+
+		foreach ( $value as $date ) {
+			if ( ! $date ) {
+				continue;
+			}
+
+			$datetime = \DateTime::createFromFormat( $date_format, $date );
+			if ( $datetime === false ) {
+				return false; // Invalid format or impossible date
+			}
+
+			// Additional validation: ensure the parsed date matches the input exactly
+			// This catches cases like "2024-02-30" which would be adjusted to "2024-03-01"
+			if ( $datetime->format( $date_format ) !== $date ) {
 				return false;
 			}
 		}

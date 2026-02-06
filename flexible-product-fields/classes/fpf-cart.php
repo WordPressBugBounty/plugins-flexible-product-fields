@@ -1,6 +1,10 @@
 <?php
 
 use WPDesk\FPF\Free\Block\Settings\BlockTemplateSettings;
+use WPDesk\FPF\Free\DTO\DateDTOInterface;
+use WPDesk\FPF\Free\Helper\DateFormatConverter;
+use WPDesk\FPF\Free\Service\BookingCartFormatter;
+use WPDesk\FPF\Free\Service\BookingUnitsCalculator;
 
 /**
  * Handles WooCommerce add to cart.
@@ -41,18 +45,22 @@ class FPF_Cart {
 	 */
 	private $product_price = null;
 
+	private BookingCartFormatter $booking_formatter;
+
 	/**
 	 * FPF_Cart constructor.
 	 *
 	 * @param Flexible_Product_Fields_Plugin $plugin
-	 * @param FPF_Product_Fields $product_fields
-	 * @param FPF_Product $product
+	 * @param FPF_Product_Fields             $product_fields
+	 * @param FPF_Product                    $product
+	 * @param FPF_Product_Price              $product_price
 	 */
-	public function __construct( Flexible_Product_Fields_Plugin $plugin, FPF_Product_Fields $product_fields, FPF_Product $product, FPF_Product_Price $product_price ) {
-		$this->_plugin         = $plugin;
-		$this->_product_fields = $product_fields;
-		$this->_product        = $product;
-		$this->product_price   = $product_price;
+	public function __construct( Flexible_Product_Fields_Plugin $plugin, FPF_Product_Fields $product_fields, FPF_Product $product, FPF_Product_Price $product_price, BookingCartFormatter $booking_formatter ) {
+		$this->_plugin           = $plugin;
+		$this->_product_fields   = $product_fields;
+		$this->_product          = $product;
+		$this->product_price     = $product_price;
+		$this->booking_formatter = $booking_formatter;
 		add_action( 'plugins_loaded', [ $this, 'hooks' ] );
 	}
 
@@ -105,6 +113,8 @@ class FPF_Cart {
 	}
 
 	/**
+	 * @deprecated since 2.12.0
+	 *
 	 * @param int $item_id
 	 * @param array $values
 	 */
@@ -128,6 +138,10 @@ class FPF_Cart {
 			if ( ! empty( $item->legacy_values ) && ! empty( $item->legacy_values['flexible_product_fields'] )
 				&& $this->validate_product_referer_id( $item->legacy_values ) ) {
 				foreach ( $item->legacy_values['flexible_product_fields'] as $field ) {
+					if ( filter_var( $field['is_reservation'] ?? false, FILTER_VALIDATE_BOOLEAN ) ) {
+						continue; // we will handle those fields in a Booking Addon plugin
+					}
+
 					$name = $field['name'];
 					wc_add_order_item_meta( $item_id, $name, $field['value'] );
 				}
@@ -162,7 +176,7 @@ class FPF_Cart {
 		}
 
 		$product_id = empty( $cart_item['variation_id'] ) ? $cart_item['product_id'] : $cart_item['variation_id'];
-		$product    = \wc_get_product( $product_id );
+		$product    = $cart_item['data'] ?? \wc_get_product( $product_id );
 		if ( ! $product instanceof \WC_Product ) {
 			return $cart_item;
 		}
@@ -172,8 +186,24 @@ class FPF_Cart {
 			: (float) $product->get_price( 'edit' );
 		$measurement   = isset( $cart_item['pricing_item_meta_data']['_measurement_needed'] ) ? (float) $cart_item['pricing_item_meta_data']['_measurement_needed'] : 1;
 
-		$extra_cost = 0;
+		// Separate fields while preserving keys
+		$non_booking_pricing_fields = [];
+		$per_booking_pricing_fields = [];
+
 		foreach ( $fields as $key => $field ) {
+			if ( ! isset( $field['price_type'] ) || $field['price_type'] === '' ) {
+				continue;
+			}
+
+			if ( $field['price_type'] === 'per_booking' ) {
+				$per_booking_pricing_fields[ $key ] = $field;
+			} else {
+				$non_booking_pricing_fields[ $key ] = $field;
+			}
+		}
+
+		$extra_cost = 0;
+		foreach ( $non_booking_pricing_fields as $key => $field ) {
 			if ( isset( $field['price_type'] ) && $field['price_type'] != '' && isset( $field['price'] ) && floatval( $field['price'] ) != 0 ) {
 				$field_price            = (float) $field['price'];
 				$field_price_type       = (string) $field['price_type'];
@@ -193,7 +223,24 @@ class FPF_Cart {
 				}
 			}
 		}
-		$cart_item['data']->set_price( (float) $cart_item['data']->get_price( 'edit' ) + $extra_cost );
+
+		$per_booking_extra_cost = 0;
+		foreach ( $per_booking_pricing_fields as $key => $field ) {
+			$booking_units = (int) ( $field['booking_units'] ?? 1 );
+			if ( $booking_units <= 1 ) {
+				continue;
+			}
+
+			$booking_base_price_option = $field['booking_base_price'] ?? 'product_only';
+			$unit_cost_base            = ( $booking_base_price_option === 'product_with_options' ) ? ( $product_price + $extra_cost ) : $product_price;
+			$field_extra_cost_base     = ( $booking_units - 1 ) * $unit_cost_base;
+			$per_booking_extra_cost   += $field_extra_cost_base;
+
+			$cart_item['flexible_product_fields'][ $key ]['value'] = $this->booking_formatter->format( $field, $unit_cost_base );
+		}
+
+		$price = $product_price + $extra_cost + $per_booking_extra_cost;
+		$cart_item['data']->set_price( $price );
 
 		return $cart_item;
 	}
@@ -201,11 +248,11 @@ class FPF_Cart {
 	/**
 	 * Get field data from posted fields.
 	 *
-	 * @param array       $field Field.
-	 * @param array       $field_type Settings of field type.
-	 * @param string|null $value Value of field.
-	 * @param int         $product_id Product ID.
-	 * @param int         $variation_id Variation ID.
+	 * @param array                          $field Field.
+	 * @param array                          $field_type Settings of field type.
+	 * @param string|null|DateDTOInterface   $value Value of field.
+	 * @param int                            $product_id Product ID.
+	 * @param int                            $variation_id Variation ID.
 	 *
 	 * @return array|bool|WP_Error
 	 */
@@ -215,8 +262,10 @@ class FPF_Cart {
 		if ( $value != null ) {
 			$ret = [
 				'name'  => $field['title'],
-				'value' => $value,
+				'id'    => $field['id'],
+				'value' => (string) $value,
 			];
+
 			if ( $field['type'] == 'checkbox' ) {
 				if ( ! isset( $field['value'] ) ) {
 					$ret['value'] = __( 'yes', 'flexible-product-fields' );
@@ -224,11 +273,29 @@ class FPF_Cart {
 					$ret['value'] = $field['value'];
 				}
 			}
+
+			if ( $this->is_reservation_field( $field ) ) {
+				$ret['is_reservation'] = true;
+				$ret['booking_data']   = $value->to_cart_format();
+			}
+
 			if ( $field_type['has_price'] ) {
 				if ( ! isset( $field['price_type'] ) ) {
 					$field['price_type'] = 'fixed';
 				}
-				if ( isset( $field['price_type'] ) && $field['price_type'] !== '' && isset( $field['price'] ) && $field['price'] !== '' ) {
+				if ( $field['price_type'] === 'per_booking' ) {
+					$ret['price_type']         = 'per_booking';
+					$ret['booking_base_price'] = $field['booking_base_price'] ?? 'product_only';
+					$ret['type']               = $value->get_type();
+
+					$date_format             = $field['date_format'] ?? DateFormatConverter::DEFAULT_DATE_FORMAT;
+					$date_format_php         = DateFormatConverter::to_php( $date_format );
+					$allow_adjacent_bookings = filter_var( $field['allow_adjacent_bookings'] ?? false, FILTER_VALIDATE_BOOLEAN );
+
+					$ret['booking_units'] = BookingUnitsCalculator::calculate( $value, $date_format_php, $allow_adjacent_bookings );
+					$ret['org_value']     = isset( $ret['value'] ) ? (string) $ret['value'] : '';
+
+				} elseif ( isset( $field['price_type'] ) && $field['price_type'] !== '' && isset( $field['price'] ) && $field['price'] !== '' ) {
 					$ret['price_type']       = $field['price_type'];
 					$ret['price']            = $field['price'];
 					$ret['calculation_type'] = $field['calculation_type'] ?? '';
@@ -335,6 +402,7 @@ class FPF_Cart {
 		return $other_data;
 	}
 
+
 	/**
 	 * @param array $cart_item_data
 	 * @param int $product_id
@@ -362,13 +430,12 @@ class FPF_Cart {
 
 		$block_settings = null;
 		if ( isset( $post_data['_fpf_block_template_id'] ) && (int) $post_data['_fpf_block_template_id'] > 0 ) {
-			$template_id = (int) $post_data['_fpf_block_template_id'];
+			$template_id          = (int) $post_data['_fpf_block_template_id'];
 			$show_other_templates = (bool) $post_data['_fpf_block_show_other_templates'] ?? false;
-			$block_settings = new BlockTemplateSettings( $template_id, $show_other_templates );
+			$block_settings       = new BlockTemplateSettings( $template_id, $show_other_templates );
 		}
 
-		$fields = $this->_product->get_translated_fields_for_product( $product_data, false, $block_settings );
-
+		$fields       = $this->_product->get_translated_fields_for_product( $product_data, false, $block_settings );
 		$fields       = apply_filters( 'flexible_product_fields_apply_logic_rules', $fields, $post_data );
 		$fields_types = $this->_product_fields->get_field_types_by_type();
 
@@ -406,6 +473,28 @@ class FPF_Cart {
 		}
 
 		return $cart_item_data;
+	}
+
+	/**
+	 * @param array<string, mixed> $field
+	 */
+	private function is_reservation_field( array $field ): bool {
+		if ( ! isset( $field['type'] ) ) {
+			return false;
+		}
+
+		$field_type = (string) $field['type'];
+
+		$daily_capacity = (int) ( $field['daily_capacity'] ?? 0 );
+		if ( 'fpfdate' === $field_type && $daily_capacity === 0 ) {
+			return false;
+		}
+
+		if ( ! in_array( $field_type, [ 'fpfdate', 'time_slots' ], true ) ) {
+			return false;
+		}
+
+		return true;
 	}
 
 	/**

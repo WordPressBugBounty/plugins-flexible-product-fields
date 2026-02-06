@@ -2,6 +2,9 @@
 
 namespace WPDesk\FPF\Free\Validation\Rule;
 
+use WPDesk\FPF\Free\Helper\DateFormatConverter;
+use WPDesk\FPF\Free\DTO\DateDTOInterface;
+
 /**
  * Supports "Excluded days of week" validation rule for fields.
  */
@@ -11,6 +14,10 @@ class WeekDaysExcludedRule implements RuleInterface {
 	 * {@inheritdoc}
 	 */
 	public function validate_value( array $field_data, array $field_type, $value ): bool {
+		if ( ! $value instanceof DateDTOInterface ) {
+			return true;
+		}
+
 		if ( ! ( $field_type['has_days_excluded'] ?? false ) ) {
 			return true;
 		}
@@ -20,9 +27,12 @@ class WeekDaysExcludedRule implements RuleInterface {
 			return true;
 		}
 
-		$dates = ( $value ) ? explode( ',', $value ) : [];
-		foreach ( $dates as $date ) {
-			if ( in_array( gmdate( 'w', strtotime( $date ) ), $days_excluded, false ) ) {
+		$date_format = $field_data['date_format'] ?? DateFormatConverter::DEFAULT_DATE_FORMAT;
+		$date_format = DateFormatConverter::to_php( $date_format );
+
+		foreach ( $value as $date ) {
+			$datetime = \DateTime::createFromFormat( $date_format, $date );
+			if ( $datetime === false || in_array( $datetime->format( 'w' ), $days_excluded, false ) ) {
 				return false;
 			}
 		}

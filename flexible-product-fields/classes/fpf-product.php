@@ -6,7 +6,6 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 use WPDesk\FPF\Free\Field\TemplateArgs;
 use WPDesk\FPF\Free\Service\TemplateFinder\TemplateFinder;
-use WPDesk\FPF\Free\Service\TemplateFinder\TemplateQuery;
 use WPDesk\FPF\Free\Service\TemplateFinder\Collections\TemplateCollection;
 use WPDesk\FPF\Free\Block\Settings\BlockTemplateSettings;
 
@@ -73,6 +72,10 @@ class FPF_Product {
 		add_action( 'woocommerce_after_add_to_cart_button', [ $this, 'woocommerce_after_add_to_cart_button' ] );
 
 		add_filter( 'woocommerce_product_supports', [ $this, 'woocommerce_product_supports' ], 10, 3 );
+	}
+
+	public function get_template_finder(): TemplateFinder {
+		return $this->template_finder;
 	}
 
 	/**
@@ -195,7 +198,13 @@ class FPF_Product {
 	 * @internal
 	 */
 	public function create_field( array $field, WC_Product $product ) {
-		$field_type    = $this->get_field_type( $field['type'] );
+		$field_type = $this->get_field_type( $field['type'] );
+
+		// Use alternative template for date fields with range selection enabled
+		if ( $field['type'] === 'fpfdate' && isset( $field['date_range_selection'] ) && $field['date_range_selection'] === '1' ) {
+			$field_type['template_file'] = 'date-range';
+		}
+
 		$template_vars = $field_type['type_object']->get_field_template_vars( $field );
 
 		$template_vars['value'] = $field_type['type_object']->get_field_value( $field['id'], true );
@@ -363,8 +372,9 @@ class FPF_Product {
 		$processed_price = $this->get_processed_price_data( $price, $field['price_type'], $calculation_type, $product );
 
 		if ( $processed_price !== null ) {
-			$field['price_value']   = $processed_price['price_value'];
-			$field['price_display'] = $processed_price['price_display'];
+			$field['price_value']        = $processed_price['price_value'];
+			$field['price_display']      = $processed_price['price_display'];
+			$field['price_label_format'] = $this->get_price_label_format( $processed_price['price_value'], $field );
 		}
 
 		return $field;
@@ -422,11 +432,12 @@ class FPF_Product {
 		$processed_price = $this->get_processed_price_data( $option_price_value, $option_price_type, $option_calculation_type, $product );
 
 		if ( $processed_price !== null ) {
-			$option['price_type']       = $option_price_type;
-			$option['price']            = $option_price_value;
-			$option['calculation_type'] = $option_calculation_type;
-			$option['price_value']      = $processed_price['price_value'];
-			$option['price_display']    = $processed_price['price_display'];
+			$option['price_type']         = $option_price_type;
+			$option['price']              = $option_price_value;
+			$option['calculation_type']   = $option_calculation_type;
+			$option['price_value']        = $processed_price['price_value'];
+			$option['price_display']      = $processed_price['price_display'];
+			$option['price_label_format'] = $this->get_price_label_format( $processed_price['price_value'], $option );
 		}
 
 		return $option;
@@ -457,6 +468,21 @@ class FPF_Product {
 			'price_value'   => $price_value,
 			'price_display' => $this->product_price->prepare_price_to_display( $product, $price_value ),
 		];
+	}
+
+	/**
+	 * @param float $price_value
+	 * @param array<string, mixed> $field
+	 */
+	private function get_price_label_format( float $price_value, array $field ): string {
+		/**
+		 * Filters the price label format.
+		 *
+		 * @param string $format The price label format.
+		 * @param float  $price_value The price value.
+		 * @param array<string, mixed> $field The field data.
+		 */
+		return apply_filters( 'flexible_product_fields/field_args/label_price', '(%s)', $price_value, $field );
 	}
 
 	public function get_product_price_data( WC_Product $product ): string {

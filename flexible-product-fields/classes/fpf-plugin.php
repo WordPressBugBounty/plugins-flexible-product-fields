@@ -13,6 +13,7 @@ use WPDesk\FPF\Free\Marketing\SupportPage;
 use WPDesk\FPF\Free\Service\TemplateFinder\TemplateFinder;
 use WPDesk\FPF\Free\Service\TemplateFinder\TemplateQuery;
 use WPDesk\FPF\Free\Block\Settings\BlockTemplateSettings;
+use WPDesk\FPF\Free\Service\BookingCartFormatter;
 
 /**
  * Plugin.
@@ -27,7 +28,7 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 	 *
 	 * @var string
 	 */
-	private $scripts_version = FLEXIBLE_PRODUCT_FIELDS_VERSION . '.69';
+	private $scripts_version = FLEXIBLE_PRODUCT_FIELDS_VERSION . '.70';
 
 	/**
 	 * FPF product fields.
@@ -77,6 +78,8 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 	private $renderer;
 
 	private TemplateFinder $template_finder;
+
+	private BookingCartFormatter $booking_formatter;
 
 	/**
 	 * Flexible_Invoices_Reports_Plugin constructor.
@@ -251,8 +254,9 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 			new TemplateQuery(),
 			$this->fpf_product_fields
 		);
+		$this->booking_formatter  = new BookingCartFormatter( $this->fpf_product_price );
 		$this->fpf_product        = new FPF_Product( $this, $this->fpf_product_fields, $this->fpf_product_price );
-		$this->fpf_cart           = new FPF_Cart( $this, $this->fpf_product_fields, $this->fpf_product, $this->fpf_product_price );
+		$this->fpf_cart           = new FPF_Cart( $this, $this->fpf_product_fields, $this->fpf_product, $this->fpf_product_price, $this->booking_formatter );
 		$this->fpf_post_type      = new FPF_Post_Type( $this, $this->fpf_product_fields, $this->renderer );
 		$this->add_hookable( new FPF_Add_To_Cart_Filters( $this->fpf_product ) );
 

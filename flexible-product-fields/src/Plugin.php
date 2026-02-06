@@ -10,7 +10,6 @@ use VendorFPF\WPDesk_Plugin_Info;
 use WPDesk\FPF\Free\Field;
 use WPDesk\FPF\Free\Integration;
 use WPDesk\FPF\Free\Product;
-use WPDesk\FPF\Free\Service\TemplateFinder\TemplateFinder;
 use WPDesk\FPF\Free\Settings;
 use WPDesk\FPF\Free\Tracker;
 use WPDesk\FPF\Free\Validation;
@@ -77,7 +76,6 @@ class Plugin extends AbstractPlugin implements HookableCollection {
 		$this->add_hookable( new Notice\NoticeIntegration( new Notice\FlexibleWishlistReview( $this ) ) );
 
 		$this->add_hookable( new Product\FieldsConfig() );
-		$this->add_hookable( new Settings\FieldsGroup() );
 		$this->add_hookable( new Settings\Page( $this->renderer ) );
 		$this->add_hookable( new Marketing\SupportPage( $this->renderer, $this->plugin_old ) );
 

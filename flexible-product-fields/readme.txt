@@ -1,11 +1,11 @@
 === Flexible Product Fields (WooCommerce Product Addons) - WooCommerce Product Page Editor ===
 Contributors: wpdesk,dyszczo,grola,piotrpo,marcinkolanko,mateuszgbiorczyk,sebastianpisula,bartj,amisiewicz
-Donate link: https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/
+Donate link: https://www.wpdesk.net/sk/flexible-product-fields-pro/
 Tags: woocommerce customize product, woocommerce product addons, woocommerce product options, woocommerce custom product, woocommerce custom fields
 Requires at least: 5.8
-Tested up to: 6.8
+Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.10.0
+Stable tag: 2.12.2
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -46,6 +46,8 @@ You may use the plugin to add custom fields, extra options, and edit the WooComm
 * Let users **upload files or pick a date** (PRO) 📅
 * Compatible with new units of measure with [Flexible Quantity – Measurement Price Calculator for WooCommerce](https://wordpress.org/plugins/flexible-quantity-measurement-price-calculator-for-woocommerce/)
 
+**Have you heard about our new plugin?** It’s an add-on for Flexible Product Fields PRO that lets you easily sell accommodations, hourly services, and day-based bookings using standard WooCommerce products — no complex booking system needed. Check out [Flexible Booking for WooCommerce!](https://wpdesk.net/sk/flexible-booking)
+
 ### Some examples of using WooCommerce extra product fields
 
 * Text fields for entering prints on T-shirts or engraving
@@ -63,39 +65,39 @@ WooCommerce custom product fields are visible on the product page in the area ab
 
 WooCommerce product add-on will also appear on the Cart and Checkout page *(as a summary - the extra product fields cannot be edited there)* and in the dashboard in the Order Details.
 
-[>>> Go to the FPF admin demo <<<](https://demo.wpdesk.org/?utm_source=wordpress-repository&utm_medium=demo-link&utm_campaign=demo-flexible-product-fields-pro-woocommerce) - here you can test the admin panel of all WP Desk plugins including **Flexible Product Fields**
+[>>> Go to the FPF admin demo <<<](https://wpdesk.link/flexible-product-fields-demo) - here you can test the admin panel of all WP Desk plugins including **Flexible Product Fields**
 
 ### FREE
 
 #### Main features of the FREE version of this WooCommerce product page configurator
 * Adding WooCommerce extra product options on the product page
-* Showing labels and field values in cart summary and checkout page [(read more)](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Product_page_and_checkout)
-* Marking custom product fields as required or not [(read more)](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#required)
+* Showing labels and field values in cart summary and checkout page [(read more)](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Product_page_and_checkout)
+* Marking custom product fields as required or not [(read more)](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#required)
 * Editing options for each placeholder and tooltip
 * Assigning CSS classes for field targeting and styling
-* Saving product configuration [(read more)](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Save_product_configuration)
+* Saving product configuration [(read more)](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Save_product_configuration)
 
 #### Fields available in the FREE version
 Read more to find out which WooCommerce Product Addons are there in the FREE version of Flexible Product Fields:
 
-* [Text](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Single_Line_Text)
-* [Textarea](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Paragraph_Text)
-* [Number](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Number)
-* [E-mail](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#E-mail) (New feature)
-* [URL](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#URL) (New feature)
-* [Checkbox](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Checkbox)
-* [Multi-checkbox](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Multi-checkbox) (New feature)
-* [Select](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Select)
-* [Multi-select](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Multi-select)
-* [Radio](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Radio_Button)
-* [Radio with images](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Radio_with_images)
-* [Radio with colors](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Radio_with_colors) (New feature)
-* [Time](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Time) (New feature)
-* [Color](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Color) (New feature)
-* [Heading](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Heading) (New feature)
-* [Paragraph](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Paragraph) (New feature)
-* [Image](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Image) (New feature)
-* [HTML](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#HTML) (New feature)
+* [Text](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Single_Line_Text)
+* [Textarea](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Paragraph_Text)
+* [Number](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Number)
+* [E-mail](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#E-mail) (New feature)
+* [URL](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#URL) (New feature)
+* [Checkbox](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Checkbox)
+* [Multi-checkbox](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Multi-checkbox) (New feature)
+* [Select](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Select)
+* [Multi-select](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Multi-select)
+* [Radio](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Radio_Button)
+* [Radio with images](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Radio_with_images)
+* [Radio with colors](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Radio_with_colors) (New feature)
+* [Time](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Time) (New feature)
+* [Color](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Color) (New feature)
+* [Heading](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Heading) (New feature)
+* [Paragraph](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Paragraph) (New feature)
+* [Image](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Image) (New feature)
+* [HTML](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#HTML) (New feature)
 
 #### Assigning additional product fields in the FREE version
 
@@ -109,19 +111,19 @@ Read more to find out what you can get in the PRO version of this WooCommerce pr
 * **Variable product support**
   It's possible to add custom product fields for specific variations independently. The plugin allows searching products and each variation. On the product page, the custom fields will appear based on variation without reloading the page (AJAX).
 * **Order Group**
-  Arranging field groups in order [(read more)](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#order-group)
+  Arranging field groups in order [(read more)](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#order-group)
 * **WooCommerce custom price fields**
-  Assigning a fixed or percentage price (of on an initial price) to a field [(read more)](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Price)
+  Assigning a fixed or percentage price (of on an initial price) to a field [(read more)](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Price)
 * **Conditional logic for fields**
-  Setting rules for conditional logic based on the values of other preset FPF fields [(read more)](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Conditional_logic_for_fields)
+  Setting rules for conditional logic based on the values of other preset FPF fields [(read more)](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Conditional_logic_for_fields)
 * **Quick Support**
   Providing fast and priority Helpdesk Support via email
 * **Duplication**
-  Duplicating field groups [(read more)](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#duplication)
+  Duplicating field groups [(read more)](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#duplication)
 
 #### Extra product fields available in the PRO version
-* [Date](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Date_Picker) with advanced date exclusion options
-* [File Upload](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#File_Upload) (New feature)
+* [Date](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Date_Picker) with advanced date exclusion options
+* [File Upload](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#File_Upload) (New feature)
 
 #### Assigning WooCommerce product extra fields in the PRO version:
 
@@ -132,7 +134,7 @@ You may also choose to customize the custom fields for more WooCommerce products
 * All products
 * Specific variations
 
-[Upgrade to Flexible Product Fields PRO Now &rarr;](https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/)
+[Upgrade to Flexible Product Fields PRO Now &rarr;](https://www.wpdesk.net/sk/flexible-product-fields-pro/)
 
 == Installation	 ==
 
@@ -146,7 +148,7 @@ You can also use WordPress uploader to upload plugin zip file in menu Plugins ->
 
 == Data use policy ==
 
-Learn about [Use of Data Policy by WP Desk Plugins](https://wpdesk.net/terms-conditions/privacy-policy-use-of-data-collected-by-wp-desk-plugins/?utm_source=wporg&utm_medium=link&utm_campaign=data-use-policy)
+Learn about [Use of Data Policy by WP Desk Plugins](https://wpdesk.net/sk/flexible-product-fields-data-privacy/)
 
 == Frequently Asked Questions ==
 
@@ -160,39 +162,39 @@ The plugin works as your product customizer, configurator, and designer in one W
 
 Yes, you may choose all WooCommerce products to use custom product fields. Also, you can add different groups of product custom fields for selected products.
 
-In the free version of the plugin, you can select products one by one. [**Upgrade to PRO**](https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/) to choose all products or products with specific categories, or product tags.
+In the free version of the plugin, you can select products one by one. [**Upgrade to PRO**](https://www.wpdesk.net/sk/flexible-product-fields-pro/) to choose all products or products with specific categories, or product tags.
 
 = What new elements can I add to the WooCommerce product page? =
 
 You may choose from a dozen of custom product fields:
 
-* [Text](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Single_Line_Text)
-* [Textarea](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Paragraph_Text)
-* [Number](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Number)
-* [E-mail](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#E-mail)
-* [URL](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#URL)
-* [Checkbox](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Checkbox)
-* [Multi-checkbox](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Multi-checkbox)
-* [Select](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Select)
-* [Multi-select](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Multi-select)
-* [Radio](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Radio_Button)
-* [Radio with images](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Radio_with_images)
-* [Radio with colors](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Radio_with_colors)
-* [Time](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Time)
-* [Color](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Color)
-* [Heading](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Heading)
-* [Paragraph](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Paragraph)
-* [Image](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Image)
-* [HTML](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#HTML)
+* [Text](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Single_Line_Text)
+* [Textarea](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Paragraph_Text)
+* [Number](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Number)
+* [E-mail](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#E-mail)
+* [URL](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#URL)
+* [Checkbox](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Checkbox)
+* [Multi-checkbox](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Multi-checkbox)
+* [Select](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Select)
+* [Multi-select](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Multi-select)
+* [Radio](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Radio_Button)
+* [Radio with images](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Radio_with_images)
+* [Radio with colors](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Radio_with_colors)
+* [Time](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Time)
+* [Color](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Color)
+* [Heading](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Heading)
+* [Paragraph](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Paragraph)
+* [Image](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Image)
+* [HTML](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#HTML)
 
 In the PRO version of the plugin, you can also use:
 
-* [Date](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Date_Picker) with advanced date exclusion options
-* [File Upload](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#File_Upload)
+* [Date](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Date_Picker) with advanced date exclusion options
+* [File Upload](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#File_Upload)
 
 And additional pricing for custom product fields and conditional logic to boost the shopping experience for your WooCommerce customers.
 
-[Upgrade to Flexible Product Fields PRO Now &rarr;](https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/)
+[Upgrade to Flexible Product Fields PRO Now &rarr;](https://www.wpdesk.net/sk/flexible-product-fields-pro/)
 
 = Is it possible to add custom fields for subscriptions? =
 
@@ -200,11 +202,11 @@ Yes. You can add subscriptions in WooCommerce with custom product fields with [F
 
 = Where can I find documentation? =
 
-All documentation is available on page [Docs: Flexible Product Fields - WooCommerce](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/).
+All documentation is available on page [Docs: Flexible Product Fields - WooCommerce](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/).
 
 = How to get technical support? =
 
-We provide support for the free version in the plugin [Support Forum](https://wordpress.org/support/plugin/flexible-product-fields/). We answer within 72 hours. Please upgrade to [PRO version](https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/) to get priority email support.
+We provide support for the free version in the plugin [Support Forum](https://wordpress.org/support/plugin/flexible-product-fields/). We answer within 72 hours. Please upgrade to [PRO version](https://www.wpdesk.net/sk/flexible-product-fields-pro/) to get priority email support.
 
 = Does FPF work with WooCommerce product varations? =
 
@@ -220,7 +222,7 @@ Flexible Product Fields is a plugin that inserts new WooCommerce custom product 
 
 = Does the plugin support currency switchers? =
 
-The [PRO version](https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/) supports the currency conversion mechanism and works with the most popular plugins of this type:
+The [PRO version](https://www.wpdesk.net/sk/flexible-product-fields-pro/) supports the currency conversion mechanism and works with the most popular plugins of this type:
 - Multi Currency for WooCommerce
 - Currency Switcher for WooCommerce
 - WooCommerce Currency Switcher
@@ -236,11 +238,11 @@ Our product will work with most other plugins supporting WooCommerce. Among them
 
 = Is it possible to assign a price to the FPF field? =
 
-Adding a fixed or percentage price is a killer feature when the product add-on affect its price. This option is available in the [PRO version](https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/).
+Adding a fixed or percentage price is a killer feature when the product add-on affect its price. This option is available in the [PRO version](https://www.wpdesk.net/sk/flexible-product-fields-pro/).
 
 = How to add a conditional field? =
 
-[Conditional logic](https://www.wpdesk.net/docs/flexible-product-fields-woocommerce-docs/#Conditional_logic_for_fields) is a [PRO version](https://www.wpdesk.net/products/flexible-product-fields-pro-woocommerce/) feature that can show one field if a specific value is selected in another field.
+[Conditional logic](https://www.wpdesk.net/sk/flexible-product-fields-readme-docs/#Conditional_logic_for_fields) is a [PRO version](https://www.wpdesk.net/sk/flexible-product-fields-pro/) feature that can show one field if a specific value is selected in another field.
 
 = Why do I need this plugin? =
 
@@ -263,6 +265,10 @@ You can also choose one from the list below based on your needs.
 * [**Flexible Quantity**](https://wordpress.org/plugins/flexible-quantity-measurement-price-calculator-for-woocommerce/) - choose new units of measure for your WooCommerce products.
 * [**Flexible Refund**](https://wordpress.org/plugins/flexible-refund-and-return-order-for-woocommerce/) - let customers send refund requests in WooCommerce.
 * [**ShopMagic**](https://wordpress.org/plugins/shopmagic-for-woocommerce/) - a free email marketing plugin for WordPress and WooCommerce (with 5 free add-ons)! Create, customize, and send personalized emails to your WordPress users and WooCommerce customers.
+
+= Where do I report security bugs found in this plugin? =
+
+Please report security bugs found in the source code of the Flexible Product Fields (WooCommerce Product Addons) plugin through the [Patchstack Vulnerability Disclosure Program](https://patchstack.com/database/vdp/5ee9d834-100d-4326-8f46-05e2447939c7). The Patchstack team will assist you with verification, CVE assignment, and notify the developers of this plugin.
 
 == Screenshots ==
 
@@ -330,6 +336,36 @@ You can also choose one from the list below based on your needs.
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.12.2 - 2026-01-27 =
+* Fixed warnings about unset variable
+
+= 2.12.1 - 2026-01-21 =
+* Added support for WooCommerce 10.5
+
+= 2.12.0 - 2026-01-14 =
+* Added support for Flexible Product Fields - Booking Addon
+* Fixed field_args/label_price filter
+* Fixed compatibility with some themes
+
+= 2.11.2 - 2025-12-03 =
+* Added support for WordPress 6.9
+* Added support for WooCommerce 10.4
+
+= 2.11.1 - 2025-11-25 =
+* Fixed product, category and tag based exclusion does not work when select multiple items (fix for Pro version)
+
+= 2.11.0 - 2025-10-30 =
+* Added support for date field formats that include full text for months or days (e.g., MM for "January" or DD for "Monday").
+* Introduced the fpf_date_field_delimiter filter to allow changing the separator for fields that support multiple date selection. Useful for date formats that naturally include a comma.
+
+= 2.10.2 - 2025-10-14 =
+* Changed plugin links
+
+= 2.10.1 - 2025-10-07 =
+* Added support for WooCommerce 10.3
+* Added Patchstack Vulnerability Disclosure Program
+* Fixed select and radio options do not change main product image
 
 = 2.10.0 - 2025-10-01 =
 * Added gutenberg block for product fields group

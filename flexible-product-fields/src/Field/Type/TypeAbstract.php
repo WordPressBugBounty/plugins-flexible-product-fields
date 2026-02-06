@@ -51,7 +51,7 @@ abstract class TypeAbstract implements TypeInterface {
 		$class_value = ( $this->has_css_class() )
 			? trim( $field_data[ CssOption::FIELD_NAME ] ?? '' )
 			: '';
-		if ( $this->has_required() && ( ( $field_data['required'] ?? '' ) == '1' ) ) {
+		if ( $this->has_required() && ( filter_var( $field_data['required'] ?? false, FILTER_VALIDATE_BOOLEAN ) ) ) {
 			$class_value .= ' fpf-required';
 		}
 

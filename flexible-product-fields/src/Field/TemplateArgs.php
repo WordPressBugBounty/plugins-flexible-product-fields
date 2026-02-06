@@ -11,32 +11,13 @@ use WPDesk\FPF\Free\Settings\Option\DefaultOption;
 use WPDesk\FPF\Free\Helper\CalendarAttributeHelper;
 use WPDesk\FPF\Free\Settings\Option\MinuteStepOption;
 use WPDesk\FPF\Free\Settings\Option\Hour12ClockOption;
+use WPDesk\FPF\Free\Helper\DateFormatConverter;
+use WPDesk\FPF\Free\Helper\FieldSettingFilters;
 
 /**
  * Generates args of fields for fields generation.
  */
 class TemplateArgs {
-
-	/**
-	 * Characters for date format used in plugin settings.
-	 *
-	 * @var string[]
-	 */
-	private static $date_format_settings = [ 'dd', 'd', 'mm', 'm', 'yy', 'y' ];
-
-	/**
-	 * Characters for date format used in JS.
-	 *
-	 * @var string[]
-	 */
-	private static $date_format_js = [ 'dd', 'd', 'mm', 'm', 'yyyy', 'yy' ];
-
-	/**
-	 * Characters for date format used in PHP.
-	 *
-	 * @var string[]
-	 */
-	private static $date_format_php = [ 'd', 'j', 'm', 'n', 'Y', 'y' ];
 
 	/**
 	 * Returns args for field based on field settings.
@@ -66,13 +47,13 @@ class TemplateArgs {
 			$args['label'] = sprintf(
 				'<span class="fpf-field-tooltip" title="%1$s">%2$s <span class="fpf-field-tooltip-icon"></span></span>',
 				esc_attr( $tooltip ),
-				$args['label']
+				esc_html( $args['label'] )
 			);
 		}
 		if ( $settings['has_required'] && isset( $field['required'] ) && ( $field['required'] == '1' ) ) {
 			$args['label'] .= sprintf(
 				' <abbr class="required" title="%s">*</abbr>',
-				__( 'Required field', 'flexible-product-fields' )
+				esc_attr__( 'Required field', 'flexible-product-fields' )
 			);
 		}
 
@@ -103,11 +84,12 @@ class TemplateArgs {
 			}
 		}
 
-		$date_format     = $field['date_format'] ?? 'dd.mm.yy';
-		$date_format_php = $this->convert_date_format_for_php( $date_format );
+		$date_format     = $field['date_format'] ?? DateFormatConverter::DEFAULT_DATE_FORMAT;
+		$date_format_php = DateFormatConverter::to_php( $date_format );
 		if ( $settings['has_date_format'] ) {
 			$args['custom_attributes']['date_format']      = $date_format;
-			$args['custom_attributes']['data-date-format'] = $this->convert_date_format_for_js( $date_format );
+			$args['custom_attributes']['data-date-format'] = DateFormatConverter::to_js_lib( $date_format );
+			$args['custom_attributes']['data-dates-delimiter'] = DateFormatConverter::get_dates_delimiter();
 		}
 		if ( $settings['has_days_before'] ) {
 			$days_before = $field['days_before'] ?? '';
@@ -126,7 +108,7 @@ class TemplateArgs {
 			foreach ( $dates as $date_index => $date ) {
 				$dates[ $date_index ] = gmdate( $date_format_php, strtotime( $date ) );
 			}
-			if ( $settings['has_today_max_hour'] && ( $max_hour = ( $field['today_max_hour'] ?? '' ) )
+			if ( $settings['has_today_max_hour'] && ( $max_hour = FieldSettingFilters::get_today_max_hour( $field ) )
 				&& ( wp_date( 'H:i' ) > gmdate( 'H:i', strtotime( $max_hour ) ) ) ) {
 				$dates[] = gmdate( $date_format_php, strtotime( wp_date( 'Y-m-d' ) ) );
 			}
@@ -151,6 +133,11 @@ class TemplateArgs {
 		}
 		if ( $field[ Hour12ClockOption::FIELD_NAME ] ?? false ) {
 			$args['custom_attributes']['data-hour-12'] = 1;
+		}
+
+		// Pass date range selection setting to frontend
+		if ( isset( $field['date_range_selection'] ) ) {
+			$args['custom_attributes']['data-date-range-selection'] = $field['date_range_selection'];
 		}
 
 		if ( filter_var( $settings['has_price'], FILTER_VALIDATE_BOOLEAN ) ) {
@@ -215,53 +202,17 @@ class TemplateArgs {
 	}
 
 	/**
-	 * Converts date format to JS date format.
-	 *
-	 * @param string $date_format Original date format.
-	 *
-	 * @return string Updated date format.
+	 * @deprecated Use DateFormatConverter::to_js_lib() instead.
 	 */
 	public static function convert_date_format_for_js( string $date_format ): string {
-		return self::convert_date_format( $date_format, self::$date_format_settings, self::$date_format_js );
+		return DateFormatConverter::to_js_lib( $date_format );
 	}
 
 	/**
-	 * Converts date format to PHP date format.
-	 *
-	 * @param string $date_format Original date format.
-	 *
-	 * @return string Updated date format.
+	 * @deprecated Use DateFormatConverter::to_php() instead.
 	 */
 	public static function convert_date_format_for_php( string $date_format ): string {
-		return self::convert_date_format( $date_format, self::$date_format_settings, self::$date_format_php );
-	}
-
-	/**
-	 * Converts date format to different date format.
-	 *
-	 * @param string $date_format      Original date format.
-	 * @param array  $old_format_parts Characters of new date format.
-	 * @param array  $new_format_parts Characters of new date format.
-	 *
-	 * @return string Updated date format.
-	 */
-	private static function convert_date_format( string $date_format, array $old_format_parts, array $new_format_parts ): string {
-		preg_match_all( '/([a-zA-Z]+)/', $date_format, $matches );
-		if ( ! $format_parts = ( $matches[0] ?? [] ) ) {
-			return $date_format;
-		}
-
-		foreach ( $format_parts as $format_part ) {
-			$index = array_search( $format_part, $old_format_parts );
-			if ( $index !== false ) {
-				$date_format = str_replace(
-					$old_format_parts[ $index ],
-					$new_format_parts[ $index ],
-					$date_format
-				);
-			}
-		}
-		return $date_format;
+		return DateFormatConverter::to_php( $date_format );
 	}
 
 	/**

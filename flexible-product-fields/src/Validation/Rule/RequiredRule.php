@@ -2,6 +2,8 @@
 
 namespace WPDesk\FPF\Free\Validation\Rule;
 
+use WPDesk\FPF\Free\DTO\DateDTOInterface;
+
 /**
  * Supports "Required" validation rule for fields.
  */
@@ -14,6 +16,8 @@ class RequiredRule implements RuleInterface {
 		if ( ! ( $field_type['has_required'] ?? false ) || ! ( $field_data['required'] ?? false ) ) {
 			return true;
 		}
+
+		$value = ( $value instanceof DateDTOInterface ) ? (string) $value : $value;
 
 		return ( ( $value !== null ) && ! in_array( $value, [ '', [ '' ] ] ) );
 	}

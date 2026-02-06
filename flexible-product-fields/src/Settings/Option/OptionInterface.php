@@ -2,8 +2,6 @@
 
 namespace WPDesk\FPF\Free\Settings\Option;
 
-use WPDesk\FPF\Free\Settings\Validation\Error\ValidationError;
-
 /**
  * Interface for option of field.
  */
@@ -61,7 +59,7 @@ interface OptionInterface {
 	/**
 	 * Returns list of HTML attributes for field with their values.
 	 *
-	 * @return array Atts for field.
+	 * @return array<string, mixed> Atts for field.
 	 */
 	public function get_input_atts(): array;
 
@@ -84,7 +82,7 @@ interface OptionInterface {
 	 * Returns list of validation rules for field.
 	 * Key is regular expression without delimiters, value is message of validation error.
 	 *
-	 * @return ValidationError[] Validation rules.
+	 * @return array<string, \WPDesk\FPF\Free\Settings\Validation\Error\ValidationError> Validation rules.
 	 */
 	public function get_validation_rules(): array;
 
@@ -92,7 +90,7 @@ interface OptionInterface {
 	 * Returns name of option and regex for its value that must be true to display this field.
 	 * Key is name of field, value is regular expression without delimiters.
 	 *
-	 * @return array Option names with regexes.
+	 * @return array<string, string> Option names with regexes.
 	 */
 	public function get_options_regexes_to_display(): array;
 
@@ -106,14 +104,14 @@ interface OptionInterface {
 	/**
 	 * Returns available values of option, if exists.
 	 *
-	 * @return array List of option values.
+	 * @return array<string, string>|array<int, string> List of option values.
 	 */
 	public function get_values(): array;
 
 	/**
 	 * Returns default value of option.
 	 *
-	 * @return string|array Default value.
+	 * @return string|int|array<mixed> Default value.
 	 */
 	public function get_default_value();
 
@@ -162,9 +160,9 @@ interface OptionInterface {
 	/**
 	 * Filters option value from all unsafe strings.
 	 *
-	 * @param string|array $field_value Original option value.
+	 * @param string|array<mixed> $field_value Original option value.
 	 *
-	 * @return string|array Updated value of option.
+	 * @return string|int|array<mixed> Updated value of option.
 	 */
 	public function sanitize_option_value( $field_value );
 
