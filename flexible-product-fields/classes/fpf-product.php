@@ -142,31 +142,32 @@ class FPF_Product {
 			return $this->translate_fields_titles_and_labels( $templates->legacy_results() );
 		}
 
-		$template_query = $this->template_finder->get_template_query();
-		$block_template = $template_query->get_template_by_id( $block_settings->get_template_id() );
-		$block_template = new TemplateCollection( [ $block_template ] );
+		$template_query      = $this->template_finder->get_template_query();
+		$template_post       = $template_query->get_template_by_id( $block_settings->get_template_id() );
+		$template_posts      = $template_post !== null ? [ $template_post ] : [];
+		$template_collection = new TemplateCollection( $template_posts );
 
 		if ( $block_settings->should_show_other_templates() ) {
 			$templates = $this->template_finder->find( $product );
-			$block_template->merge( $templates );
+			$template_collection->merge( $templates );
 		}
 
-		$block_template->init_fields( $this->_product_fields->get_field_types() );
+		$template_collection->init_fields( $this->_product_fields->get_field_types() );
 
-		return $this->translate_fields_titles_and_labels( $block_template->legacy_results() );
+		return $this->translate_fields_titles_and_labels( $template_collection->legacy_results() );
 	}
 
 	/**
 	 * @param WC_Product $product
 	 * @param BlockTemplateSettings|null $block_settings
 	 *
-	 * @return array
+	 * @return array<string, array<string, mixed>>
 	 */
-	public function get_logic_rules_for_product( $product, ?BlockTemplateSettings $block_settings = null ) {
+	public function get_logic_rules_for_product( $product, ?BlockTemplateSettings $block_settings = null ): array {
 		$fields = $this->get_translated_fields_for_product( $product, false, $block_settings );
 		$rules  = [];
 		foreach ( $fields['fields'] as $field ) {
-			if ( isset( $field['logic'] ) && $field['logic'] == '1' && isset( $field['logic_operator'] ) && isset( $field['logic_rules'] ) ) {
+			if ( isset( $field['logic'] ) && $field['logic'] === '1' && isset( $field['logic_operator'] ) && isset( $field['logic_rules'] ) ) {
 				$rules[ $field['id'] ]             = [];
 				$rules[ $field['id'] ]['rules']    = $field['logic_rules'];
 				$rules[ $field['id'] ]['operator'] = $field['logic_operator'];
@@ -179,10 +180,10 @@ class FPF_Product {
 	 * @param WC_Product $product
 	 * @param bool|string $hook
 	 *
-	 * @return array
+	 * @return array<string, array<int, mixed>>
 	 * @internal
 	 */
-	public function create_fields_for_product( $product, $hook, ?BlockTemplateSettings $block_settings = null ) {
+	public function create_fields_for_product( $product, $hook, ?BlockTemplateSettings $block_settings = null ): array {
 		$fields = $this->get_translated_fields_for_product( $product, $hook, $block_settings );
 		foreach ( $fields['fields'] as $field ) {
 			$fields['display_fields'][] = $this->create_field( $field, $product );
