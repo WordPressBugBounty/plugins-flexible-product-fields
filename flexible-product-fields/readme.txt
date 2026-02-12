@@ -5,7 +5,7 @@ Tags: woocommerce customize product, woocommerce product addons, woocommerce pro
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.12.3
+Stable tag: 2.12.4
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -337,7 +337,10 @@ Update the plugin to get the current version compatible with the newest WordPres
 
 == Changelog ==
 
-= 2.12.3 - 2026-02-11
+= 2.12.4 - 2026-02-12 =
+* Fixed adding empty date field to the cart
+
+= 2.12.3 - 2026-02-11 =
 * Fixed error when template used in block does not exist anymore
 
 = 2.12.2 - 2026-01-27 =

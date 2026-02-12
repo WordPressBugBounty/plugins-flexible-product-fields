@@ -257,88 +257,91 @@ class FPF_Cart {
 	 * @return array|bool|WP_Error
 	 */
 	private function get_field_data( $field, $field_type, $value, $product_id, $variation_id ) {
-		$ret = false;
+		if ( $this->is_field_value_empty( $value ) ) {
+			return false;
+		}
 
-		if ( $value != null ) {
-			$ret = [
-				'name'  => $field['title'],
-				'id'    => $field['id'],
-				'value' => (string) $value,
-			];
+		$ret = [
+			'name'  => $field['title'],
+			'id'    => $field['id'],
+			'value' => (string) $value,
+		];
 
-			if ( $field['type'] == 'checkbox' ) {
-				if ( ! isset( $field['value'] ) ) {
-					$ret['value'] = __( 'yes', 'flexible-product-fields' );
-				} else {
-					$ret['value'] = $field['value'];
-				}
-			}
-
-			if ( $this->is_reservation_field( $field ) ) {
-				$ret['is_reservation'] = true;
-				$ret['booking_data']   = $value->to_cart_format();
-			}
-
-			if ( $field_type['has_price'] ) {
-				if ( ! isset( $field['price_type'] ) ) {
-					$field['price_type'] = 'fixed';
-				}
-				if ( $field['price_type'] === 'per_booking' ) {
-					$ret['price_type']         = 'per_booking';
-					$ret['booking_base_price'] = $field['booking_base_price'] ?? 'product_only';
-					$ret['type']               = $value->get_type();
-
-					$date_format             = $field['date_format'] ?? DateFormatConverter::DEFAULT_DATE_FORMAT;
-					$date_format_php         = DateFormatConverter::to_php( $date_format );
-					$allow_adjacent_bookings = filter_var( $field['allow_adjacent_bookings'] ?? false, FILTER_VALIDATE_BOOLEAN );
-
-					$ret['booking_units'] = BookingUnitsCalculator::calculate( $value, $date_format_php, $allow_adjacent_bookings );
-					$ret['org_value']     = isset( $ret['value'] ) ? (string) $ret['value'] : '';
-
-				} elseif ( isset( $field['price_type'] ) && $field['price_type'] !== '' && isset( $field['price'] ) && $field['price'] !== '' ) {
-					$ret['price_type']       = $field['price_type'];
-					$ret['price']            = $field['price'];
-					$ret['calculation_type'] = $field['calculation_type'] ?? '';
-				}
-			}
-			if ( $field_type['has_options'] ) {
-				foreach ( $field['options'] as $option ) {
-					if ( trim( $option['value'] ) === $ret['value'] ) {
-						$ret['value'] = $option['label'];
-						if ( ! $field_type['has_price_in_options'] ) {
-							continue;
-						}
-
-						$price_values            = $field['price_values'] ?? [];
-						$option_price_type       = $price_values[ $option['value'] ]['price_type'] ?? ( $option['price_type'] ?? '' );
-						$option_price_value      = $price_values[ $option['value'] ]['price'] ?? ( $option['price'] ?? '' );
-						$option_calculation_type = $price_values[ $option['value'] ]['calculation_type'] ?? ( $option['calculation_type'] ?? '' );
-
-						if ( ( $option_price_type === '' ) || ( $option_price_value === '' ) ) {
-							continue;
-						}
-
-						$ret['price_type']       = $option_price_type;
-						$ret['price']            = $option_price_value;
-						$ret['calculation_type'] = $option_calculation_type;
-					}
-				}
-			}
-			if ( isset( $ret['price_type'] ) && $ret['price_type'] !== '' && isset( $ret['price'] ) && $ret['price'] !== '' ) {
-				if ( $variation_id ) {
-					$product_id = $variation_id;
-				}
-
-				$product                      = wc_get_product( $product_id );
-				$field_price                  = floatval( $ret['price'] );
-				$field_price_type             = (string) $ret['price_type'];
-				$field_calculation_type       = (string) $ret['calculation_type'];
-				$field_price_current_currency = $this->field_price_multicurrency( $field_price, $field_price_type, $product, $field_calculation_type );
-
-				$ret['org_value'] = isset( $ret['value'] ) ? (string) $ret['value'] : '';
-				$ret['value']     = $this->field_display_value( $field_price_current_currency, $ret['org_value'] );
+		if ( $field['type'] == 'checkbox' ) {
+			if ( ! isset( $field['value'] ) ) {
+				$ret['value'] = __( 'yes', 'flexible-product-fields' );
+			} else {
+				$ret['value'] = $field['value'];
 			}
 		}
+
+		if ( $this->is_reservation_field( $field ) ) {
+			$ret['is_reservation'] = true;
+			$ret['booking_data']   = $value->to_cart_format();
+		}
+
+		if ( $field_type['has_price'] ) {
+			if ( ! isset( $field['price_type'] ) ) {
+				$field['price_type'] = 'fixed';
+			}
+			if ( $field['price_type'] === 'per_booking' ) {
+				$ret['price_type']         = 'per_booking';
+				$ret['booking_base_price'] = $field['booking_base_price'] ?? 'product_only';
+				$ret['type']               = $value->get_type();
+
+				$date_format             = $field['date_format'] ?? DateFormatConverter::DEFAULT_DATE_FORMAT;
+				$date_format_php         = DateFormatConverter::to_php( $date_format );
+				$allow_adjacent_bookings = filter_var( $field['allow_adjacent_bookings'] ?? false, FILTER_VALIDATE_BOOLEAN );
+
+				$ret['booking_units'] = BookingUnitsCalculator::calculate( $value, $date_format_php, $allow_adjacent_bookings );
+				$ret['org_value']     = isset( $ret['value'] ) ? (string) $ret['value'] : '';
+
+			} elseif ( isset( $field['price_type'] ) && $field['price_type'] !== '' && isset( $field['price'] ) && $field['price'] !== '' ) {
+				$ret['price_type']       = $field['price_type'];
+				$ret['price']            = $field['price'];
+				$ret['calculation_type'] = $field['calculation_type'] ?? '';
+			}
+		}
+
+		if ( $field_type['has_options'] ) {
+			foreach ( $field['options'] as $option ) {
+				if ( trim( $option['value'] ) === $ret['value'] ) {
+					$ret['value'] = $option['label'];
+					if ( ! $field_type['has_price_in_options'] ) {
+						continue;
+					}
+
+					$price_values            = $field['price_values'] ?? [];
+					$option_price_type       = $price_values[ $option['value'] ]['price_type'] ?? ( $option['price_type'] ?? '' );
+					$option_price_value      = $price_values[ $option['value'] ]['price'] ?? ( $option['price'] ?? '' );
+					$option_calculation_type = $price_values[ $option['value'] ]['calculation_type'] ?? ( $option['calculation_type'] ?? '' );
+
+					if ( ( $option_price_type === '' ) || ( $option_price_value === '' ) ) {
+						continue;
+					}
+
+					$ret['price_type']       = $option_price_type;
+					$ret['price']            = $option_price_value;
+					$ret['calculation_type'] = $option_calculation_type;
+				}
+			}
+		}
+
+		if ( isset( $ret['price_type'] ) && $ret['price_type'] !== '' && isset( $ret['price'] ) && $ret['price'] !== '' ) {
+			if ( $variation_id ) {
+				$product_id = $variation_id;
+			}
+
+			$product                      = wc_get_product( $product_id );
+			$field_price                  = floatval( $ret['price'] );
+			$field_price_type             = (string) $ret['price_type'];
+			$field_calculation_type       = (string) $ret['calculation_type'];
+			$field_price_current_currency = $this->field_price_multicurrency( $field_price, $field_price_type, $product, $field_calculation_type );
+
+			$ret['org_value'] = isset( $ret['value'] ) ? (string) $ret['value'] : '';
+			$ret['value']     = $this->field_display_value( $field_price_current_currency, $ret['org_value'] );
+		}
+
 		return $ret;
 	}
 
@@ -510,5 +513,24 @@ class FPF_Cart {
 				$cart->add_fee( $fee_title, $fee );
 			}
 		);
+	}
+
+	/**
+	 * @param string|null|DateDTOInterface $value Value of field.
+	 */
+	private function is_field_value_empty( $value ): bool {
+		if ( $value === null ) {
+			return true;
+		}
+
+		if ( $value === '' ) {
+			return true;
+		}
+
+		if ( $value instanceof DateDTOInterface && $value->is_empty() ) {
+			return true;
+		}
+
+		return false;
 	}
 }
