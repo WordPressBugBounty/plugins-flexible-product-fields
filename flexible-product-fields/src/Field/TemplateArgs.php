@@ -7,6 +7,7 @@ use WPDesk\FPF\Free\Field\Type\TypeInterface;
 use WPDesk\FPF\Free\Field\Type\RadioColorsType;
 use WPDesk\FPF\Free\Field\Type\RadioImagesType;
 use WPDesk\FPF\Free\Field\Type\MultiCheckboxType;
+use WPDesk\FPF\Free\Field\Type\MultiImagesType;
 use WPDesk\FPF\Free\Settings\Option\DefaultOption;
 use WPDesk\FPF\Free\Helper\CalendarAttributeHelper;
 use WPDesk\FPF\Free\Settings\Option\MinuteStepOption;
@@ -87,8 +88,8 @@ class TemplateArgs {
 		$date_format     = $field['date_format'] ?? DateFormatConverter::DEFAULT_DATE_FORMAT;
 		$date_format_php = DateFormatConverter::to_php( $date_format );
 		if ( $settings['has_date_format'] ) {
-			$args['custom_attributes']['date_format']      = $date_format;
-			$args['custom_attributes']['data-date-format'] = DateFormatConverter::to_js_lib( $date_format );
+			$args['custom_attributes']['date_format']          = $date_format;
+			$args['custom_attributes']['data-date-format']     = DateFormatConverter::to_js_lib( $date_format );
 			$args['custom_attributes']['data-dates-delimiter'] = DateFormatConverter::get_dates_delimiter();
 		}
 		if ( $settings['has_days_before'] ) {
@@ -113,7 +114,7 @@ class TemplateArgs {
 				$dates[] = gmdate( $date_format_php, strtotime( wp_date( 'Y-m-d' ) ) );
 			}
 
-			$dates                                            = apply_filters( 'flexible_product_fields/field_args/dates_excluded', $dates, $field, $date_format_php );
+			$dates = apply_filters( 'flexible_product_fields/field_args/dates_excluded', $dates, $field, $date_format_php );
 			$args['custom_attributes']['data-dates-disabled'] = implode( ',', $dates );
 		}
 		if ( $settings['has_today_max_hour'] ) {
@@ -141,12 +142,12 @@ class TemplateArgs {
 		}
 
 		if ( filter_var( $settings['has_price'], FILTER_VALIDATE_BOOLEAN ) ) {
- 			$price_value = $field['price'] ?? '';
-			$price_type  = $field['price_type'] ?? 'fixed';
+			$price_value      = $field['price'] ?? '';
+			$price_type       = $field['price_type'] ?? 'fixed';
 			$calculation_type = $field['calculation_type'] ?? '';
 
 			if ( $product_price->is_valid_pricing_settings( $price_type, $price_value, $calculation_type ) ) {
-				$price_raw     = $this->get_raw_price_for_label( $price_type, $price_value, $product_price, $product );
+				$price_raw      = $this->get_raw_price_for_label( $price_type, $price_value, $product_price, $product );
 				$args['label'] .= sprintf(
 					' <span id="%1$s_price">%2$s</span>',
 					$field['id'],
@@ -162,9 +163,9 @@ class TemplateArgs {
 			$price_values = $field['price_values'] ?? [];
 
 			foreach ( $args['options'] as $option_value => $option_label ) {
-				$option_data = $this->get_option_data( $field['options'], $option_value );
-				$price_type  = $price_values[ $option_value ]['price_type'] ?? ( $option_data['price_type'] ?? '' );
-				$price_value = $price_values[ $option_value ]['price'] ?? ( $option_data['price'] ?? '' );
+				$option_data      = $this->get_option_data( $field['options'], $option_value );
+				$price_type       = $price_values[ $option_value ]['price_type'] ?? ( $option_data['price_type'] ?? '' );
+				$price_value      = $price_values[ $option_value ]['price'] ?? ( $option_data['price'] ?? '' );
 				$calculation_type = $price_values[ $option_value ]['calculation_type'] ?? ( $option_data['calculation_type'] ?? '' );
 				if ( ! $option_data || ! $product_price->is_valid_pricing_settings( $price_type, $price_value, $calculation_type ) ) {
 					continue;
@@ -175,7 +176,7 @@ class TemplateArgs {
 
 				if ( in_array(
 					$field['type'],
-					[ RadioType::FIELD_TYPE, MultiCheckboxType::FIELD_TYPE, RadioImagesType::FIELD_TYPE, RadioColorsType::FIELD_TYPE ]
+					[ RadioType::FIELD_TYPE, MultiCheckboxType::FIELD_TYPE, RadioImagesType::FIELD_TYPE, RadioColorsType::FIELD_TYPE, MultiImagesType::FIELD_TYPE ]
 				) ) {
 					$args['options'][ $option_value ] .= sprintf(
 						' <span id="%1$s_%2$s_price">%3$s</span>',

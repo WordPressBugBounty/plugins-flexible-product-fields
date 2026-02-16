@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Flexible Product Fields plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Flexible Product Fields 2.12.4\n"
+"Project-Id-Version: Flexible Product Fields 2.13.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/flexible-product-fields\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-12T10:29:46+00:00\n"
+"POT-Creation-Date: 2026-02-16T08:40:50+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: flexible-product-fields\n"
@@ -49,7 +49,7 @@ msgstr ""
 msgid "Select options"
 msgstr ""
 
-#: classes/fpf-cart.php:272
+#: classes/fpf-cart.php:274
 msgid "yes"
 msgstr ""
 
@@ -210,7 +210,7 @@ msgstr ""
 msgid "No fields found in this template."
 msgstr ""
 
-#: src/Field/TemplateArgs.php:56
+#: src/Field/TemplateArgs.php:57
 #: src/Settings/Option/RequiredOption.php:39
 msgid "Required field"
 msgstr ""
@@ -254,6 +254,10 @@ msgstr ""
 msgid "Multi-checkbox"
 msgstr ""
 
+#: src/Field/Type/MultiImagesType.php:39
+msgid "Multi-images"
+msgstr ""
+
 #: src/Field/Type/MultiselectType.php:45
 msgid "Multi-select"
 msgstr ""
@@ -292,6 +296,10 @@ msgstr ""
 
 #: src/Field/Type/TimeType.php:48
 msgid "Time"
+msgstr ""
+
+#: src/Field/Type/ToggleType.php:14
+msgid "Toggle"
 msgstr ""
 
 #: src/Field/Type/UrlType.php:38
@@ -811,13 +819,17 @@ msgid "Delete"
 msgstr ""
 
 #. translators: %s: minimum number of values that can be selected within multicheckbox field
+#. translators: %s: minimum number of values that can be selected within multi-images field
 #: templates/fields/multi-checkbox.php:31
+#: templates/fields/multi-images.php:34
 #, php-format
 msgid "Minimum: %s."
 msgstr ""
 
 #. translators: %s: maximum number of values that can be selected within multicheckbox field
+#. translators: %s: maximum number of values that can be selected within multi-images field
 #: templates/fields/multi-checkbox.php:42
+#: templates/fields/multi-images.php:45
 #, php-format
 msgid "Limit: %s."
 msgstr ""

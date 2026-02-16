@@ -3,6 +3,7 @@
 namespace WPDesk\FPF\Free\Field;
 
 use WPDesk\FPF\Free\Field\Type\CheckboxType;
+use WPDesk\FPF\Free\Field\Type\ToggleType;
 use WPDesk\FPF\Free\Field\Type\ColorType;
 use WPDesk\FPF\Free\Field\Type\DateType;
 use WPDesk\FPF\Free\Field\Type\EmailType;
@@ -11,6 +12,7 @@ use WPDesk\FPF\Free\Field\Type\HeadingType;
 use WPDesk\FPF\Free\Field\Type\HtmlType;
 use WPDesk\FPF\Free\Field\Type\ImageType;
 use WPDesk\FPF\Free\Field\Type\MultiCheckboxType;
+use WPDesk\FPF\Free\Field\Type\MultiImagesType;
 use WPDesk\FPF\Free\Field\Type\MultiselectType;
 use WPDesk\FPF\Free\Field\Type\NumberType;
 use WPDesk\FPF\Free\Field\Type\ParagraphType;
@@ -46,7 +48,9 @@ class Types {
 		( new TypeIntegration( new EmailType() ) )->hooks();
 		( new TypeIntegration( new UrlType() ) )->hooks();
 		( new TypeIntegration( new CheckboxType() ) )->hooks();
+		( new TypeIntegration( new ToggleType() ) )->hooks();
 		( new TypeIntegration( new MultiCheckboxType() ) )->hooks();
+		( new TypeIntegration( new MultiImagesType() ) )->hooks();
 		( new TypeIntegration( new SelectType() ) )->hooks();
 		( new TypeIntegration( new MultiselectType() ) )->hooks();
 		( new TypeIntegration( new RadioType() ) )->hooks();

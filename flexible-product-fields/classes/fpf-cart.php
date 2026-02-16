@@ -5,6 +5,8 @@ use WPDesk\FPF\Free\DTO\DateDTOInterface;
 use WPDesk\FPF\Free\Helper\DateFormatConverter;
 use WPDesk\FPF\Free\Service\BookingCartFormatter;
 use WPDesk\FPF\Free\Service\BookingUnitsCalculator;
+use WPDesk\FPF\Free\Field\Type\CheckboxType;
+use WPDesk\FPF\Free\Field\Type\ToggleType;
 
 /**
  * Handles WooCommerce add to cart.
@@ -267,7 +269,7 @@ class FPF_Cart {
 			'value' => (string) $value,
 		];
 
-		if ( $field['type'] == 'checkbox' ) {
+		if ( in_array( $field['type'], [ CheckboxType::FIELD_TYPE, ToggleType::FIELD_TYPE ], true ) ) {
 			if ( ! isset( $field['value'] ) ) {
 				$ret['value'] = __( 'yes', 'flexible-product-fields' );
 			} else {

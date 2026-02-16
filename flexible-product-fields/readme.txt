@@ -5,7 +5,7 @@ Tags: woocommerce customize product, woocommerce product addons, woocommerce pro
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.12.4
+Stable tag: 2.13.0
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -336,6 +336,10 @@ Please report security bugs found in the source code of the Flexible Product Fie
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.13.0 - 2026-02-16 =
+* Added toggle field type
+* Added multi images (multi checkbox with images) field type
 
 = 2.12.4 - 2026-02-12 =
 * Fixed adding empty date field to the cart

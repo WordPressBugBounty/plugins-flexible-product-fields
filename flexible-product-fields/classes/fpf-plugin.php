@@ -28,7 +28,7 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 	 *
 	 * @var string
 	 */
-	private $scripts_version = FLEXIBLE_PRODUCT_FIELDS_VERSION . '.70';
+	private $scripts_version = FLEXIBLE_PRODUCT_FIELDS_VERSION . '.72';
 
 	/**
 	 * FPF product fields.
