@@ -37,11 +37,22 @@ class GroupAdvOption extends OptionAbstract {
 	 */
 	public function get_option_label(): string {
 		$url_upgrade_pro = esc_url( apply_filters( 'flexible_product_fields/short_url', '#', 'fpf-settings-option-group-notice-upgrade-link' ) );
-		return sprintf(
+		$url_multistep = esc_url( apply_filters( 'flexible_product_fields/short_url', '#', 'fpf-multistep-configuration' ) );
+
+		$pro_plugin_info = sprintf(
 		/* translators: %1$s and %3$s: anchor opening tags, %2$s and %4$s: anchor closing tags */
 			__( 'The plugin in the PRO version allows you to assign groups to specific categories or tags and to all products. You can also set the order in which the field groups are arranged. %1$sUpgrade to PRO%2$s', 'flexible-product-fields' ),
 			'<a target="_blank" style="color:#003399;" class="fpfArrowLink" href="' . $url_upgrade_pro . '"><span class="dashicons dashicons-star-filled" style="font-size: 13px;vertical-align: bottom;"></span>',
 			'</a>'
 		);
+
+		$multistep_plugin_info = sprintf(
+		/* translators: %1$s and %3$s: anchor opening tags, %2$s and %4$s: anchor closing tags */
+			__( 'And if you want to split field display into steps in an accordion, check out the %1$sMultistep Configuration add-on%2$s', 'flexible-product-fields' ),
+			'<a target="_blank" style="color:#003399;" class="fpfArrowLink" href="' . $url_multistep . '"><span class="dashicons dashicons-star-filled" style="font-size: 13px;vertical-align: bottom;"></span>',
+			'</a>'
+		);
+
+		return $pro_plugin_info . '<br>' . $multistep_plugin_info;
 	}
 }

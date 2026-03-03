@@ -8,12 +8,16 @@
 use WPDesk\FPF\Free\Plugin as PluginFree;
 use VendorFPF\WPDesk\View\Renderer\Renderer;
 use VendorFPF\WPDesk\View\Resolver\DirResolver;
+use VendorFPF\WPDesk\View\Resolver\WPThemeResolver;
+use VendorFPF\WPDesk\View\Resolver\ChainResolver;
 use VendorFPF\WPDesk\View\Renderer\SimplePhpRenderer;
 use WPDesk\FPF\Free\Marketing\SupportPage;
 use WPDesk\FPF\Free\Service\TemplateFinder\TemplateFinder;
 use WPDesk\FPF\Free\Service\TemplateFinder\TemplateQuery;
 use WPDesk\FPF\Free\Block\Settings\BlockTemplateSettings;
 use WPDesk\FPF\Free\Service\BookingCartFormatter;
+use WPDesk\FPF\Free\Service\FieldsDisplayerInterface;
+use WPDesk\FPF\Free\Service\FieldsDisplayer;
 
 /**
  * Plugin.
@@ -21,7 +25,6 @@ use WPDesk\FPF\Free\Service\BookingCartFormatter;
 class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plugin\AbstractPlugin implements VendorFPF\WPDesk\PluginBuilder\Plugin\HookableCollection {
 
 	use VendorFPF\WPDesk\PluginBuilder\Plugin\HookableParent;
-	use VendorFPF\WPDesk\PluginBuilder\Plugin\TemplateLoad;
 
 	/**
 	 * Scripts version string.
@@ -81,6 +84,10 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 
 	private BookingCartFormatter $booking_formatter;
 
+	private FieldsDisplayerInterface $fields_displayer;
+
+	private string $plugin_path;
+
 	/**
 	 * Flexible_Invoices_Reports_Plugin constructor.
 	 *
@@ -89,7 +96,7 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 	public function __construct( VendorFPF\WPDesk_Plugin_Info $plugin_info ) {
 		$this->plugin_info = $plugin_info;
 		parent::__construct( $this->plugin_info );
-		$this->renderer    = new SimplePhpRenderer( new DirResolver( dirname( __DIR__ ) . '/templates' ) );
+		$this->renderer    = $this->get_renderer();
 		$this->plugin_free = new PluginFree( $plugin_info, $this, $this->renderer );
 	}
 
@@ -99,9 +106,14 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 	public function init_base_variables() {
 		$this->plugin_url       = $this->plugin_info->get_plugin_url();
 		$this->plugin_path      = $this->plugin_info->get_plugin_dir();
-		$this->template_path    = $this->plugin_info->get_text_domain();
 		$this->plugin_namespace = $this->plugin_info->get_text_domain();
-		$this->template_path    = $this->plugin_info->get_text_domain();
+	}
+
+	private function get_renderer(): Renderer {
+		$resolver = new ChainResolver();
+		$resolver->appendResolver( new WPThemeResolver( 'flexible-product-fields' ) );
+		$resolver->appendResolver( new DirResolver( $this->plugin_path . '/templates/' ) );
+		return new SimplePhpRenderer( $resolver );
 	}
 
 	/**
@@ -255,9 +267,11 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 			$this->fpf_product_fields
 		);
 		$this->booking_formatter  = new BookingCartFormatter( $this->fpf_product_price );
-		$this->fpf_product        = new FPF_Product( $this, $this->fpf_product_fields, $this->fpf_product_price );
+		$this->fpf_product        = new FPF_Product( $this, $this->fpf_product_fields, $this->fpf_product_price, $this->renderer );
 		$this->fpf_cart           = new FPF_Cart( $this, $this->fpf_product_fields, $this->fpf_product, $this->fpf_product_price, $this->booking_formatter );
 		$this->fpf_post_type      = new FPF_Post_Type( $this, $this->fpf_product_fields, $this->renderer );
+		$this->fields_displayer   = new FieldsDisplayer( $this->renderer, $this->fpf_product );
+		$this->fpf_product->set_displayer( $this->fields_displayer );
 		$this->add_hookable( new FPF_Add_To_Cart_Filters( $this->fpf_product ) );
 
 		new FPF_Order( $this );
@@ -293,6 +307,10 @@ class Flexible_Product_Fields_Plugin extends VendorFPF\WPDesk\PluginBuilder\Plug
 
 	public function get_template_finder(): TemplateFinder {
 		return $this->template_finder;
+	}
+
+	public function get_fields_displayer(): FieldsDisplayerInterface {
+		return $this->fields_displayer;
 	}
 
 	/**

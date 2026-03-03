@@ -1,21 +1,21 @@
 <?php
 namespace WPDesk\FPF\Free\Block;
 
-use FPF_Product;
 use VendorFPF\WPDesk\PluginBuilder\Plugin\Hookable;
 use WPDesk\FPF\Free\Block\Settings\BlockTemplateSettings;
+use WPDesk\FPF\Free\Service\FieldsDisplayerInterface;
 
 /**
  * Ajax action for loading template previews in the block editor.
  */
 class AjaxTemplatePreviewLoader implements Hookable {
 
-	private FPF_Product $fpf_product;
+	private FieldsDisplayerInterface $fields_displayer;
 
 	private const ACTION = 'fpf_template_preview';
 
-	public function __construct( FPF_Product $fpf_product ) {
-		$this->fpf_product = $fpf_product;
+	public function __construct( FieldsDisplayerInterface $fields_displayer ) {
+		$this->fields_displayer = $fields_displayer;
 	}
 
 	public function hooks() {
@@ -66,7 +66,7 @@ class AjaxTemplatePreviewLoader implements Hookable {
 		$mock_product = new \WC_Product_Simple();
 		$mock_product->set_id( 0 );
 
-		$preview_html = $this->fpf_product->render_fields( $mock_product, $block_settings );
+		$preview_html = $this->fields_displayer->get_fields_for_block( $mock_product, $block_settings );
 
 		if ( empty( $preview_html ) ) {
 			$preview_html = '<p>' . \esc_html__( 'No fields found in this template.', 'flexible-product-fields' ) . '</p>';

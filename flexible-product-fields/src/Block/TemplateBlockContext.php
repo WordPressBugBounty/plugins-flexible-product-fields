@@ -2,18 +2,18 @@
 
 namespace WPDesk\FPF\Free\Block;
 
-use Flexible_Product_Fields_Plugin;
 use VendorFPF\WPDesk\PluginBuilder\Plugin\Hookable;
+use WPDesk\FPF\Free\Service\FieldsDisplayerInterface;
 
 /**
  * Adds context to the block editor.
  */
 class TemplateBlockContext implements Hookable {
 
-	private Flexible_Product_Fields_Plugin $plugin;
+	private FieldsDisplayerInterface $fields_displayer;
 
-	public function __construct( Flexible_Product_Fields_Plugin $plugin ) {
-		$this->plugin = $plugin;
+	public function __construct( FieldsDisplayerInterface $fields_displayer ) {
+		$this->fields_displayer = $fields_displayer;
 	}
 
 	public function hooks() {
@@ -31,7 +31,7 @@ class TemplateBlockContext implements Hookable {
 			return $context;
 		}
 
-		$context['fpf_plugin'] = $this->plugin;
+		$context['fields_displayer'] = $this->fields_displayer;
 		return $context;
 	}
 }

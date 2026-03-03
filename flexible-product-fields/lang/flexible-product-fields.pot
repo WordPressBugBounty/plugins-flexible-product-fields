@@ -2,14 +2,14 @@
 # This file is distributed under the same license as the Flexible Product Fields plugin.
 msgid ""
 msgstr ""
-"Project-Id-Version: Flexible Product Fields 2.13.0\n"
+"Project-Id-Version: Flexible Product Fields 2.14.0\n"
 "Report-Msgid-Bugs-To: https://wordpress.org/support/plugin/flexible-product-fields\n"
 "Last-Translator: FULL NAME <EMAIL@ADDRESS>\n"
 "Language-Team: LANGUAGE <LL@li.org>\n"
 "MIME-Version: 1.0\n"
 "Content-Type: text/plain; charset=UTF-8\n"
 "Content-Transfer-Encoding: 8bit\n"
-"POT-Creation-Date: 2026-02-16T08:40:50+00:00\n"
+"POT-Creation-Date: 2026-03-03T07:59:16+00:00\n"
 "PO-Revision-Date: YEAR-MO-DA HO:MI+ZONE\n"
 "X-Generator: WP-CLI 2.12.0\n"
 "X-Domain: flexible-product-fields\n"
@@ -49,15 +49,15 @@ msgstr ""
 msgid "Select options"
 msgstr ""
 
-#: classes/fpf-cart.php:274
+#: classes/fpf-cart.php:275
 msgid "yes"
 msgstr ""
 
-#: classes/fpf-plugin.php:139
+#: classes/fpf-plugin.php:151
 msgid "Total"
 msgstr ""
 
-#: classes/fpf-plugin.php:325
+#: classes/fpf-plugin.php:343
 #: src/Settings/Page.php:145
 #: vendor_prefixed/wpdesk/wp-builder/src/Plugin/AbstractPlugin.php:188
 #: assets-src/js/blocks/fpf-template-selector/edit.js:108
@@ -65,16 +65,16 @@ msgstr ""
 msgid "Settings"
 msgstr ""
 
-#: classes/fpf-plugin.php:326
+#: classes/fpf-plugin.php:344
 #: vendor_prefixed/wpdesk/wp-builder/src/Plugin/AbstractPlugin.php:184
 msgid "Docs"
 msgstr ""
 
-#: classes/fpf-plugin.php:330
+#: classes/fpf-plugin.php:348
 msgid "Upgrade to PRO &rarr;"
 msgstr ""
 
-#: classes/fpf-plugin.php:331
+#: classes/fpf-plugin.php:349
 #: templates/metabox/start-here.php:7
 msgid "Start here"
 msgstr ""
@@ -339,9 +339,15 @@ msgid "Field name"
 msgstr ""
 
 #. translators: %1$s and %3$s: anchor opening tags, %2$s and %4$s: anchor closing tags
-#: src/Settings/Option/GroupAdvOption.php:42
+#: src/Settings/Option/GroupAdvOption.php:44
 #, php-format
 msgid "The plugin in the PRO version allows you to assign groups to specific categories or tags and to all products. You can also set the order in which the field groups are arranged. %1$sUpgrade to PRO%2$s"
+msgstr ""
+
+#. translators: %1$s and %3$s: anchor opening tags, %2$s and %4$s: anchor closing tags
+#: src/Settings/Option/GroupAdvOption.php:51
+#, php-format
+msgid "And if you want to split field display into steps in an accordion, check out the %1$sMultistep Configuration add-on%2$s"
 msgstr ""
 
 #: src/Settings/Option/GroupAssignOption.php:57

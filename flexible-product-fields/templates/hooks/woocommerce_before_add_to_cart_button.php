@@ -16,7 +16,6 @@
 
 ?>
 <div class="fpf-fields before-add-to-cart">
-	<input type="hidden" name="_fpf_nonce" value="<?php echo esc_attr( $fpf_nonce ); ?>">
 	<input type="hidden" name="_fpf_product_id" value="<?php echo esc_attr( $product_id ); ?>">
 	<?php foreach ( $fields as $field ) : ?>
 		<?php echo $field; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped ?>

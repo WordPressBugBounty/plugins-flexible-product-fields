@@ -102,9 +102,17 @@ class TemplateQuery {
 	 * @return array<string, mixed>
 	 */
 	private function prepare_fields_meta( int $template_id ): array {
-		$raw_fields_meta = \get_post_meta( $template_id, '_fields', true );
+		$raw_fields_meta  = \get_post_meta( $template_id, '_fields', true );
+		$enable_multistep = \get_post_meta( $template_id, '_enable_multistep', true );
+
 		return array_map(
-			fn ( array $field ) => array_merge( $field, [ '_group_id' => $template_id ] ),
+			fn ( array $field ) => array_merge(
+				$field,
+				[
+					'_group_id'         => $template_id,
+					'_enable_multistep' => $enable_multistep,
+				]
+			),
 			$raw_fields_meta
 		);
 	}

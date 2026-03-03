@@ -8,6 +8,9 @@ use WPDesk\FPF\Free\Field\TemplateArgs;
 use WPDesk\FPF\Free\Service\TemplateFinder\TemplateFinder;
 use WPDesk\FPF\Free\Service\TemplateFinder\Collections\TemplateCollection;
 use WPDesk\FPF\Free\Block\Settings\BlockTemplateSettings;
+use WPDesk\FPF\Free\Service\FieldsDisplayerInterface;
+use VendorFPF\WPDesk\View\Renderer\Renderer;
+
 
 class FPF_Product {
 
@@ -49,16 +52,20 @@ class FPF_Product {
 
 	private $has_fpf_block = false;
 
-	/**
-	 * FPF_Product constructor.
-	 *
-	 * @param Flexible_Product_Fields_Plugin $plugin
-	 * @param FPF_Product_Fields $product_fields
-	 */
-	public function __construct( Flexible_Product_Fields_Plugin $plugin, FPF_Product_Fields $product_fields, FPF_Product_Price $product_price ) {
+	private FieldsDisplayerInterface $displayer;
+
+	private Renderer $renderer;
+
+	public function __construct(
+		Flexible_Product_Fields_Plugin $plugin,
+		FPF_Product_Fields $product_fields,
+		FPF_Product_Price $product_price,
+		Renderer $renderer
+	) {
 		$this->_plugin         = $plugin;
 		$this->_product_fields = $product_fields;
 		$this->product_price   = $product_price;
+		$this->renderer        = $renderer;
 		$this->template_finder = $this->_plugin->get_template_finder();
 		$this->hooks();
 	}
@@ -76,6 +83,10 @@ class FPF_Product {
 
 	public function get_template_finder(): TemplateFinder {
 		return $this->template_finder;
+	}
+
+	public function set_displayer( FieldsDisplayerInterface $displayer ): void {
+		$this->displayer = $displayer;
 	}
 
 	/**
@@ -137,9 +148,28 @@ class FPF_Product {
 			return [];
 		}
 
+		$template_collection = $this->get_template_collection_for_product( $product, $hook, $block_settings );
+		if ( $template_collection === null ) {
+			return [];
+		}
+
+		return $template_collection->legacy_results();
+	}
+
+	/**
+	 * Get translated fields for product.
+	 * Titles and labels will be translated to current language.
+	 *
+	 * @param WC_Product $product
+	 * @param bool|string $hook
+	 */
+	public function get_template_collection_for_product( $product, $hook = false, ?BlockTemplateSettings $block_settings = null ): ?TemplateCollection {
+		if ( ! $product instanceof \WC_Product ) {
+			return null;
+		}
+
 		if ( $block_settings === null ) {
-			$templates = $this->template_finder->find( $product, $hook );
-			return $this->translate_fields_titles_and_labels( $templates->legacy_results() );
+			return $this->template_finder->find( $product, $hook );
 		}
 
 		$template_query      = $this->template_finder->get_template_query();
@@ -154,7 +184,7 @@ class FPF_Product {
 
 		$template_collection->init_fields( $this->_product_fields->get_field_types() );
 
-		return $this->translate_fields_titles_and_labels( $template_collection->legacy_results() );
+		return $template_collection;
 	}
 
 	/**
@@ -217,73 +247,35 @@ class FPF_Product {
 			$product
 		);
 
-		return $this->_plugin->load_template(
-			$field_type['template_file'],
-			'fields',
+		return $this->renderer->render(
+			'fields/' . $field_type['template_file'],
 			$template_vars
 		);
 	}
 
 	/**
-	 * Translate fields titles and labels.
-	 *
-	 * @param array $fields
-	 *
-	 * @return array
+	 * @deprecated
 	 */
-	private function translate_fields_titles_and_labels( array $fields ) {
-		foreach ( $fields['fields'] as $key => $field ) {
-			$field['title'] = wpdesk__( $field['title'], 'flexible-product-fields' );
-			if ( isset( $field['placeholder'] ) ) {
-				$field['placeholder'] = wpdesk__( $field['placeholder'], 'flexible-product-fields' );
-			}
-			if ( isset( $field['has_options'] ) && $field['has_options'] ) {
-				foreach ( $field['options'] as $option_key => $option ) {
-					$field['options'][ $option_key ]['label'] = wpdesk__( $option['label'], 'flexible-product-fields' );
-				}
-			}
-			$fields['fields'][ $key ] = $field;
-		}
-		return $fields;
-	}
-
 	public function render_fields_before_add_to_cart( WC_Product $product ): string {
-		$fields = $this->create_fields_for_product( $product, 'woocommerce_before_add_to_cart_button' );
-		return $this->_plugin->load_template(
-			'woocommerce_before_add_to_cart_button',
-			'hooks',
-			[
-				'fields'     => $fields['display_fields'],
-				'product_id' => $product->get_id(),
-				'fpf_nonce'  => \wp_create_nonce( 'fpf_add_to_cart_nonce' ),
-			]
-		);
+		ob_start();
+		$this->displayer->display_fields_for_hook( $product, 'woocommerce_before_add_to_cart_button' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		return ob_get_clean();
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function render_fields_after_add_to_cart( WC_Product $product ): string {
-		$fields = $this->create_fields_for_product( $product, 'woocommerce_after_add_to_cart_button' );
-		return $this->_plugin->load_template(
-			'woocommerce_after_add_to_cart_button',
-			'hooks',
-			[
-				'fields'     => $fields['display_fields'],
-				'product_id' => $product->get_id(),
-			]
-		);
+		ob_start();
+		$this->displayer->display_fields_for_hook( $product, 'woocommerce_after_add_to_cart_button' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		return ob_get_clean();
 	}
 
+	/**
+	 * @deprecated
+	 */
 	public function render_fields( WC_Product $product, BlockTemplateSettings $block_settings ): string {
-		$fields = $this->create_fields_for_product( $product, false, $block_settings );
-		return $this->_plugin->load_template(
-			'block_fields',
-			'hooks',
-			[
-				'fields'         => $fields['display_fields'],
-				'product_id'     => $product->get_id(),
-				'block_settings' => $block_settings,
-				'fpf_nonce'      => \wp_create_nonce( 'fpf_add_to_cart_nonce' ),
-			]
-		);
+		return $this->displayer->get_fields_for_block( $product, $block_settings );
 	}
 
 	/**
@@ -300,7 +292,7 @@ class FPF_Product {
 			return;
 		}
 
-		echo $this->render_fields_after_add_to_cart( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$this->displayer->display_fields_for_hook( $product, 'woocommerce_after_add_to_cart_button' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**
@@ -325,7 +317,7 @@ class FPF_Product {
 			return;
 		}
 
-		echo $this->render_fields_before_add_to_cart( $product ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		$this->displayer->display_fields_for_hook( $product, 'woocommerce_before_add_to_cart_button' ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	}
 
 	/**

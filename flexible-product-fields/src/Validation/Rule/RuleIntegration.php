@@ -2,6 +2,8 @@
 
 namespace WPDesk\FPF\Free\Validation\Rule;
 
+use WPDesk\FPF\Free\Validation\ValidationResult;
+
 /**
  * Initializes integration of validation rule.
  */
@@ -27,25 +29,29 @@ class RuleIntegration {
 	 * {@inheritdoc}
 	 */
 	public function hooks() {
-		add_filter( 'flexible_product_fields/validate_field', [ $this, 'validate_field' ], 10, 3 );
+		add_filter( 'flexible_product_fields/validate_field/v2', [ $this, 'validate_field' ], 10, 4 );
 	}
 
 	/**
 	 * Validates field value.
 	 *
+	 * @param ValidationResult $result
 	 * @param array $field_data Field settings.
 	 * @param mixed $value      Value of field.
 	 * @param array $field_type Config for field data.
 	 *
-	 * @throws \Exception .
-	 *
 	 * @internal
 	 */
-	public function validate_field( array $field_data, $value, array $field_type ) {
+	public function validate_field( ValidationResult $result, array $field_data, $value, array $field_type ): ValidationResult {
 		if ( $this->rule_object->validate_value( $field_data, $field_type, $value ) ) {
-			return;
+			return $result;
 		}
 
-		throw new \Exception( $this->rule_object->get_error_message( $field_data ) );
+		$result->add_error(
+			get_class( $this->rule_object ),
+			$this->rule_object->get_error_message( $field_data )
+		);
+
+		return $result;
 	}
 }

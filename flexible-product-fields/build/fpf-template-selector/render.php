@@ -1,6 +1,7 @@
 <?php
 
 use WPDesk\FPF\Free\Block\Settings\BlockTemplateSettings;
+use WPDesk\FPF\Free\Service\FieldsDisplayerInterface;
 
 /**
  * Server-side rendering of the `fpf/template-selector` block.
@@ -17,21 +18,18 @@ if ( $template_id === 0 ) {
 	return;
 }
 
-$fpf_plugin  = $block->context['fpf_plugin'] ?? null;
-if ( ! $fpf_plugin instanceof \Flexible_Product_Fields_Plugin ) {
+$fields_displayer = $block->context['fields_displayer'] ?? null;
+if ( ! $fields_displayer instanceof FieldsDisplayerInterface ) {
 	return;
 }
-
-$fpf_product = $fpf_plugin->get_fpf_product();
 
 global $product;
 
 $block_settings = new BlockTemplateSettings( $template_id, $show_other_fields );
 
-$wrapper_attributes = get_block_wrapper_attributes();
 ?>
 <div class="wp-block-fpf-template-selector">
 	<?php
-		echo $fpf_product->render_fields( $product, $block_settings ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
+		echo $fields_displayer->get_fields_for_block( $product, $block_settings ); // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped
 	?>
 </div>

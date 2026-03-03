@@ -84,8 +84,8 @@ class Plugin extends AbstractPlugin implements HookableCollection {
 		$this->add_hookable( new Settings\FieldListSearchModifier( $this->plugin_old->get_template_finder() ) );
 
 		$this->add_hookable( new Block\BlockIntegration( $this->plugin_info->get_plugin_dir() ) );
-		$this->add_hookable( new Block\AjaxTemplatePreviewLoader( $this->plugin_old->get_fpf_product() ) );
-		$this->add_hookable( new Block\TemplateBlockContext( $this->plugin_old ) );
+		$this->add_hookable( new Block\AjaxTemplatePreviewLoader( $this->plugin_old->get_fields_displayer() ) );
+		$this->add_hookable( new Block\TemplateBlockContext( $this->plugin_old->get_fields_displayer() ) );
 
 		( new Settings\Forms() )->init();
 		( new Settings\Routes() )->init();

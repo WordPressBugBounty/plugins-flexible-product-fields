@@ -103,10 +103,30 @@ class TemplateCollection {
 				$field['has_price']            = $definition['has_price'] ?? false;
 				$field['has_price_in_options'] = $definition['has_price_in_options'] ?? false;
 				$field['has_options']          = $definition['has_options'] ?? false;
-				$carry[]                       = $field;
+				$carry[]                       = $this->translate_fields_titles_and_labels( $field );
 				return $carry;
 			},
 			[]
 		);
+	}
+
+	/**
+	 * Translate fields titles and labels.
+	 *
+	 * @param array<string, mixed> $field
+	 *
+	 * @return array<string, mixed>
+	 */
+	private function translate_fields_titles_and_labels( array $field ) {
+		$field['title'] = wpdesk__( $field['title'], 'flexible-product-fields' );
+		if ( isset( $field['placeholder'] ) ) {
+			$field['placeholder'] = wpdesk__( $field['placeholder'], 'flexible-product-fields' );
+		}
+		if ( isset( $field['has_options'] ) && $field['has_options'] ) {
+			foreach ( $field['options'] as $option_key => $option ) {
+				$field['options'][ $option_key ]['label'] = wpdesk__( $option['label'], 'flexible-product-fields' );
+			}
+		}
+		return $field;
 	}
 }

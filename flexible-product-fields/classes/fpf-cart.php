@@ -7,6 +7,7 @@ use WPDesk\FPF\Free\Service\BookingCartFormatter;
 use WPDesk\FPF\Free\Service\BookingUnitsCalculator;
 use WPDesk\FPF\Free\Field\Type\CheckboxType;
 use WPDesk\FPF\Free\Field\Type\ToggleType;
+use WPDesk\FPF\Free\Validation\ValidationResult;
 
 /**
  * Handles WooCommerce add to cart.
@@ -417,19 +418,15 @@ class FPF_Cart {
 	 * @throws \Exception
 	 */
 	public function woocommerce_add_cart_item_data( $cart_item_data, $product_id, $variation_id ) {
-		if ( ! isset( $_POST['_fpf_product_id'], $_POST['_fpf_nonce'] ) ) {
+		if ( ! isset( $_POST['_fpf_product_id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			return $cart_item_data;
 		}
 
-		if ( ! in_array( (int) $_POST['_fpf_product_id'], [ $product_id, $variation_id ], true ) ) {
+		if ( ! in_array( (int) $_POST['_fpf_product_id'], [ $product_id, $variation_id ], true ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
 			return $cart_item_data;
 		}
 
-		$post_data = wc_clean( wp_unslash( $_POST ) );
-
-		if ( ! wp_verify_nonce( $post_data['_fpf_nonce'], 'fpf_add_to_cart_nonce' ) ) {
-			throw new \Exception( 'Nonce verification failed.' );
-		}
+		$post_data = wc_clean( wp_unslash( $_POST ) ); // phpcs:ignore WordPress.Security.NonceVerification.Missing
 
 		$product_data = wc_get_product( $post_data['_fpf_product_id'] );
 
@@ -444,6 +441,8 @@ class FPF_Cart {
 		$fields       = apply_filters( 'flexible_product_fields_apply_logic_rules', $fields, $post_data );
 		$fields_types = $this->_product_fields->get_field_types_by_type();
 
+		$results = new ValidationResult();
+
 		foreach ( $fields['fields'] as $field ) {
 			if ( ! isset( $fields_types[ $field['type'] ] ) ) {
 				continue;
@@ -452,10 +451,44 @@ class FPF_Cart {
 			$field_type   = $fields_types[ $field['type'] ];
 			$field_values = $field_type['type_object']->get_field_value( $field['id'] );
 
+			/**
+			 * Fires to validate a single field (legacy — throws on error).
+			 *
+			 * @deprecated Use flexible_product_fields/validate_field/v2 filter instead.
+			 *
+			 * @param array $field       Field settings.
+			 * @param mixed $field_values Field values.
+			 * @param array $field_type  Field type config.
+			 */
 			try {
 				do_action( 'flexible_product_fields/validate_field', $field, $field_values, $field_type );
 			} catch ( \Exception $e ) {
-				throw new \Exception( $e->getMessage() );
+				$results->add_error( 'legacy', $e->getMessage() );
+			}
+
+			/**
+			 * Filters the validation result for a single field.
+			 *
+			 * Listeners receive a ValidationResult, append errors via add_error(), and return it.
+			 * Use this hook to collect all field errors or to modify error messages from other rules.
+			 *
+			 * @param ValidationResult $result      Accumulated validation result.
+			 * @param array            $field        Field settings.
+			 * @param mixed            $field_values Field values.
+			 * @param array            $field_type   Field type config.
+			 *
+			 * @since 2.x.0
+			 */
+			$field_result = apply_filters(
+				'flexible_product_fields/validate_field/v2',
+				new ValidationResult(),
+				$field,
+				$field_values,
+				$field_type
+			);
+
+			if ( $field_result instanceof ValidationResult ) {
+				$results->merge( $field_result );
 			}
 
 			if ( ! is_array( $field_values ) ) {
@@ -471,6 +504,10 @@ class FPF_Cart {
 					$cart_item_data['flexible_product_fields'][] = $data;
 				}
 			}
+		}
+
+		if ( ! $results->is_valid() ) {
+			throw new \Exception( implode( '<br>', $results->get_messages() ) );
 		}
 
 		if ( isset( $cart_item_data['flexible_product_fields'] ) ) {

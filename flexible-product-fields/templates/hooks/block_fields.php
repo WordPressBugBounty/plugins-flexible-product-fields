@@ -18,7 +18,6 @@ use WPDesk\FPF\Free\Block\Settings\BlockTemplateSettings;
 
 ?>
 <div class="fpf-fields">
-	<input type="hidden" name="_fpf_nonce" value="<?php echo esc_attr( $fpf_nonce ); ?>">
 	<input type="hidden" name="_fpf_product_id" value="<?php echo esc_attr( $product_id ); ?>">
 	<input type="hidden" name="_fpf_block_template_id" value="<?php echo esc_attr( (string) $block_settings->get_template_id() ); ?>">
 	<input type="hidden" name="_fpf_block_show_other_templates" value="<?php echo esc_attr( $block_settings->should_show_other_templates() ? '1' : '0' ); ?>">
