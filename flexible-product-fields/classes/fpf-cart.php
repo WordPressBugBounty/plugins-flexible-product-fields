@@ -8,6 +8,13 @@ use WPDesk\FPF\Free\Service\BookingUnitsCalculator;
 use WPDesk\FPF\Free\Field\Type\CheckboxType;
 use WPDesk\FPF\Free\Field\Type\ToggleType;
 use WPDesk\FPF\Free\Validation\ValidationResult;
+use WPDesk\FPF\Free\Field\Type\SelectType;
+use WPDesk\FPF\Free\Field\Type\RadioType;
+use WPDesk\FPF\Free\Field\Type\RadioImagesType;
+use WPDesk\FPF\Free\Field\Type\RadioColorsType;
+use WPDesk\FPF\Free\Field\Type\MultiselectType;
+use WPDesk\FPF\Free\Field\Type\MultiCheckboxType;
+use WPDesk\FPF\Free\Field\Type\MultiImagesType;
 
 /**
  * Handles WooCommerce add to cart.
@@ -216,8 +223,8 @@ class FPF_Cart {
 				$field_price_current_currency = (float) $this->product_price->multicurrency_calculate_price_to_display( $field_price_base_currency );
 
 				if ( $field_calculation_type === 'fee' ) {
-					$title = (string) $field['name'];
-					$this->add_fee( $title, $field_price_base_currency );
+					$fee_title = $this->prepare_fee_title( $field, $product );
+					$this->add_fee( $fee_title, $field_price_base_currency );
 				} else {
 					$extra_cost += $field_price_base_currency;
 
@@ -268,6 +275,7 @@ class FPF_Cart {
 			'name'  => $field['title'],
 			'id'    => $field['id'],
 			'value' => (string) $value,
+			'type'  => $field['type'],
 		];
 
 		if ( in_array( $field['type'], [ CheckboxType::FIELD_TYPE, ToggleType::FIELD_TYPE ], true ) ) {
@@ -551,6 +559,38 @@ class FPF_Cart {
 				}
 				$cart->add_fee( $fee_title, $fee );
 			}
+		);
+	}
+
+	/**
+	 * @param array<string, mixed> $field
+	 * @param WC_Product $product
+	 */
+	private function prepare_fee_title( array $field, WC_Product $product ): string {
+		$field_name  = $field['name'] ?? '';
+		$field_type  = $field['type'] ?? '';
+		$field_value = $field['org_value'] ?? '';
+
+		$fee_title = $this->is_field_with_options( $field_type )
+			? $field_name . ': ' . $field_value
+			: $field_name;
+
+		return $fee_title . ' (' . $product->get_name() . ')';
+	}
+
+	private function is_field_with_options( string $field_type ): bool {
+		return in_array(
+			$field_type,
+			[
+				SelectType::FIELD_TYPE,
+				RadioType::FIELD_TYPE,
+				RadioImagesType::FIELD_TYPE,
+				RadioColorsType::FIELD_TYPE,
+				MultiselectType::FIELD_TYPE,
+				MultiCheckboxType::FIELD_TYPE,
+				MultiImagesType::FIELD_TYPE,
+			],
+			true
 		);
 	}
 
