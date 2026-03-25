@@ -220,11 +220,12 @@ class FPF_Cart {
 				$field_calculation_type = (string) ( $field['calculation_type'] ?? '' );
 
 				$field_price_base_currency    = $this->product_price->calculate_price( $field_price, $field_price_type, $product, $field_calculation_type, $product_price, $measurement );
-				$field_price_current_currency = (float) $this->product_price->multicurrency_calculate_price_to_display( $field_price_base_currency );
+				$field_price_current_currency = $this->product_price->prepare_price_to_display( $product, $field_price_base_currency );
 
 				if ( $field_calculation_type === 'fee' ) {
-					$fee_title = $this->prepare_fee_title( $field, $product );
-					$this->add_fee( $fee_title, $field_price_base_currency );
+					$fee_title                   = $this->prepare_fee_title( $field, $product );
+					$fee_amount_current_currency = $this->prepare_fee_amount( $field_price_base_currency, $product );
+					$this->add_fee( $fee_title, $fee_amount_current_currency, $product );
 				} else {
 					$extra_cost += $field_price_base_currency;
 
@@ -365,7 +366,7 @@ class FPF_Cart {
 	 */
 	private function field_price_multicurrency( float $price_or_percent, string $price_type, \WC_Product $product, string $calculation_type ): float {
 		$price = $this->product_price->calculate_price( $price_or_percent, $price_type, $product, $calculation_type );
-		$price = $this->product_price->multicurrency_calculate_price_to_display( $price );
+		$price = $this->product_price->prepare_price_to_display( $product, $price );
 
 		return (float) $price;
 	}
@@ -550,14 +551,17 @@ class FPF_Cart {
 	/**
 	 * Add fee to cart.
 	 */
-	private function add_fee( string $fee_title, float $fee ): void {
+	private function add_fee( string $fee_title, float $fee, WC_Product $product ): void {
 		add_action(
 			'woocommerce_cart_calculate_fees',
-			function ( $cart ) use ( $fee_title, $fee ) {
+			function ( $cart ) use ( $fee_title, $fee, $product ) {
 				if ( $cart->is_empty() ) {
 					return;
 				}
-				$cart->add_fee( $fee_title, $fee );
+
+				$taxable   = $product->is_taxable();
+				$tax_class = $product->get_tax_class();
+				$cart->add_fee( $fee_title, $fee, $taxable, $tax_class );
 			}
 		);
 	}
@@ -592,6 +596,16 @@ class FPF_Cart {
 			],
 			true
 		);
+	}
+
+	private function prepare_fee_amount( float $fee_amount, WC_Product $product ): float {
+		$fee_amount_current_currency = (float) $this->product_price->multicurrency_calculate_price_to_display( $fee_amount );
+		$wc_prices_include_tax       = get_option( 'woocommerce_prices_include_tax' ) === 'yes';
+		if ( ! $wc_prices_include_tax ) {
+			return $fee_amount_current_currency;
+		}
+
+		return (float) wpdesk_get_price_excluding_tax( $product, 1, $fee_amount_current_currency );
 	}
 
 	/**
