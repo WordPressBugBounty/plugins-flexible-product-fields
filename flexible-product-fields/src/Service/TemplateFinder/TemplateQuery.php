@@ -28,8 +28,8 @@ class TemplateQuery {
 
 	/**
 	 * @param string $assign_to
-	 * @param array<string, string> $meta_query_args
-	 * @return WP_Post[]
+	 * @param array<string, mixed> $meta_query_args
+	 * @return \WP_Post[]
 	 */
 	public function get_templates( string $assign_to, array $meta_query_args = [] ): array {
 		$args = [

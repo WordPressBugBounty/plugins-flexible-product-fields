@@ -11,7 +11,7 @@ use WP_Post;
 class TemplateCollection {
 
 	/**
-	 * @var WP_Post[]
+	 * @var \WP_Post[]
 	 */
 	private array $posts = [];
 
@@ -21,7 +21,7 @@ class TemplateCollection {
 	private array $fields = [];
 
 	/**
-	 * @param WP_Post[] $posts
+	 * @param \WP_Post[] $posts
 	 */
 	public function __construct( array $posts = [] ) {
 		$this->posts = $posts;
@@ -42,7 +42,7 @@ class TemplateCollection {
 	}
 
 	/**
-	 * @return WP_Post[]
+	 * @return \WP_Post[]
 	 */
 	public function get_posts(): array {
 		return $this->posts;

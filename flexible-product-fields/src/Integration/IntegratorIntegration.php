@@ -45,7 +45,8 @@ class IntegratorIntegration implements Hookable, HookablePluginDependant {
 		do_action(
 			'flexible_product_fields/init',
 			( new Integrator(
-				$this->plugin_old->get_fpf_product()
+				$this->plugin_old->get_fpf_product(),
+				$this->plugin_old->get_template_finder()
 			) )
 		);
 	}

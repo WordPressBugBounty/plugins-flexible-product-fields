@@ -3,6 +3,7 @@
 namespace WPDesk\FPF\Free\Integration;
 
 use FPF_Product;
+use WPDesk\FPF\Free\Service\TemplateFinder\TemplateFinder;
 
 /**
  * .
@@ -32,12 +33,19 @@ class Integrator implements IntegratorInterface {
 
 	private FPF_Product $fpf_product;
 
-	public function __construct( FPF_Product $fpf_product ) {
-		$this->fpf_product = $fpf_product;
+	private TemplateFinder $template_finder;
+
+	public function __construct( FPF_Product $fpf_product, TemplateFinder $template_finder ) {
+		$this->fpf_product     = $fpf_product;
+		$this->template_finder = $template_finder;
 	}
 
 	public function get_fpf_product(): FPF_Product {
 		return $this->fpf_product;
+	}
+
+	public function get_template_finder(): TemplateFinder {
+		return $this->template_finder;
 	}
 
 	/**

@@ -2,6 +2,8 @@
 
 namespace WPDesk\FPF\Free\Integration;
 
+use WPDesk\FPF\Free\Service\TemplateFinder\TemplateFinder;
+
 /**
  * .
  */
@@ -22,4 +24,6 @@ interface IntegratorInterface {
 	 * @example Use method to create plugin dependent on this plugin.
 	 */
 	public function get_version_dev(): string;
+
+	public function get_template_finder(): TemplateFinder;
 }

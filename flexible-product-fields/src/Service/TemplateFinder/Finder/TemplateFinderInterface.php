@@ -11,10 +11,5 @@ use WPDesk\FPF\Free\Service\TemplateFinder\TemplateQuery;
  */
 interface TemplateFinderInterface {
 
-	/**
-	 * @param ProductHandlerInterface $product_handler
-	 * @param TemplateQuery $template_query
-	 * @return TemplateCollection
-	 */
 	public function find_templates( ProductHandlerInterface $product_handler, TemplateQuery $template_query ): TemplateCollection;
 }

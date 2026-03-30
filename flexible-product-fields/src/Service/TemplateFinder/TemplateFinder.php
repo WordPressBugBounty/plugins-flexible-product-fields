@@ -3,16 +3,11 @@
 namespace WPDesk\FPF\Free\Service\TemplateFinder;
 
 use WPDesk\FPF\Free\Service\TemplateFinder\TemplateQuery;
-use WPDesk\FPF\Free\Service\TemplateFinder\Finder\AllTemplateFinder;
-use WPDesk\FPF\Free\Service\TemplateFinder\Finder\TagTemplateFinder;
 use WPDesk\FPF\Free\Service\TemplateFinder\Collections\FinderCollection;
 use WPDesk\FPF\Free\Service\TemplateFinder\Finder\ProductTemplateFinder;
-use WPDesk\FPF\Free\Service\TemplateFinder\Finder\CategoryTemplateFinder;
 use WPDesk\FPF\Free\Service\TemplateFinder\ProductHandler\ProductHandler;
 use WPDesk\FPF\Free\Service\TemplateFinder\Collections\TemplateCollection;
-use WPDesk\FPF\Free\Service\TemplateFinder\Finder\TagExludedTemplateFinder;
-use WPDesk\FPF\Free\Service\TemplateFinder\Finder\ProductExludedTemplateFinder;
-use WPDesk\FPF\Free\Service\TemplateFinder\Finder\CategoryExludedTemplateFinder;
+use WPDesk\FPF\Free\Service\TemplateFinder\Finder\TemplateFinderInterface;
 use WPDesk\FPF\Free\Service\TemplateFinder\ProductHandler\ProductHandlerInterface;
 use WPDesk\FPF\Free\Service\TemplateFinder\ProductHandler\VariationProductHandler;
 use FPF_Product_Fields;
@@ -74,12 +69,10 @@ class TemplateFinder {
 
 	private function init_finders(): void {
 		$this->finders->add( new ProductTemplateFinder() );
-		$this->finders->add( new CategoryTemplateFinder() );
-		$this->finders->add( new TagTemplateFinder() );
-		$this->finders->add( new AllTemplateFinder() );
-		$this->finders->add( new ProductExludedTemplateFinder() );
-		$this->finders->add( new CategoryExludedTemplateFinder() );
-		$this->finders->add( new TagExludedTemplateFinder() );
+	}
+
+	public function append_finder( TemplateFinderInterface $finder ): void {
+		$this->finders->add( $finder );
 	}
 
 	public function get_template_query(): TemplateQuery {

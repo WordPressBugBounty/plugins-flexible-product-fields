@@ -5,7 +5,7 @@ Tags: woocommerce customize product, woocommerce product addons, woocommerce pro
 Requires at least: 5.8
 Tested up to: 6.9
 Requires PHP: 7.4
-Stable tag: 2.14.2
+Stable tag: 2.14.3
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -336,6 +336,9 @@ Please report security bugs found in the source code of the Flexible Product Fie
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.14.3 - 2026-03-30 =
+* Fixed reduced database queries in free verson, by moving pro related finders into pro plugin
 
 = 2.14.2 - 2026-03-25 =
 * Fixed tax not being applied to calculation type: additional fees to product price option
