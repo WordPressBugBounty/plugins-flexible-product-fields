@@ -391,6 +391,9 @@ class FPF_Product {
 		$price_values = $field['price_values'] ?? [];
 
 		foreach ( $options as $option_key => $option ) {
+			// for backward compatibility (with our price label filter) lets also add the field id to the option data
+			// this way the label can be filtered by the field id and not just the option value
+			$option['id']           = $field['id'] ?? '';
 			$options[ $option_key ] = $this->process_single_option_price(
 				$option,
 				$price_values,
