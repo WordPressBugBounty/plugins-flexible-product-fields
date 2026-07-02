@@ -3,9 +3,9 @@ Contributors: wpdesk,dyszczo,grola,piotrpo,marcinkolanko,mateuszgbiorczyk,sebast
 Donate link: https://www.wpdesk.net/sk/flexible-product-fields-pro/
 Tags: woocommerce customize product, woocommerce product addons, woocommerce product options, woocommerce custom product, woocommerce custom fields
 Requires at least: 5.8
-Tested up to: 6.9
+Tested up to: 7.0
 Requires PHP: 7.4
-Stable tag: 2.14.4
+Stable tag: 2.14.7
 License: GPLv3 or later
 License URI: http://www.gnu.org/licenses/gpl-3.0.html
 
@@ -336,6 +336,15 @@ Please report security bugs found in the source code of the Flexible Product Fie
 Update the plugin to get the current version compatible with the newest WordPress and WooCommerce.
 
 == Changelog ==
+
+= 2.14.7 - 2026-06-21 =
+* Added support for WooCommerce 10.9
+
+= 2.14.6 - 2026-05-19 =
+* Added support for WordPress 7.0
+
+= 2.14.5 - 2026-05-07 =
+* Added support for WooCommerce 10.8
 
 = 2.14.4 - 2026-05-06 =
 * Added support for WordPress 7.0
